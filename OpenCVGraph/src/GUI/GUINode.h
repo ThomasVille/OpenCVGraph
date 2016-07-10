@@ -1,14 +1,13 @@
-#ifndef _GUI_GRAPHVIEW_H_
-#define _GUI_GRAPHVIEW_H_
+#ifndef _GUI_GUINODE_H_
+#define _GUI_GUINODE_H_
 
 #include <wx/wx.h>
-#include "GUINode.h"
 
-class GraphView : public wxControl
+class GUINode : public wxControl
 {
 public:
-	GraphView() : wxControl() { Init(); }
-	GraphView(wxWindow *parent,
+	GUINode() : wxControl() { Init(); };
+	GUINode(wxWindow *parent,
 		wxWindowID winid,
 		const wxPoint& pos = wxDefaultPosition,
 		const wxSize& size = wxDefaultSize,
@@ -19,13 +18,13 @@ public:
 		Init();
 	}
 
-	// accessors...
 protected:
 	void Init();
 	virtual wxSize DoGetBestSize() const;
 	void OnPaint(wxPaintEvent&);
+
 private:
-	wxDECLARE_DYNAMIC_CLASS(GraphView);
+	wxDECLARE_DYNAMIC_CLASS(GUINode);
 };
 
 #endif

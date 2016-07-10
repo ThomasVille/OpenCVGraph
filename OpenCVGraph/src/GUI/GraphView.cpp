@@ -1,9 +1,11 @@
 #include "GraphView.h"
 
-wxIMPLEMENT_DYNAMIC_CLASS(GraphView, wxWindow);
+wxIMPLEMENT_DYNAMIC_CLASS(GraphView, wxControl);
 
 void GraphView::Init()
 {
+	new GUINode(this, wxID_ANY);
+
 	Bind(wxEVT_PAINT, &GraphView::OnPaint, this);
 }
 
@@ -14,7 +16,5 @@ wxSize GraphView::DoGetBestSize() const
 
 void GraphView::OnPaint(wxPaintEvent &)
 {
-	wxPaintDC dc(this);
-	dc.SetBrush(*wxRED_BRUSH);
-	dc.DrawRoundedRectangle(wxRect(wxPoint(10, 10), wxPoint(100, 100)), 10);
+
 }

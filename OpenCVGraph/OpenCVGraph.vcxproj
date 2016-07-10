@@ -500,11 +500,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GUI\GraphView.cpp" />
+    <ClCompile Include="src\GUI\GUINode.cpp" />
     <ClCompile Include="src\GUI\MainFrame.cpp" />
     <ClCompile Include="src\OpenCVGraph.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GUI\GraphView.h" />
+    <ClInclude Include="src\GUI\GUINode.h" />
     <ClInclude Include="src\GUI\MainFrame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
