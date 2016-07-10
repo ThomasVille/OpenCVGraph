@@ -496,10 +496,14 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="OpenCVGraph.cpp" />
+    <ResourceCompile Include="sample.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="sample.rc" />
+    <ClCompile Include="src\GUI\MainFrame.cpp" />
+    <ClCompile Include="src\OpenCVGraph.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\GUI\MainFrame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

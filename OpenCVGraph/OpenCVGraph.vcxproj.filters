@@ -13,15 +13,29 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="OpenCVGraph.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
+    <Filter Include="Fichiers sources\src">
+      <UniqueIdentifier>{e76a8aff-a3fb-413b-9254-8abcb1b30d8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\src\GUI">
+      <UniqueIdentifier>{bd3b09cc-f3a1-49ca-a84b-a701ee0233cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="sample.rc">
       <Filter>Fichiers de ressources</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\OpenCVGraph.cpp">
+      <Filter>Fichiers sources\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\MainFrame.cpp">
+      <Filter>Fichiers sources\src\GUI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\GUI\MainFrame.h">
+      <Filter>Fichiers sources\src\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
