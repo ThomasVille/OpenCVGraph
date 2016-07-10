@@ -4,6 +4,9 @@
 *.o
 *.obj
 
+# Visual Studio
+*.db
+
 # Precompiled Headers
 *.gch
 *.pch
@@ -27,3 +30,6 @@
 *.exe
 *.out
 *.app
+wxWidgets-3.1.0/
+*.tlog
+*.opendb
