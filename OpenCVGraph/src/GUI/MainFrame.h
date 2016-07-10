@@ -4,8 +4,8 @@
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
 #include <wx/artprov.h>
+#include "GraphView.h"
 
-// Define a new frame type: this is going to be our main frame
 class MyFrame : public wxFrame
 {
 public:

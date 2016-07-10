@@ -91,9 +91,8 @@ void MyFrame::CreateGraphNotebook()
 
 	wxBitmap page_bmp = wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, wxSize(16, 16));
 
-
-	m_graphNotebook->AddPage(new wxTextCtrl(m_graphNotebook, wxID_ANY, wxT("Some text"),
-		wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxNO_BORDER), wxT("wxTextCtrl 1"), false, page_bmp);
+	GraphView* m_graphView = new GraphView(m_graphNotebook, wxID_ANY, "prout");
+	m_graphNotebook->AddPage(m_graphView, wxT("wxTextCtrl 1"), false, page_bmp);
 	m_graphNotebook->SetPageToolTip(0, "Welcome to wxAUI (this is a page tooltip)");
 
 	m_graphNotebook->AddPage(new wxTextCtrl(m_graphNotebook, wxID_ANY, wxT("Some more text"),

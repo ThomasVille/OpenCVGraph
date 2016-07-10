@@ -32,9 +32,15 @@
     <ClCompile Include="src\GUI\MainFrame.cpp">
       <Filter>Fichiers sources\src\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="src\GUI\GraphView.cpp">
+      <Filter>Fichiers sources\src\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GUI\MainFrame.h">
+      <Filter>Fichiers sources\src\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\GraphView.h">
       <Filter>Fichiers sources\src\GUI</Filter>
     </ClInclude>
   </ItemGroup>
