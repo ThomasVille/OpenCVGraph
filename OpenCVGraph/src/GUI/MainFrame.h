@@ -2,14 +2,8 @@
 #define _GUI_MAINFRAME_H_
 
 #include <wx/wx.h>
-
-// IDs for the controls and the menu commands
-enum
-{
-	// menu items
-	Event_Quit = 1,
-	Event_About
-};
+#include <wx/aui/aui.h>
+#include <wx/artprov.h>
 
 // Define a new frame type: this is going to be our main frame
 class MyFrame : public wxFrame
@@ -23,13 +17,27 @@ public:
 	void OnAbout(wxCommandEvent& event);
 
 private:
-	// symbolic names for the status bar fields
+	wxAuiManager m_mgr;
+
+	// Default style & theme for the notebooks
+	long m_notebookStyle;
+	long m_notebookTheme;
+
 	enum
 	{
-		Status_Main = 0,
-		Status_Correct,
-		Status_Inputs,
-		Status_Outputs
+		// status bar fields
+		SB_MAIN = 0,
+		SB_CORRECT,
+		SB_INPUTS,
+		SB_OUTPUTS,
+
+		// menu items
+		MENU_QUIT = 1,
+		MENU_ABOUT,
+
+		// toolbar
+		TB_NEW_FILE,
+		TB_OPEN_FILE
 	};
 
 };
