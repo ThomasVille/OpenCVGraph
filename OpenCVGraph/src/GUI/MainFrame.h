@@ -13,11 +13,21 @@ public:
 	MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
 	virtual ~MyFrame();
 
+	// GUI Building
+	void CreateToolbar();
+	void CreateStatus();
+	void CreateMenuBar();
+	void CreateGraphNotebook();
+	void CreatePanes();
+
+	// Events callbacks
 	void OnQuit(wxCommandEvent& event);
 	void OnAbout(wxCommandEvent& event);
 
 private:
 	wxAuiManager m_mgr;
+	wxAuiToolBar* m_mainToolbar;
+	wxAuiNotebook *m_graphNotebook;
 
 	// Default style & theme for the notebooks
 	long m_notebookStyle;
