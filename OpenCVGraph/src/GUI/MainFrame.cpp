@@ -51,7 +51,7 @@ MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
 
 	m_mgr.AddPane(new wxTextCtrl(this, wxID_ANY, "Here goes the file explorer", wxPoint(0, 0), wxSize(200, 90), wxNO_BORDER | wxTE_MULTILINE),
 		wxAuiPaneInfo().Name(wxT("file_explorer")).Caption(wxT("File explorer")).
-		Left().Row(0).Position(0));
+		Left().Row(0).Position(0).Hide());
 	m_mgr.AddPane(new wxTextCtrl(this, wxID_ANY, "Here goes all the available nodes", wxPoint(0, 0), wxSize(200, 90), wxNO_BORDER | wxTE_MULTILINE),
 		wxAuiPaneInfo().Name(wxT("available_nodes")).Caption(wxT("Available nodes")).
 		Left().Row(1).Position(0));
