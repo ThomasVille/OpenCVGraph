@@ -4,6 +4,7 @@ wxIMPLEMENT_DYNAMIC_CLASS(GraphView, wxWindow);
 
 void GraphView::Init()
 {
+	Bind(wxEVT_PAINT, &GraphView::OnPaint, this);
 }
 
 wxSize GraphView::DoGetBestSize() const

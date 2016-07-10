@@ -9,7 +9,6 @@ public:
 	GraphView() : wxWindow() { Init(); }
 	GraphView(wxWindow *parent,
 		wxWindowID winid,
-		const wxString& label,
 		const wxPoint& pos = wxDefaultPosition,
 		const wxSize& size = wxDefaultSize,
 		long style = 0,
