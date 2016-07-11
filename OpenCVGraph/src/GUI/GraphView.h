@@ -19,11 +19,11 @@ public:
 		Init();
 	}
 
-	// accessors...
 protected:
 	void Init();
 	virtual wxSize DoGetBestSize() const;
 	void OnPaint(wxPaintEvent&);
+
 private:
 	wxDECLARE_DYNAMIC_CLASS(GraphView);
 };

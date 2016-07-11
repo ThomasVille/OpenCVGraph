@@ -11,9 +11,8 @@ public:
 		wxWindowID winid,
 		const wxPoint& pos = wxDefaultPosition,
 		const wxSize& size = wxDefaultSize,
-		long style = 0,
 		const wxValidator& val = wxDefaultValidator) :
-		wxControl(parent, winid, pos, size, style, val)
+		wxControl(parent, winid, pos, size, wxBORDER_NONE, val)
 	{
 		Init();
 	}
@@ -22,7 +21,12 @@ protected:
 	void Init();
 	virtual wxSize DoGetBestSize() const;
 	void OnPaint(wxPaintEvent&);
+	void OnLeftMouseDown(wxMouseEvent&);
+	void OnLeftMouseUp(wxMouseEvent&);
+	void OnMouseMotion(wxMouseEvent& event);
 
+	bool m_isDragging = false;
+	wxPoint m_firstDraggingPoint;
 private:
 	wxDECLARE_DYNAMIC_CLASS(GUINode);
 };
