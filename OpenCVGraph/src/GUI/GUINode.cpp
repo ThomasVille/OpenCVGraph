@@ -19,12 +19,16 @@ void GUINode::Init()
 	wxSizer* verticalSizer = new wxBoxSizer(wxVERTICAL);
 	wxStaticText* titleText = new wxStaticText(this, wxID_ANY, "Title");
 	verticalSizer->Add(titleText, 1, wxALL | wxALIGN_CENTER);
+
+	// TODO Add horizontal sizers to distribute the space for each input/output
+
 	SetSizer(verticalSizer);
 	Layout();
 	SetBackgroundColour(*wxGREEN);
 
 	titleText->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
 	titleText->Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);
+	titleText->Bind(wxEVT_LEFT_UP, &GUINode::OnLeftMouseUp, this);
 
 	Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);
 	Bind(wxEVT_LEFT_UP, &GUINode::OnLeftMouseUp, this);
