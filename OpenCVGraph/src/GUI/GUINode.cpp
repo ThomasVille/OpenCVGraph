@@ -18,8 +18,17 @@ wxSize GUINode::DoGetBestSize() const
 void GUINode::OnPaint(wxPaintEvent &event)
 {
 	wxPaintDC dc(this);
-	dc.SetBrush(*wxRED_BRUSH);
-	dc.DrawRoundedRectangle(wxRect(wxPoint(0, 0), GetSize()), 10);
+	wxGraphicsContext *gc = wxGraphicsContext::Create(dc);;
+
+	if (gc)
+	{
+		gc->SetBrush(*wxRED_BRUSH);
+		gc->SetPen(wxPen(*wxBLACK, 1));
+		gc->DrawRoundedRectangle(0, 0, GetSize().GetWidth()-1, GetSize().GetHeight()-1, 10);
+		delete gc;
+	}
+
+	
 	event.Skip();
 }
 

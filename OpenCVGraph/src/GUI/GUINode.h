@@ -2,7 +2,7 @@
 #define _GUI_GUINODE_H_
 
 #include <wx/wx.h>
-
+#include <wx/graphics.h>
 class GUINode : public wxControl
 {
 public:
@@ -20,6 +20,7 @@ public:
 protected:
 	void Init();
 	virtual wxSize DoGetBestSize() const;
+	// Draws the node's body
 	void OnPaint(wxPaintEvent&);
 	void OnLeftMouseDown(wxMouseEvent&);
 	void OnLeftMouseUp(wxMouseEvent&);

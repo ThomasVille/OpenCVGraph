@@ -4,17 +4,16 @@
 #include <wx/wx.h>
 #include "GUINode.h"
 
-class GraphView : public wxControl
+class GraphView : public wxScrolledWindow
 {
 public:
-	GraphView() : wxControl() { Init(); }
+	GraphView() : wxScrolledWindow() { Init(); }
 	GraphView(wxWindow *parent,
 		wxWindowID winid,
 		const wxPoint& pos = wxDefaultPosition,
 		const wxSize& size = wxDefaultSize,
-		long style = 0,
-		const wxValidator& val = wxDefaultValidator) :
-		wxControl(parent, winid, pos, size, style, val)
+		long style = 0) :
+		wxScrolledWindow(parent, winid, pos, size, style)
 	{
 		Init();
 	}

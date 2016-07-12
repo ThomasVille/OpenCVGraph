@@ -4,7 +4,9 @@ wxIMPLEMENT_DYNAMIC_CLASS(GraphView, wxControl);
 
 void GraphView::Init()
 {
-	new GUINode(this, wxID_ANY, wxPoint(50,50), wxSize(100,100));
+	SetVirtualSize(wxSize(1920, 1080));
+	new GUINode(this, wxID_ANY, wxPoint(50, 50), wxSize(100, 100));
+	new GUINode(this, wxID_ANY, wxPoint(200,200), wxSize(100,100));
 
 	Bind(wxEVT_PAINT, &GraphView::OnPaint, this);
 }
@@ -18,6 +20,6 @@ void GraphView::OnPaint(wxPaintEvent& event)
 {
 	wxPaintDC dc(this);
 	dc.SetBrush(*wxWHITE_BRUSH);
-	dc.DrawRectangle(wxRect(wxPoint(0, 0), GetSize()));
+	//dc.DrawRectangle(wxRect(wxPoint(0, 0), GetSize()));
 	event.Skip();
 }
