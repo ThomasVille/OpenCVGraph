@@ -5,8 +5,8 @@ wxIMPLEMENT_DYNAMIC_CLASS(GraphView, wxControl);
 void GraphView::Init()
 {
 	SetVirtualSize(wxSize(1920, 1080));
-	new GUINode(this, wxID_ANY, wxPoint(50, 50), wxSize(100, 100));
-	new GUINode(this, wxID_ANY, wxPoint(200,200), wxSize(100,100));
+	new GUINode(this, Node({ InputParam("a"), InputParam("b") }, { OutputParam("y") }));
+	new GUINode(this, Node({ InputParam("x"), InputParam("y") }, { OutputParam("z") }));
 
 	Bind(wxEVT_PAINT, &GraphView::OnPaint, this);
 }

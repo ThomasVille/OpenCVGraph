@@ -38,6 +38,15 @@
     <ClCompile Include="src\GUI\GUINode.cpp">
       <Filter>Fichiers sources\src\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="src\Node.cpp">
+      <Filter>Fichiers sources\src</Filter>
+    </ClCompile>
+    <ClCompile Include="InputParam.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="OutputParam.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GUI\MainFrame.h">
@@ -48,6 +57,15 @@
     </ClInclude>
     <ClInclude Include="src\GUI\GUINode.h">
       <Filter>Fichiers sources\src\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Node.h">
+      <Filter>Fichiers sources\src</Filter>
+    </ClInclude>
+    <ClInclude Include="InputParam.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputParam.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

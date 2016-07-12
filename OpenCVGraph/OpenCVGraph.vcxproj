@@ -499,15 +499,21 @@
     <ResourceCompile Include="sample.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="InputParam.cpp" />
+    <ClCompile Include="OutputParam.cpp" />
     <ClCompile Include="src\GUI\GraphView.cpp" />
     <ClCompile Include="src\GUI\GUINode.cpp" />
     <ClCompile Include="src\GUI\MainFrame.cpp" />
+    <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\OpenCVGraph.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="InputParam.h" />
+    <ClInclude Include="OutputParam.h" />
     <ClInclude Include="src\GUI\GraphView.h" />
     <ClInclude Include="src\GUI\GUINode.h" />
     <ClInclude Include="src\GUI\MainFrame.h" />
+    <ClInclude Include="src\Node.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
