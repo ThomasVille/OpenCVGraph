@@ -17,7 +17,14 @@ void GUINode::Init()
 
 	// Add a sizer to manage the space inside the node
 	wxSizer* verticalSizer = new wxBoxSizer(wxVERTICAL);
+	wxStaticText* titleText = new wxStaticText(this, wxID_ANY, "Title");
+	verticalSizer->Add(titleText, 1, wxALL | wxALIGN_CENTER);
 	SetSizer(verticalSizer);
+	Layout();
+	SetBackgroundColour(*wxGREEN);
+
+	titleText->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
+	titleText->Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);
 
 	Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);
 	Bind(wxEVT_LEFT_UP, &GUINode::OnLeftMouseUp, this);
@@ -73,7 +80,7 @@ void GUINode::OnPaint(wxPaintEvent &event)
 void GUINode::OnLeftMouseDown(wxMouseEvent& event)
 {
 	m_isDragging = true;
-	m_firstDraggingPoint = event.GetPosition();
+	m_firstDraggingPoint = ScreenToClient(ClientToScreen(event.GetPosition()));
 }
 
 void GUINode::OnLeftMouseUp(wxMouseEvent& event)
