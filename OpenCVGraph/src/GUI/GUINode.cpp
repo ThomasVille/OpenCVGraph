@@ -17,10 +17,38 @@ void GUINode::Init()
 
 	// Add a sizer to manage the space inside the node
 	wxSizer* verticalSizer = new wxBoxSizer(wxVERTICAL);
-	wxStaticText* titleText = new wxStaticText(this, wxID_ANY, "Title");
-	verticalSizer->Add(titleText, 1, wxALL | wxALIGN_CENTER);
+	wxStaticText* titleText = new wxStaticText(this, wxID_ANY, "Title", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
+	verticalSizer->Add(titleText, 1, wxALL | wxEXPAND);
 
 	// TODO Add horizontal sizers to distribute the space for each input/output
+	for (int i = 0; i < m_maxParamsPerColumn; i++) {
+		wxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+		// TODO change this text to a specific class GUINodeInput
+		wxStaticText* guiNodeInput = new wxStaticText(this, wxID_ANY, "I", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
+		wxStaticText* guiNodeOutput = new wxStaticText(this, wxID_ANY, "O", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
+		wxStaticText* intputText = new wxStaticText(this, wxID_ANY, i<nbInputs ? m_node.GetInputs()[i].GetName() : "", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+		wxStaticText* outputText = new wxStaticText(this, wxID_ANY, i<nbOutputs ? m_node.GetOutputs()[i].GetName() : "", wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
+
+		horizontalSizer->Add(guiNodeInput, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
+		horizontalSizer->Add(intputText, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
+		horizontalSizer->Add(outputText, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
+		horizontalSizer->Add(guiNodeOutput, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
+
+		verticalSizer->Add(horizontalSizer, 1, wxALL | wxEXPAND);
+
+		guiNodeInput->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
+		guiNodeInput->Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);
+		guiNodeInput->Bind(wxEVT_LEFT_UP, &GUINode::OnLeftMouseUp, this);
+		guiNodeOutput->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
+		guiNodeOutput->Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);
+		guiNodeOutput->Bind(wxEVT_LEFT_UP, &GUINode::OnLeftMouseUp, this);
+		intputText->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
+		intputText->Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);
+		intputText->Bind(wxEVT_LEFT_UP, &GUINode::OnLeftMouseUp, this);
+		outputText->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
+		outputText->Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);
+		outputText->Bind(wxEVT_LEFT_UP, &GUINode::OnLeftMouseUp, this);
+	}
 
 	SetSizer(verticalSizer);
 	Layout();
@@ -94,6 +122,6 @@ void GUINode::OnLeftMouseUp(wxMouseEvent& event)
 
 void GUINode::OnMouseMotion(wxMouseEvent& event)
 {
-	if (m_isDragging && event.LeftIsDown())
+	if (m_isDragging)
 		SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())) - m_firstDraggingPoint);
 }
