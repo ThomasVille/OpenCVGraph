@@ -3,6 +3,8 @@
 #include <wx/wx.h>
 #include <wx/graphics.h>
 #include "../Node.h"
+#include "GUINodeParam.h"
+
 class GUINode : public wxControl
 {
 public:
@@ -17,15 +19,19 @@ public:
 		Init();
 	}
 
+	void OnLeftMouseDown(wxMouseEvent&);
+	void OnLeftMouseUp(wxMouseEvent&);
+	void OnMouseMotion(wxMouseEvent& event);
 protected:
 	void Init();
 	virtual wxSize DoGetBestSize() const;
 
 	// Draws the node's body
 	void OnPaint(wxPaintEvent&);
-	void OnLeftMouseDown(wxMouseEvent&);
-	void OnLeftMouseUp(wxMouseEvent&);
-	void OnMouseMotion(wxMouseEvent& event);
+
+
+	void OnNodeMouseDown(wxMouseEvent&);
+	void OnNodeMouseUp(wxMouseEvent&);
 
 	// Best size for the node according to its content
 	wxSize m_bestSize;

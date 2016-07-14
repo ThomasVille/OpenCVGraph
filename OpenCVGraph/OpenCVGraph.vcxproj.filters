@@ -47,6 +47,9 @@
     <ClCompile Include="OutputParam.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="src\GUI\GUINodeParam.cpp">
+      <Filter>Fichiers sources\src\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GUI\MainFrame.h">
@@ -66,6 +69,9 @@
     </ClInclude>
     <ClInclude Include="OutputParam.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\GUINodeParam.h">
+      <Filter>Fichiers sources\src\GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

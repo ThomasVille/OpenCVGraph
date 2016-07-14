@@ -503,6 +503,7 @@
     <ClCompile Include="OutputParam.cpp" />
     <ClCompile Include="src\GUI\GraphView.cpp" />
     <ClCompile Include="src\GUI\GUINode.cpp" />
+    <ClCompile Include="src\GUI\GUINodeParam.cpp" />
     <ClCompile Include="src\GUI\MainFrame.cpp" />
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\OpenCVGraph.cpp" />
@@ -512,6 +513,7 @@
     <ClInclude Include="OutputParam.h" />
     <ClInclude Include="src\GUI\GraphView.h" />
     <ClInclude Include="src\GUI\GUINode.h" />
+    <ClInclude Include="src\GUI\GUINodeParam.h" />
     <ClInclude Include="src\GUI\MainFrame.h" />
     <ClInclude Include="src\Node.h" />
   </ItemGroup>

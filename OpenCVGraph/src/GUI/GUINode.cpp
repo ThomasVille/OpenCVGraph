@@ -1,5 +1,5 @@
 #include "GUINode.h"
-
+#include "GraphView.h"
 wxIMPLEMENT_DYNAMIC_CLASS(GUINode, wxControl);
 
 void GUINode::Init()
@@ -24,30 +24,14 @@ void GUINode::Init()
 	for (int i = 0; i < m_maxParamsPerColumn; i++) {
 		wxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 		// TODO change this text to a specific class GUINodeInput
-		wxStaticText* guiNodeInput = new wxStaticText(this, wxID_ANY, "I", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
-		wxStaticText* guiNodeOutput = new wxStaticText(this, wxID_ANY, "O", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
-		wxStaticText* intputText = new wxStaticText(this, wxID_ANY, i<nbInputs ? m_node.GetInputs()[i].GetName() : "", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
-		wxStaticText* outputText = new wxStaticText(this, wxID_ANY, i<nbOutputs ? m_node.GetOutputs()[i].GetName() : "", wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
+		GUINodeParam* guiNodeInput = new GUINodeParam(this, i < nbInputs ? m_node.GetInputs()[i].GetName() : "", "I");
+		GUINodeParam* guiNodeOutput = new GUINodeParam(this, i<nbOutputs ? m_node.GetOutputs()[i].GetName() : "", "O");
+
 
 		horizontalSizer->Add(guiNodeInput, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
-		horizontalSizer->Add(intputText, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
-		horizontalSizer->Add(outputText, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
 		horizontalSizer->Add(guiNodeOutput, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
 
 		verticalSizer->Add(horizontalSizer, 1, wxALL | wxEXPAND);
-
-		guiNodeInput->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
-		guiNodeInput->Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);
-		guiNodeInput->Bind(wxEVT_LEFT_UP, &GUINode::OnLeftMouseUp, this);
-		guiNodeOutput->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
-		guiNodeOutput->Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);
-		guiNodeOutput->Bind(wxEVT_LEFT_UP, &GUINode::OnLeftMouseUp, this);
-		intputText->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
-		intputText->Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);
-		intputText->Bind(wxEVT_LEFT_UP, &GUINode::OnLeftMouseUp, this);
-		outputText->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
-		outputText->Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);
-		outputText->Bind(wxEVT_LEFT_UP, &GUINode::OnLeftMouseUp, this);
 	}
 
 	SetSizer(verticalSizer);
@@ -62,6 +46,9 @@ void GUINode::Init()
 	Bind(wxEVT_LEFT_UP, &GUINode::OnLeftMouseUp, this);
 	Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
 	Bind(wxEVT_PAINT, &GUINode::OnPaint, this);
+
+	((GraphView*)m_parent)->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
+
 }
 
 wxSize GUINode::DoGetBestSize() const
@@ -72,7 +59,7 @@ wxSize GUINode::DoGetBestSize() const
 void GUINode::OnPaint(wxPaintEvent &event)
 {
 	wxPaintDC dc(this);
-	wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
+	/*wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
 	wxFont font = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
 
 	int height = GetSize().GetHeight() - 1;
@@ -103,7 +90,7 @@ void GUINode::OnPaint(wxPaintEvent &event)
 		}
 
 		delete gc;
-	}
+	}*/
 
 	
 	event.Skip();
@@ -122,6 +109,16 @@ void GUINode::OnLeftMouseUp(wxMouseEvent& event)
 
 void GUINode::OnMouseMotion(wxMouseEvent& event)
 {
-	if (m_isDragging)
+	if (m_isDragging && event.LeftIsDown())
 		SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())) - m_firstDraggingPoint);
+}
+
+void GUINode::OnNodeMouseDown(wxMouseEvent& event)
+{
+	((GraphView*)m_parent)->OnNodeMouseDown(this, m_parent->ScreenToClient(ClientToScreen(event.GetPosition())));
+}
+
+void GUINode::OnNodeMouseUp(wxMouseEvent& event)
+{
+	((GraphView*)m_parent)->OnNodeMouseUp(this, m_parent->ScreenToClient(ClientToScreen(event.GetPosition())));
 }
