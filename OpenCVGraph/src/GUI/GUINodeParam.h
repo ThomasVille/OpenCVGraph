@@ -21,7 +21,6 @@ protected:
 	void Init();
 	virtual wxSize DoGetBestSize() const;
 
-	void OnPaint(wxPaintEvent&);
 	void OnLeftMouseDown(wxMouseEvent&);
 	void OnLeftMouseUp(wxMouseEvent&);
 	void OnMouseMotion(wxMouseEvent& event);

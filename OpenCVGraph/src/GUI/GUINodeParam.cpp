@@ -53,57 +53,14 @@ wxSize GUINodeParam::DoGetBestSize() const
 	return wxSize(100,100);
 }
 
-void GUINodeParam::OnPaint(wxPaintEvent &event)
-{
-	wxPaintDC dc(this);
-	/*wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
-	wxFont font = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
-
-	int height = GetSize().GetHeight() - 1;
-	int width = GetSize().GetWidth() - 1;
-	int i = 0;
-	if (gc)
-	{
-		// Draw the body
-		gc->SetBrush(*wxRED_BRUSH);
-		gc->SetPen(wxPen(*wxBLACK, 1));
-		gc->DrawRoundedRectangle(0, 0, m_bestSize.GetWidth() - 1, m_bestSize.GetHeight() - 1, 10);
-		
-		gc->SetBrush(*wxBLUE_BRUSH);
-		gc->SetFont(font, *wxBLACK);
-		i = 0;
-		// Draw the inputs
-		for (InputParam p : m_node.GetInputs()) {
-			gc->DrawEllipse(10, (i+0.5f)*height / m_maxParamsPerColumn, 25, 25);
-			gc->DrawText(p.GetName(), 50, (i + 0.5f)*height / m_maxParamsPerColumn);
-			i++;
-		}
-		i = 0;
-		// Draw the outputs
-		for (OutputParam p : m_node.GetOutputs()) {
-			gc->DrawEllipse(width-50, (i+0.5f)*height / m_maxParamsPerColumn, 25, 25);
-			gc->DrawText(p.GetName(), width-100, (i + 0.5f)*height / m_maxParamsPerColumn);
-			i++;
-		}
-
-		delete gc;
-	}*/
-
-	
-	event.Skip();
-}
-
 void GUINodeParam::OnLeftMouseDown(wxMouseEvent& event)
 {
-	//m_isDragging = true;
-	//m_firstDraggingPoint = ScreenToClient(ClientToScreen(event.GetPosition()));
 	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(ClientToScreen(event.GetPosition())));
 	((GUINode*)m_parent)->OnLeftMouseDown(event);
 }
 
 void GUINodeParam::OnLeftMouseUp(wxMouseEvent& event)
 {
-	//m_isDragging = false;
 	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(ClientToScreen(event.GetPosition())));
 	((GUINode*)m_parent)->OnLeftMouseUp(event);
 
@@ -111,27 +68,27 @@ void GUINodeParam::OnLeftMouseUp(wxMouseEvent& event)
 
 void GUINodeParam::OnMouseMotion(wxMouseEvent& event)
 {
-//	if (m_isDragging && event.LeftIsDown())
-//		SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())) - m_firstDraggingPoint);
 	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(ClientToScreen(event.GetPosition())));
 	((GUINode*)m_parent)->OnMouseMotion(event);
-
 }
 
 void GUINodeParam::OnPinLeftMouseDown(wxMouseEvent& event)
 {
+	// Convert from pinImage coordinates to GUINode coordinates before sending it to GUINode
 	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(pinImage->ClientToScreen(event.GetPosition())));
 	((GUINode*)m_parent)->OnPinMouseDown(event);
 }
 
 void GUINodeParam::OnPinLeftMouseUp(wxMouseEvent& event)
 {
+	// Convert from pinImage coordinates to GUINode coordinates before sending it to GUINode
 	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(pinImage->ClientToScreen(event.GetPosition())));
 	((GUINode*)m_parent)->OnPinMouseUp(event);
 }
 
 void GUINodeParam::OnPinMouseMotion(wxMouseEvent& event)
 {
+	// Convert from pinImage coordinates to GUINode coordinates before sending it to GUINode
 	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(pinImage->ClientToScreen(event.GetPosition())));
 	((GUINode*)m_parent)->OnPinMouseMotion(event);
 }
