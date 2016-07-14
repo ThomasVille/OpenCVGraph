@@ -22,6 +22,10 @@ public:
 	void OnLeftMouseDown(wxMouseEvent&);
 	void OnLeftMouseUp(wxMouseEvent&);
 	void OnMouseMotion(wxMouseEvent& event);
+
+	void OnPinMouseDown(wxMouseEvent&);
+	void OnPinMouseUp(wxMouseEvent&);
+	void OnPinMouseMotion(wxMouseEvent&);
 protected:
 	void Init();
 	virtual wxSize DoGetBestSize() const;
@@ -30,8 +34,7 @@ protected:
 	void OnPaint(wxPaintEvent&);
 
 
-	void OnNodeMouseDown(wxMouseEvent&);
-	void OnNodeMouseUp(wxMouseEvent&);
+	
 
 	// Best size for the node according to its content
 	wxSize m_bestSize;

@@ -20,11 +20,10 @@ public:
 		Init();
 	}
 
-	// Can be called when clicked in the graphview or in children like GUINodes
-	void OnLeftMouseDown(wxMouseEvent& event);
-
-	void OnNodeMouseDown(GUINode* node, wxPoint pos);
-	void OnNodeMouseUp(GUINode* node, wxPoint pos);
+	// Begin the drawing of the wire
+	void OnPinMouseDown(GUINode* node, wxPoint pos);
+	// Must be called every time the mouse button is released (even if inside a child)
+	void OnMouseUp(GUINode* node, wxPoint pos);
 
 protected:
 	void Init();

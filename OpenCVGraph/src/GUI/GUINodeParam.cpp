@@ -16,19 +16,19 @@ void GUINodeParam::Init()
 	// Defines the size of the widget
 	//SetSize(m_bestSize);
 
-	// Add a sizer to manage the space inside the node
+	
 	wxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
-	attachImage = new wxStaticText(this, wxID_ANY, m_type, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
-	attachImage->SetBackgroundColour(*wxRED);
+	pinImage = new wxStaticText(this, wxID_ANY, m_type, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
+	pinImage->SetBackgroundColour(*wxRED); // Helps to visualize the space taken by the pin
 	if (m_type == "I") {
 		nameText = new wxStaticText(this, wxID_ANY, m_name, wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
-		sizer->Add(attachImage, 1, wxALL | wxALIGN_CENTER_VERTICAL);
+		sizer->Add(pinImage, 1, wxALL | wxALIGN_CENTER_VERTICAL); // From left to right, add the pin then the name for an input
 		sizer->Add(nameText, 1, wxALL | wxALIGN_CENTER_VERTICAL);
 	}
 	else {
 		nameText = new wxStaticText(this, wxID_ANY, m_name, wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
-		sizer->Add(nameText, 1, wxALL | wxALIGN_CENTER_VERTICAL);
-		sizer->Add(attachImage, 1, wxALL | wxALIGN_CENTER_VERTICAL);
+		sizer->Add(nameText, 1, wxALL | wxALIGN_CENTER_VERTICAL); // From left to right, add the name then the pin for an output
+		sizer->Add(pinImage, 1, wxALL | wxALIGN_CENTER_VERTICAL);
 	}
 
 	SetSizer(sizer);
@@ -38,9 +38,9 @@ void GUINodeParam::Init()
 	nameText->Bind(wxEVT_MOTION, &GUINodeParam::OnNameMouseMotion, this);
 	nameText->Bind(wxEVT_LEFT_DOWN, &GUINodeParam::OnNameLeftMouseDown, this);
 	nameText->Bind(wxEVT_LEFT_UP, &GUINodeParam::OnNameLeftMouseUp, this);
-	attachImage->Bind(wxEVT_MOTION, &GUINodeParam::OnAttachMouseMotion, this);
-	attachImage->Bind(wxEVT_LEFT_DOWN, &GUINodeParam::OnAttachLeftMouseDown, this);
-	attachImage->Bind(wxEVT_LEFT_UP, &GUINodeParam::OnAttachLeftMouseUp, this);
+	pinImage->Bind(wxEVT_MOTION, &GUINodeParam::OnPinMouseMotion, this);
+	pinImage->Bind(wxEVT_LEFT_DOWN, &GUINodeParam::OnPinLeftMouseDown, this);
+	pinImage->Bind(wxEVT_LEFT_UP, &GUINodeParam::OnPinLeftMouseUp, this);
 
 	Bind(wxEVT_LEFT_DOWN, &GUINodeParam::OnLeftMouseDown, this);
 	Bind(wxEVT_LEFT_UP, &GUINodeParam::OnLeftMouseUp, this);
@@ -118,32 +118,35 @@ void GUINodeParam::OnMouseMotion(wxMouseEvent& event)
 
 }
 
-void GUINodeParam::OnAttachLeftMouseDown(wxMouseEvent &)
+void GUINodeParam::OnPinLeftMouseDown(wxMouseEvent &)
 {
 }
 
-void GUINodeParam::OnAttachLeftMouseUp(wxMouseEvent &)
+void GUINodeParam::OnPinLeftMouseUp(wxMouseEvent &)
 {
 }
 
-void GUINodeParam::OnAttachMouseMotion(wxMouseEvent & event)
+void GUINodeParam::OnPinMouseMotion(wxMouseEvent & event)
 {
 }
 
 void GUINodeParam::OnNameLeftMouseDown(wxMouseEvent & event)
 {
+	// Convert from nameText coordinates to GUINode coordinates before sending it to GUINode
 	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(nameText->ClientToScreen(event.GetPosition())));
 	((GUINode*)m_parent)->OnLeftMouseDown(event);
 }
 
 void GUINodeParam::OnNameLeftMouseUp(wxMouseEvent & event)
 {
+	// Convert from nameText coordinates to GUINode coordinates before sending it to GUINode
 	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(nameText->ClientToScreen(event.GetPosition())));
 	((GUINode*)m_parent)->OnLeftMouseUp(event);
 }
 
 void GUINodeParam::OnNameMouseMotion(wxMouseEvent & event)
 {
+	// Convert from nameText coordinates to GUINode coordinates before sending it to GUINode
 	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(nameText->ClientToScreen(event.GetPosition())));
 	((GUINode*)m_parent)->OnMouseMotion(event);
 }

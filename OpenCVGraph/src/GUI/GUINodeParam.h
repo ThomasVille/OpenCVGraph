@@ -26,16 +26,16 @@ protected:
 	void OnLeftMouseUp(wxMouseEvent&);
 	void OnMouseMotion(wxMouseEvent& event);
 
-	void OnAttachLeftMouseDown(wxMouseEvent&);
-	void OnAttachLeftMouseUp(wxMouseEvent&);
-	void OnAttachMouseMotion(wxMouseEvent& event);
+	void OnPinLeftMouseDown(wxMouseEvent&);
+	void OnPinLeftMouseUp(wxMouseEvent&);
+	void OnPinMouseMotion(wxMouseEvent& event);
 
 	void OnNameLeftMouseDown(wxMouseEvent&);
 	void OnNameLeftMouseUp(wxMouseEvent&);
 	void OnNameMouseMotion(wxMouseEvent& event);
 
 	wxStaticText* nameText;
-	wxStaticText* attachImage;
+	wxStaticText* pinImage;
 
 	std::string m_name;
 	std::string m_type;
