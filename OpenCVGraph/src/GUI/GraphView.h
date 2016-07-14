@@ -2,6 +2,9 @@
 #define _GUI_GRAPHVIEW_H_
 
 /* Color of the wire defined by the output parameter type */
+/* Events must be handled at the innermost level of hierarchy
+e.g. when the mouse is released on a pin, it's the GUINodeParam parent which should do the job
+(check if the types are compatible, ...) and tell the GraphView to do something if needed */
 
 #include <wx/wx.h>
 #include "GUINode.h"
