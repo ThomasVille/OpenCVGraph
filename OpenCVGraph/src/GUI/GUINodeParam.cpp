@@ -118,16 +118,22 @@ void GUINodeParam::OnMouseMotion(wxMouseEvent& event)
 
 }
 
-void GUINodeParam::OnPinLeftMouseDown(wxMouseEvent &)
+void GUINodeParam::OnPinLeftMouseDown(wxMouseEvent& event)
 {
+	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(pinImage->ClientToScreen(event.GetPosition())));
+	((GUINode*)m_parent)->OnPinMouseDown(event);
 }
 
-void GUINodeParam::OnPinLeftMouseUp(wxMouseEvent &)
+void GUINodeParam::OnPinLeftMouseUp(wxMouseEvent& event)
 {
+	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(pinImage->ClientToScreen(event.GetPosition())));
+	((GUINode*)m_parent)->OnPinMouseUp(event);
 }
 
-void GUINodeParam::OnPinMouseMotion(wxMouseEvent & event)
+void GUINodeParam::OnPinMouseMotion(wxMouseEvent& event)
 {
+	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(pinImage->ClientToScreen(event.GetPosition())));
+	((GUINode*)m_parent)->OnPinMouseMotion(event);
 }
 
 void GUINodeParam::OnNameLeftMouseDown(wxMouseEvent & event)
