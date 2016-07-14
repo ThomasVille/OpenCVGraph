@@ -1,25 +1,23 @@
 #ifndef _NODE_H_
 #define _NODE_H_
 #include <vector>
-#include "InputParam.h"
-#include "OutputParam.h"
-
+#include "Parameter.h"
 class Node
 {
 public:
-	Node(std::vector<InputParam>, std::vector<OutputParam>);
+	Node(std::vector<Parameter>, std::vector<Parameter>);
 	~Node();
 
-	std::vector<InputParam> GetInputs() {
+	std::vector<Parameter> GetInputs() {
 		return m_inputs;
 	}
-	std::vector<OutputParam> GetOutputs() {
+	std::vector<Parameter> GetOutputs() {
 		return m_outputs;
 	}
 
 private:
-	std::vector<InputParam> m_inputs;
-	std::vector<OutputParam> m_outputs;
+	std::vector<Parameter> m_inputs;
+	std::vector<Parameter> m_outputs;
 };
 
 

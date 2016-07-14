@@ -83,7 +83,7 @@ void GUINode::OnPaint(wxPaintEvent &event)
 		}
 		i = 0;
 		// Draw the outputs
-		for (OutputParam p : m_node.GetOutputs()) {
+		for (Parameter p : m_node.GetOutputs()) {
 			gc->DrawEllipse(width-50, (i+0.5f)*height / m_maxParamsPerColumn, 25, 25);
 			gc->DrawText(p.GetName(), width-100, (i + 0.5f)*height / m_maxParamsPerColumn);
 			i++;
@@ -124,8 +124,10 @@ void GUINode::OnPinLeftMouseUp(wxMouseEvent& event)
 	// If we release the node when the mouse is above a pin, we just stop the dragging
 	if (m_isDragging)
 		m_isDragging = false;
-	else
-		((GraphView*)m_parent)->OnMouseUp(this, m_parent->ScreenToClient(ClientToScreen(event.GetPosition())));
+	else {
+		event.SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())));
+		((GraphView*)m_parent)->OnMouseUp(event);
+	}
 }
 
 void GUINode::OnPinMouseMotion(wxMouseEvent& event)

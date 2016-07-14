@@ -8,7 +8,7 @@ void GraphView::OnPinLeftMouseDown(GUINode* node, wxPoint pos)
 	m_mouseWiring = true;
 	ContinuousRefresh(true);
 }
-void GraphView::OnMouseUp(GUINode* node, wxPoint pos)
+void GraphView::OnMouseUp(wxMouseEvent& event)
 {
 	m_mouseWiring = false;
 	ContinuousRefresh(false);
@@ -17,11 +17,12 @@ void GraphView::OnMouseUp(GUINode* node, wxPoint pos)
 void GraphView::Init()
 {
 	SetVirtualSize(wxSize(1920, 1080));
-	new GUINode(this, Node({ InputParam("a"), InputParam("b") }, { OutputParam("y") }));
-	new GUINode(this, Node({ InputParam("x"), InputParam("y") }, { OutputParam("z") }));
+	new GUINode(this, Node({ Parameter("a", INPUT_PARAM), Parameter("b", INPUT_PARAM) }, { Parameter("y", OUTPUT_PARAM) }));
+	new GUINode(this, Node({ Parameter("x", INPUT_PARAM), Parameter("y", INPUT_PARAM) }, { Parameter("z", OUTPUT_PARAM) }));
 
 	Bind(wxEVT_PAINT, &GraphView::OnPaint, this);
 	Bind(wxEVT_MOTION, &GraphView::OnMouseMotion, this);
+	Bind(wxEVT_LEFT_UP, &GraphView::OnMouseUp, this);
 
 	m_timer.SetOwner(this);
 	Bind(wxEVT_TIMER, &GraphView::OnTimer, this);

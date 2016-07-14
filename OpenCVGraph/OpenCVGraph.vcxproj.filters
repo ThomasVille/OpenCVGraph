@@ -41,14 +41,11 @@
     <ClCompile Include="src\Node.cpp">
       <Filter>Fichiers sources\src</Filter>
     </ClCompile>
-    <ClCompile Include="InputParam.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="OutputParam.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="src\GUI\GUINodeParam.cpp">
       <Filter>Fichiers sources\src\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Parameter.cpp">
+      <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -64,14 +61,11 @@
     <ClInclude Include="src\Node.h">
       <Filter>Fichiers sources\src</Filter>
     </ClInclude>
-    <ClInclude Include="InputParam.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="OutputParam.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="src\GUI\GUINodeParam.h">
       <Filter>Fichiers sources\src\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Parameter.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

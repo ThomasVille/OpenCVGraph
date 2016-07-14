@@ -1,6 +1,6 @@
 #include "Node.h"
 
-Node::Node(std::vector<InputParam> inputs, std::vector<OutputParam> outputs):
+Node::Node(std::vector<Parameter> inputs, std::vector<Parameter> outputs):
 	m_inputs(inputs), m_outputs(outputs)
 {
 }
