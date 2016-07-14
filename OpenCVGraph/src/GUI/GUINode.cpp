@@ -113,13 +113,13 @@ void GUINode::OnMouseMotion(wxMouseEvent& event)
 		SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())) - m_firstDraggingPoint);
 }
 
-void GUINode::OnPinMouseDown(wxMouseEvent& event)
+void GUINode::OnPinLeftMouseDown(wxMouseEvent& event)
 {
 	// In any case, if we click on a pin, we must say it to the GraphView above
-	((GraphView*)m_parent)->OnPinMouseDown(this, m_parent->ScreenToClient(ClientToScreen(event.GetPosition())));
+	((GraphView*)m_parent)->OnPinLeftMouseDown(this, m_parent->ScreenToClient(ClientToScreen(event.GetPosition())));
 }
 
-void GUINode::OnPinMouseUp(wxMouseEvent& event)
+void GUINode::OnPinLeftMouseUp(wxMouseEvent& event)
 {
 	// If we release the node when the mouse is above a pin, we just stop the dragging
 	if (m_isDragging)

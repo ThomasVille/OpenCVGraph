@@ -21,7 +21,7 @@ public:
 	}
 
 	// Begin the drawing of the wire
-	void OnPinMouseDown(GUINode* node, wxPoint pos);
+	void OnPinLeftMouseDown(GUINode* node, wxPoint pos);
 	// Must be called every time the mouse button is released (even if inside a child)
 	void OnMouseUp(GUINode* node, wxPoint pos);
 

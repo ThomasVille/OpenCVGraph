@@ -23,8 +23,8 @@ public:
 	void OnLeftMouseUp(wxMouseEvent&);
 	void OnMouseMotion(wxMouseEvent& event);
 
-	void OnPinMouseDown(wxMouseEvent&);
-	void OnPinMouseUp(wxMouseEvent&);
+	void OnPinLeftMouseDown(wxMouseEvent&);
+	void OnPinLeftMouseUp(wxMouseEvent&);
 	void OnPinMouseMotion(wxMouseEvent&);
 protected:
 	void Init();
@@ -32,9 +32,6 @@ protected:
 
 	// Draws the node's body
 	void OnPaint(wxPaintEvent&);
-
-
-	
 
 	// Best size for the node according to its content
 	wxSize m_bestSize;

@@ -2,7 +2,7 @@
 
 wxIMPLEMENT_DYNAMIC_CLASS(GraphView, wxControl);
 
-void GraphView::OnPinMouseDown(GUINode* node, wxPoint pos)
+void GraphView::OnPinLeftMouseDown(GUINode* node, wxPoint pos)
 {
 	m_mouseWiringStartingPoint = pos;
 	m_mouseWiring = true;

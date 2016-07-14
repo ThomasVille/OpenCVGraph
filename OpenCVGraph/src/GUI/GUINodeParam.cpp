@@ -76,14 +76,14 @@ void GUINodeParam::OnPinLeftMouseDown(wxMouseEvent& event)
 {
 	// Convert from pinImage coordinates to GUINode coordinates before sending it to GUINode
 	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(pinImage->ClientToScreen(event.GetPosition())));
-	((GUINode*)m_parent)->OnPinMouseDown(event);
+	((GUINode*)m_parent)->OnPinLeftMouseDown(event);
 }
 
 void GUINodeParam::OnPinLeftMouseUp(wxMouseEvent& event)
 {
 	// Convert from pinImage coordinates to GUINode coordinates before sending it to GUINode
 	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(pinImage->ClientToScreen(event.GetPosition())));
-	((GUINode*)m_parent)->OnPinMouseUp(event);
+	((GUINode*)m_parent)->OnPinLeftMouseUp(event);
 }
 
 void GUINodeParam::OnPinMouseMotion(wxMouseEvent& event)
