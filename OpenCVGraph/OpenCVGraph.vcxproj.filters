@@ -45,7 +45,7 @@
       <Filter>Fichiers sources\src\GUI</Filter>
     </ClCompile>
     <ClCompile Include="Parameter.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -65,7 +65,7 @@
       <Filter>Fichiers sources\src\GUI</Filter>
     </ClInclude>
     <ClInclude Include="Parameter.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers sources\src</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

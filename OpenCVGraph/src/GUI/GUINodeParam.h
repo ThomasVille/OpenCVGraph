@@ -2,7 +2,7 @@
 #define _GUI_GUINODEPARAM_H_
 #include <wx/wx.h>
 #include <wx/graphics.h>
-#include "../Node.h"
+#include "Parameter.h"
 
 class GUINodeParam : public wxControl
 {
@@ -10,9 +10,9 @@ public:
 	GUINodeParam():
 		wxControl()
 	{ Init(); };
-	GUINodeParam(wxWindow *parent, std::string name, std::string type):
+	GUINodeParam(wxWindow *parent, Parameter param):
 		wxControl(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE, wxDefaultValidator),
-		m_name(name), m_type(type)
+		m_parameter(param)
 	{
 		Init();
 	}
@@ -36,8 +36,7 @@ protected:
 	wxStaticText* nameText;
 	wxStaticText* pinImage;
 
-	std::string m_name;
-	std::string m_type;
+	Parameter m_parameter;
 private:
 	wxDECLARE_DYNAMIC_CLASS(GUINodeParam);
 };

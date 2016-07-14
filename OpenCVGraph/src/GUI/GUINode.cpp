@@ -20,16 +20,21 @@ void GUINode::Init()
 	wxStaticText* titleText = new wxStaticText(this, wxID_ANY, "Title", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
 	verticalSizer->Add(titleText, 1, wxALL | wxEXPAND);
 
-	// TODO Add horizontal sizers to distribute the space for each input/output
 	for (int i = 0; i < m_maxParamsPerColumn; i++) {
 		wxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
-		// TODO change this text to a specific class GUINodeInput
-		GUINodeParam* guiNodeInput = new GUINodeParam(this, i < nbInputs ? m_node.GetInputs()[i].GetName() : "", "I");
-		GUINodeParam* guiNodeOutput = new GUINodeParam(this, i<nbOutputs ? m_node.GetOutputs()[i].GetName() : "", "O");
-
-
-		horizontalSizer->Add(guiNodeInput, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
-		horizontalSizer->Add(guiNodeOutput, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
+		// Add a pin if needed or an empty text to fill up the space if there's no pin
+		if (i < nbInputs) {
+			GUINodeParam* guiNodeInput = new GUINodeParam(this, m_node.GetInputs()[i]);
+			horizontalSizer->Add(guiNodeInput, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
+		}else {
+			horizontalSizer->Add(new wxStaticText(this, wxID_ANY, "EMPTY"), 2, wxALL | wxALIGN_CENTER_VERTICAL);
+		}
+		if (i < nbOutputs) {
+			GUINodeParam* guiNodeOutput = new GUINodeParam(this, m_node.GetOutputs()[i]);
+			horizontalSizer->Add(guiNodeOutput, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
+		}else{
+			horizontalSizer->Add(new wxStaticText(this, wxID_ANY, "EMPTY"), 2, wxALL | wxALIGN_CENTER_VERTICAL);
+		}
 
 		verticalSizer->Add(horizontalSizer, 1, wxALL | wxEXPAND);
 	}

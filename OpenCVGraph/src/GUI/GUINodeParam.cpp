@@ -16,17 +16,16 @@ void GUINodeParam::Init()
 	// Defines the size of the widget
 	//SetSize(m_bestSize);
 
-	
 	wxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
-	pinImage = new wxStaticText(this, wxID_ANY, m_type, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
+	pinImage = new wxStaticText(this, wxID_ANY, "O", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
 	pinImage->SetBackgroundColour(*wxRED); // Helps to visualize the space taken by the pin
-	if (m_type == "I") {
-		nameText = new wxStaticText(this, wxID_ANY, m_name, wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+	if (m_parameter.GetType() == INPUT_PARAM) {
+		nameText = new wxStaticText(this, wxID_ANY, m_parameter.GetName(), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
 		sizer->Add(pinImage, 1, wxALL | wxALIGN_CENTER_VERTICAL); // From left to right, add the pin then the name for an input
 		sizer->Add(nameText, 1, wxALL | wxALIGN_CENTER_VERTICAL);
 	}
 	else {
-		nameText = new wxStaticText(this, wxID_ANY, m_name, wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
+		nameText = new wxStaticText(this, wxID_ANY, m_parameter.GetName(), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
 		sizer->Add(nameText, 1, wxALL | wxALIGN_CENTER_VERTICAL); // From left to right, add the name then the pin for an output
 		sizer->Add(pinImage, 1, wxALL | wxALIGN_CENTER_VERTICAL);
 	}

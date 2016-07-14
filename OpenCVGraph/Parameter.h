@@ -12,11 +12,15 @@ private:
 	// Type of parameter (input or output)
 	ParamType m_type;
 public:
+	Parameter();
 	Parameter(std::string name, ParamType type);
 	~Parameter();
 
 	inline std::string GetName() {
 		return m_name;
+	}
+	inline ParamType GetType() {
+		return m_type;
 	}
 };
 
