@@ -123,7 +123,6 @@ void GUINode::OnMouseMotion(wxMouseEvent& event)
 		SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())) - m_firstDraggingPoint);
 		m_graphView->Refresh();
 	}
-
 	else
 	{
 		// Send the event to the GraphView, in case he wants to handle a wiring event
@@ -149,5 +148,9 @@ void GUINode::OnPinMouseMotion(wxMouseEvent& event)
 	if (m_isDragging) {
 		SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())) - m_firstDraggingPoint);
 		m_graphView->Refresh();
+	}
+	else { // If the mouse juste goes over the pin, we forward the event to graphView
+		event.SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())));
+		m_graphView->OnMouseMotion(event);
 	}
 }

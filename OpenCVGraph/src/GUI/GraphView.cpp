@@ -67,10 +67,13 @@ void GraphView::OnPaint(wxPaintEvent& event)
 		}
 		// Draw the wires
 		gc->SetPen(wxPen(*wxBLACK, 2));
+		gc->SetBrush(*wxTRANSPARENT_BRUSH);
 		wxGraphicsPath path = gc->CreatePath();
 		for (auto wire : m_wires) {
 			path.MoveToPoint(wire.first->GetPinPosition());
-			path.AddLineToPoint(wire.second->GetPinPosition());
+			int distance = abs(wire.first->GetPinPosition().x - wire.second->GetPinPosition().x);
+			path.AddCurveToPoint(wire.first->GetPinPosition()+wxPoint(distance/2,0), wire.second->GetPinPosition()-wxPoint(distance/2,0), wire.second->GetPinPosition());
+			//path.AddLineToPoint(wire.second->GetPinPosition());
 		}
 		gc->DrawPath(path);
 
