@@ -100,7 +100,10 @@ GUINodeParam * GraphView::GetSelectedPin()
 
 void GraphView::AddWire(GUINodeParam * first, GUINodeParam * second)
 {
-	m_wires.push_back(std::pair<GUINodeParam*, GUINodeParam*>(first, second));
+	if(first->GetParameter().GetType() == INPUT_PARAM)
+		m_wires.push_back(std::pair<GUINodeParam*, GUINodeParam*>(second, first));
+	if (first->GetParameter().GetType() == OUTPUT_PARAM)
+		m_wires.push_back(std::pair<GUINodeParam*, GUINodeParam*>(first, second));
 }
 
 void GraphView::OnTimer(wxTimerEvent &event)

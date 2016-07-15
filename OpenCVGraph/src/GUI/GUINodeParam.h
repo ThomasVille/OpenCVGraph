@@ -22,6 +22,8 @@ public:
 	// Return the position of the pin in *GraphView* coordinates
 	wxPoint GetPinPosition();
 
+	Parameter GetParameter();
+
 protected:
 	void Init();
 	virtual wxSize DoGetBestSize() const;

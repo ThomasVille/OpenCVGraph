@@ -5,7 +5,15 @@ wxIMPLEMENT_DYNAMIC_CLASS(GUINodeParam, wxControl);
 
 wxPoint GUINodeParam::GetPinPosition()
 {
-	return m_graphView->ScreenToClient(ClientToScreen(pinImage->GetPosition()));
+	if(m_parameter.GetType() == INPUT_PARAM) // Return the middle of the left border of the image
+		return m_graphView->ScreenToClient(ClientToScreen( pinImage->GetPosition()+wxPoint(0,pinImage->GetRect().GetHeight()/2) ));
+	else // Return the middle of the right border of the image
+		return m_graphView->ScreenToClient(ClientToScreen(pinImage->GetPosition() + wxPoint(pinImage->GetRect().GetWidth(), pinImage->GetRect().GetHeight() / 2)));
+}
+
+Parameter GUINodeParam::GetParameter()
+{
+	return m_parameter;
 }
 
 void GUINodeParam::Init()
