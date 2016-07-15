@@ -32,6 +32,9 @@ public:
 	// e.g. wiring event
 	void OnMouseMotion(wxMouseEvent&);
 
+	// Redraw asap the whole graph
+	void Redraw();
+
 	// Are we wiring a pin to another at the moment ?
 	bool isWiring();
 	// Return the pin we selected when we began to wire a pin to another
@@ -39,13 +42,12 @@ public:
 	// Add a wire between to pins
 	// Called from a GUINodeParam when it accepts a connection with another pin
 	void AddWire(GUINodeParam* first, GUINodeParam* second);
+	void SetLinkState(LinkState state);
 
 protected:
 	void Init();
-	void ContinuousRefresh(bool);
 	virtual wxSize DoGetBestSize() const;
 	void OnPaint(wxPaintEvent&);
-	void OnTimer(wxTimerEvent&);
 
 	std::vector<GUINode*> m_selectedNodes;
 
@@ -54,9 +56,9 @@ protected:
 	GUINodeParam* m_selectedPin = nullptr;
 	wxPoint m_mousePosition;
 	bool m_mouseWiring = false;
+	LinkState m_linkState = END_MISSING; // State of the link we are currently dragging with the mouse
 
 	std::vector<std::pair<GUINodeParam*, GUINodeParam*>> m_wires;
-	wxTimer m_timer;
 
 private:
 	wxDECLARE_DYNAMIC_CLASS(GraphView);

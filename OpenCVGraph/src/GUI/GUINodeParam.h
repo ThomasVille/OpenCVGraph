@@ -5,7 +5,7 @@
 #include "Parameter.h"
 
 class GraphView;
-
+enum LinkState { ERROR_SAME_WAY, LINK_OK, END_MISSING };
 class GUINodeParam : public wxControl
 {
 public:

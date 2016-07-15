@@ -121,7 +121,7 @@ void GUINode::OnMouseMotion(wxMouseEvent& event)
 {
 	if (m_isDragging && event.LeftIsDown()) {
 		SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())) - m_firstDraggingPoint);
-		m_graphView->Refresh();
+		m_graphView->Redraw();
 	}
 	else
 	{

@@ -7,13 +7,14 @@ void GraphView::OnPinLeftMouseDown(GUINodeParam* param, wxPoint pos)
 	m_mouseWiringStartingPoint = pos;
 	m_selectedPin = param;
 	m_mouseWiring = true;
-	ContinuousRefresh(true);
+	m_linkState = END_MISSING;
+	//ContinuousRefresh(true);
 }
 void GraphView::OnMouseUp(wxMouseEvent& event)
 {
 	m_mouseWiring = false;
 	m_selectedPin = nullptr;
-	ContinuousRefresh(false);
+	//ContinuousRefresh(false);
 }
 
 void GraphView::Init()
@@ -26,16 +27,6 @@ void GraphView::Init()
 	Bind(wxEVT_MOTION, &GraphView::OnMouseMotion, this);
 	Bind(wxEVT_LEFT_UP, &GraphView::OnMouseUp, this);
 
-	m_timer.SetOwner(this);
-	Bind(wxEVT_TIMER, &GraphView::OnTimer, this);
-}
-
-void GraphView::ContinuousRefresh(bool continuous)
-{
-	if (continuous)
-		m_timer.Start(1);
-	else
-		m_timer.Stop();
 }
 
 wxSize GraphView::DoGetBestSize() const
@@ -52,22 +43,29 @@ void GraphView::OnPaint(wxPaintEvent& event)
 
 	if (gc)
 	{
-		gc->SetBrush(*wxWHITE_BRUSH);
-		//(GUINode*)(event.GetPropagatedFrom())->;
-		for (int i = 0; i < m_children.size(); i++) {
-			//if()
-		}
-		gc->SetBrush(*wxBLACK_BRUSH);
-		gc->SetPen(wxPen(*wxBLACK, 1));
+		// Draw the link when we draw a link with the mouse
 		if (m_mouseWiring) {
+			gc->SetBrush(*wxTRANSPARENT_BRUSH);
+			switch (m_linkState) { // Change the color of the link depending on its state
+			case ERROR_SAME_WAY:
+				gc->SetPen(wxPen(*wxRED, 1));
+				break;
+			case LINK_OK:
+				gc->SetPen(wxPen(*wxGREEN, 1));
+				break;
+			case END_MISSING:
+				gc->SetPen(wxPen(*wxBLACK, 1));
+				break;
+			}
+
 			wxGraphicsPath path = gc->CreatePath();
 			path.MoveToPoint(m_mousePosition);
 			path.AddLineToPoint(m_mouseWiringStartingPoint);
 			gc->DrawPath(path);
 		}
 		// Draw the wires
-		gc->SetPen(wxPen(*wxBLACK, 2));
 		gc->SetBrush(*wxTRANSPARENT_BRUSH);
+		gc->SetPen(wxPen(*wxBLACK, 2));
 		wxGraphicsPath path = gc->CreatePath();
 		for (auto wire : m_wires) {
 			path.MoveToPoint(wire.first->GetPinPosition());
@@ -79,6 +77,9 @@ void GraphView::OnPaint(wxPaintEvent& event)
 
 		delete gc;
 	}
+	// Reset the link's state
+	// Needed because GUINodeParams can't reset the link to END_MISSING when the mouse goes outside of them
+	m_linkState = END_MISSING;
 
 	event.Skip();
 }
@@ -86,6 +87,10 @@ void GraphView::OnPaint(wxPaintEvent& event)
 void GraphView::OnMouseMotion(wxMouseEvent &event)
 {
 	m_mousePosition = event.GetPosition();
+	
+	// Redraw the graph only if we are dragging a link
+	if(isWiring())
+		Redraw();
 }
 
 bool GraphView::isWiring()
@@ -106,7 +111,13 @@ void GraphView::AddWire(GUINodeParam * first, GUINodeParam * second)
 		m_wires.push_back(std::pair<GUINodeParam*, GUINodeParam*>(first, second));
 }
 
-void GraphView::OnTimer(wxTimerEvent &event)
+void GraphView::SetLinkState(LinkState state)
+{
+	m_linkState = state;
+}
+
+void GraphView::Redraw()
 {
 	Refresh();
+	Update();
 }
