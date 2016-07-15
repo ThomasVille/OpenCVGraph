@@ -4,6 +4,8 @@
 #include <wx/graphics.h>
 #include "Parameter.h"
 
+class GraphView;
+
 class GUINodeParam : public wxControl
 {
 public:
@@ -16,6 +18,9 @@ public:
 	{
 		Init();
 	}
+
+	// Return the position of the pin in *GraphView* coordinates
+	wxPoint GetPinPosition();
 
 protected:
 	void Init();
@@ -37,6 +42,10 @@ protected:
 	wxStaticText* pinImage;
 
 	Parameter m_parameter;
+
+	// Pointer to the GraphView
+	// For convenience
+	GraphView* m_graphView;
 private:
 	wxDECLARE_DYNAMIC_CLASS(GUINodeParam);
 };

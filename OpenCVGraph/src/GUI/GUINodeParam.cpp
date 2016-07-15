@@ -3,8 +3,14 @@
 #include "GUINode.h"
 wxIMPLEMENT_DYNAMIC_CLASS(GUINodeParam, wxControl);
 
+wxPoint GUINodeParam::GetPinPosition()
+{
+	return m_graphView->ScreenToClient(ClientToScreen(pinImage->GetPosition()));
+}
+
 void GUINodeParam::Init()
 {
+	m_graphView = (GraphView*)(((GUINode*)m_parent)->GetParent());
 	// Compute the best width
 	//m_bestSize.SetWidth(200); // Must be computed depending on the lengths of the inputs and outputs parameters
 	// Compute the best height
@@ -74,12 +80,16 @@ void GUINodeParam::OnMouseMotion(wxMouseEvent& event)
 void GUINodeParam::OnPinLeftMouseDown(wxMouseEvent& event)
 {
 	// Convert from pinImage coordinates to GUINode coordinates before sending it to GUINode
-	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(pinImage->ClientToScreen(event.GetPosition())));
-	((GUINode*)m_parent)->OnPinLeftMouseDown(event);
+	m_graphView->OnPinLeftMouseDown(this, GetPinPosition());
 }
 
 void GUINodeParam::OnPinLeftMouseUp(wxMouseEvent& event)
 {
+	// If we are wiring two pins together (and thus, this is a second one)
+	// We add the wire between the twos after checking if it's possible
+	if (m_graphView->isWiring()) {
+		m_graphView->AddWire(this, m_graphView->GetSelectedPin());
+	}
 	// Convert from pinImage coordinates to GUINode coordinates before sending it to GUINode
 	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(pinImage->ClientToScreen(event.GetPosition())));
 	((GUINode*)m_parent)->OnPinLeftMouseUp(event);

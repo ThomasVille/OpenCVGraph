@@ -23,7 +23,6 @@ public:
 	void OnLeftMouseUp(wxMouseEvent&);
 	void OnMouseMotion(wxMouseEvent& event);
 
-	void OnPinLeftMouseDown(wxMouseEvent&);
 	void OnPinLeftMouseUp(wxMouseEvent&);
 	void OnPinMouseMotion(wxMouseEvent&);
 protected:
@@ -43,6 +42,10 @@ protected:
 
 	// The node to represent
 	Node m_node;
+
+	// Pointer to the GraphView
+	// For convenience
+	GraphView* m_graphView;
 private:
 	wxDECLARE_DYNAMIC_CLASS(GUINode);
 };

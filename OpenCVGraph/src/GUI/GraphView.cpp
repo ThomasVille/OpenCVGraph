@@ -2,15 +2,17 @@
 
 wxIMPLEMENT_DYNAMIC_CLASS(GraphView, wxControl);
 
-void GraphView::OnPinLeftMouseDown(GUINode* node, wxPoint pos)
+void GraphView::OnPinLeftMouseDown(GUINodeParam* param, wxPoint pos)
 {
 	m_mouseWiringStartingPoint = pos;
+	m_selectedPin = param;
 	m_mouseWiring = true;
 	ContinuousRefresh(true);
 }
 void GraphView::OnMouseUp(wxMouseEvent& event)
 {
 	m_mouseWiring = false;
+	m_selectedPin = nullptr;
 	ContinuousRefresh(false);
 }
 
@@ -44,21 +46,58 @@ wxSize GraphView::DoGetBestSize() const
 void GraphView::OnPaint(wxPaintEvent& event)
 {
 	wxPaintDC dc(this);
-	dc.SetBrush(*wxWHITE_BRUSH);
-	//(GUINode*)(event.GetPropagatedFrom())->;
-	for (int i = 0; i < m_children.size(); i++) {
-		//if()
+	wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
+	wxFont font = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
+
+
+	if (gc)
+	{
+		gc->SetBrush(*wxWHITE_BRUSH);
+		//(GUINode*)(event.GetPropagatedFrom())->;
+		for (int i = 0; i < m_children.size(); i++) {
+			//if()
+		}
+		gc->SetBrush(*wxBLACK_BRUSH);
+		gc->SetPen(wxPen(*wxBLACK, 1));
+		if (m_mouseWiring) {
+			wxGraphicsPath path = gc->CreatePath();
+			path.MoveToPoint(m_mousePosition);
+			path.AddLineToPoint(m_mouseWiringStartingPoint);
+			gc->DrawPath(path);
+		}
+		// Draw the wires
+		gc->SetPen(wxPen(*wxBLACK, 2));
+		wxGraphicsPath path = gc->CreatePath();
+		for (auto wire : m_wires) {
+			path.MoveToPoint(wire.first->GetPinPosition());
+			path.AddLineToPoint(wire.second->GetPinPosition());
+		}
+		gc->DrawPath(path);
+
+		delete gc;
 	}
-	dc.SetBrush(*wxBLACK_BRUSH);
-	if (m_mouseWiring) {
-		dc.DrawLine(m_mousePosition, m_mouseWiringStartingPoint);
-	}
+
 	event.Skip();
 }
 
 void GraphView::OnMouseMotion(wxMouseEvent &event)
 {
 	m_mousePosition = event.GetPosition();
+}
+
+bool GraphView::isWiring()
+{
+	return m_selectedPin != nullptr ? true : false;
+}
+
+GUINodeParam * GraphView::GetSelectedPin()
+{
+	return m_selectedPin;
+}
+
+void GraphView::AddWire(GUINodeParam * first, GUINodeParam * second)
+{
+	m_wires.push_back(std::pair<GUINodeParam*, GUINodeParam*>(first, second));
 }
 
 void GraphView::OnTimer(wxTimerEvent &event)

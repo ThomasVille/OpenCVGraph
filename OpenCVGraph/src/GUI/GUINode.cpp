@@ -4,6 +4,8 @@ wxIMPLEMENT_DYNAMIC_CLASS(GUINode, wxControl);
 
 void GUINode::Init()
 {
+	m_graphView = (GraphView*)m_parent;
+
 	// Compute the best width
 	m_bestSize.SetWidth(200); // Must be computed depending on the lengths of the inputs and outputs parameters
 	// Compute the best height
@@ -110,18 +112,24 @@ void GUINode::OnLeftMouseDown(wxMouseEvent& event)
 void GUINode::OnLeftMouseUp(wxMouseEvent& event)
 {
 	m_isDragging = false;
+	// Send the event to the GraphView
+	event.SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())));
+	m_graphView->OnMouseUp(event);
 }
 
 void GUINode::OnMouseMotion(wxMouseEvent& event)
 {
-	if (m_isDragging && event.LeftIsDown())
+	if (m_isDragging && event.LeftIsDown()) {
 		SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())) - m_firstDraggingPoint);
-}
+		m_graphView->Refresh();
+	}
 
-void GUINode::OnPinLeftMouseDown(wxMouseEvent& event)
-{
-	// In any case, if we click on a pin, we must say it to the GraphView above
-	((GraphView*)m_parent)->OnPinLeftMouseDown(this, m_parent->ScreenToClient(ClientToScreen(event.GetPosition())));
+	else
+	{
+		// Send the event to the GraphView, in case he wants to handle a wiring event
+		event.SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())));
+		m_graphView->OnMouseMotion(event);
+	}
 }
 
 void GUINode::OnPinLeftMouseUp(wxMouseEvent& event)
@@ -131,13 +139,15 @@ void GUINode::OnPinLeftMouseUp(wxMouseEvent& event)
 		m_isDragging = false;
 	else {
 		event.SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())));
-		((GraphView*)m_parent)->OnMouseUp(event);
+		m_graphView->OnMouseUp(event);
 	}
 }
 
 void GUINode::OnPinMouseMotion(wxMouseEvent& event)
 {
 	// If we are moving the node and the mouse hover over a pin, continue moving
-	if(m_isDragging)
+	if (m_isDragging) {
 		SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())) - m_firstDraggingPoint);
+		m_graphView->Refresh();
+	}
 }

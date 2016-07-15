@@ -24,24 +24,38 @@ public:
 	}
 
 	// Begin the drawing of the wire
-	void OnPinLeftMouseDown(GUINode* node, wxPoint pos);
+	// Called when the user click on a parameter
+	void OnPinLeftMouseDown(GUINodeParam* param, wxPoint pos);
 	// Must be called every time the mouse button is released (even if inside a child)
 	void OnMouseUp(wxMouseEvent& event);
+	// Public because the nodes can send event to it if the mouse is over a node and we still need to handle the event
+	// e.g. wiring event
+	void OnMouseMotion(wxMouseEvent&);
+
+	// Are we wiring a pin to another at the moment ?
+	bool isWiring();
+	// Return the pin we selected when we began to wire a pin to another
+	GUINodeParam* GetSelectedPin();
+	// Add a wire between to pins
+	// Called from a GUINodeParam when it accepts a connection with another pin
+	void AddWire(GUINodeParam* first, GUINodeParam* second);
 
 protected:
 	void Init();
 	void ContinuousRefresh(bool);
 	virtual wxSize DoGetBestSize() const;
 	void OnPaint(wxPaintEvent&);
-	void OnMouseMotion(wxMouseEvent&);
 	void OnTimer(wxTimerEvent&);
 
 	std::vector<GUINode*> m_selectedNodes;
 
 	wxPoint m_mouseWiringStartingPoint;
+	// Selected pin when we first left clicked on a pin and began dragging
+	GUINodeParam* m_selectedPin = nullptr;
 	wxPoint m_mousePosition;
 	bool m_mouseWiring = false;
 
+	std::vector<std::pair<GUINodeParam*, GUINodeParam*>> m_wires;
 	wxTimer m_timer;
 
 private:
