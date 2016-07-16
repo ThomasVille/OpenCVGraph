@@ -33,6 +33,7 @@ void GUINodeParam::Init()
 		sizer->Add(nameText, 1, wxALL | wxALIGN_CENTER_VERTICAL); // From left to right, add the name then the pin for an output
 		sizer->Add(pinImage, 1, wxALL | wxALIGN_CENTER_VERTICAL);
 	}
+	nameText->SetForegroundColour(*wxWHITE);
 
 	SetSizer(sizer);
 	Layout();
