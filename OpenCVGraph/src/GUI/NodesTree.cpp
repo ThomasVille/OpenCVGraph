@@ -148,8 +148,6 @@ void MyTreeCtrl::OnItemActivated(wxTreeEvent& event)
 	{
 		m_graphView->AddNode(m_nodesProvider->GetNewNode(item->Get()));
 	}
-
-	wxLogMessage(wxT("OnItemActivated"));
 }
 
 void MyTreeCtrl::OnItemMenu(wxTreeEvent& event)
