@@ -39,6 +39,7 @@ MyTreeCtrl::MyTreeCtrl(wxWindow *parent, std::shared_ptr<NodesProvider> nodesPro
 
 	wxTreeItemId rootId = AddRoot(wxT("Root"), TreeCtrlIcon_Folder, TreeCtrlIcon_Folder,	new MyTreeItemData(wxT("Root item")));
 	AddItemsRecursively(rootId, m_nodesProvider->GetItems());
+	ExpandAll();
 }
 
 void MyTreeCtrl::CreateImageList(int size)
