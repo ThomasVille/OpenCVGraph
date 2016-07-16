@@ -37,7 +37,7 @@ MyTreeCtrl::MyTreeCtrl(wxWindow *parent, std::shared_ptr<NodesProvider> nodesPro
 {
 	CreateImageList();
 
-	wxTreeItemId rootId = AddRoot(wxT("Root"), TreeCtrlIcon_Folder, TreeCtrlIcon_Folder,	new MyTreeItemData(wxT("Root item")));
+	wxTreeItemId rootId = AddRoot(wxT("Root"), TreeCtrlIcon_Folder, TreeCtrlIcon_Folder, new MyTreeItemData(nullptr));
 	AddItemsRecursively(rootId, m_nodesProvider->GetItems());
 	ExpandAll();
 }
@@ -97,7 +97,7 @@ void MyTreeCtrl::AddItemsRecursively(const wxTreeItemId& idParent, vector<shared
 	// Append all nodes and their children
 	for (auto node : nodes) {
 		int image = node->HasChildren() ? TreeCtrlIcon_Folder : TreeCtrlIcon_File;
-		wxTreeItemId id = AppendItem(idParent, node->GetName(), image , image+1, new MyTreeItemData(node->GetName()));
+		wxTreeItemId id = AppendItem(idParent, node->GetName(), image , image+1, new MyTreeItemData(node));
 		if (node->HasChildren())
 			AddItemsRecursively(id, node->GetChildren());
 	}
@@ -340,7 +340,6 @@ void MyTreeCtrl::OnItemActivated(wxTreeEvent& event)
 
 	if (item != NULL)
 	{
-		item->ShowInfo(this);
 	}
 
 	wxLogMessage(wxT("OnItemActivated"));
@@ -356,7 +355,7 @@ void MyTreeCtrl::OnItemMenu(wxTreeEvent& event)
 	wxPoint screenpt = ClientToScreen(clientpt);
 
 	wxLogMessage(wxT("OnItemMenu for item \"%s\" at screen coords (%i, %i)"),
-		item ? item->GetDesc() : wxString(wxS("unknown")), screenpt.x, screenpt.y);
+		item ? item->Get()->GetName() : wxString(wxS("unknown")), screenpt.x, screenpt.y);
 
 	ShowMenu(itemId, clientpt);
 	event.Skip();
@@ -401,24 +400,7 @@ void MyTreeCtrl::OnItemRClick(wxTreeEvent& event)
 
 	MyTreeItemData *item = (MyTreeItemData *)GetItemData(itemId);
 
-	wxLogMessage(wxT("Item \"%s\" right clicked"), item ? item->GetDesc() : wxString(wxS("unknown")));
+	wxLogMessage(wxT("Item \"%s\" right clicked"), item ? item->Get()->GetName() : wxString(wxS("unknown")));
 
 	event.Skip();
-}
-
-static inline const wxChar *Bool2String(bool b)
-{
-	return b ? wxT("") : wxT("not ");
-}
-
-void MyTreeItemData::ShowInfo(wxTreeCtrl *tree)
-{
-	wxLogMessage(wxT("Item '%s': %sselected, %sexpanded, %sbold,\n")
-		wxT("%u children (%u immediately under this item)."),
-		m_desc.c_str(),
-		Bool2String(tree->IsSelected(GetId())),
-		Bool2String(tree->IsExpanded(GetId())),
-		Bool2String(tree->IsBold(GetId())),
-		unsigned(tree->GetChildrenCount(GetId())),
-		unsigned(tree->GetChildrenCount(GetId(), false)));
 }

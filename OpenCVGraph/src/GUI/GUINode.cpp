@@ -35,7 +35,7 @@ void GUINode::Init()
 			GUINodeParam* guiNodeOutput = new GUINodeParam(this, m_node.GetOutputs()[i]);
 			horizontalSizer->Add(guiNodeOutput, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
 		}else{
-			horizontalSizer->Add(new wxStaticText(this, wxID_ANY, "EMPTY"), 2, wxALL | wxALIGN_CENTER_VERTICAL);
+			horizontalSizer->Add(new wxStaticText(this, wxID_ANY, ""), 2, wxALL | wxALIGN_CENTER_VERTICAL);
 		}
 
 		verticalSizer->Add(horizontalSizer, 1, wxALL | wxEXPAND);
@@ -67,39 +67,19 @@ void GUINode::OnPaint(wxPaintEvent &event)
 {
 	wxPaintDC dc(this);
 	/*wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
-	wxFont font = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
 
 	int height = GetSize().GetHeight() - 1;
 	int width = GetSize().GetWidth() - 1;
-	int i = 0;
 	if (gc)
 	{
 		// Draw the body
-		gc->SetBrush(*wxRED_BRUSH);
+		gc->SetBrush(*wxTRANSPARENT_BRUSH);
 		gc->SetPen(wxPen(*wxBLACK, 1));
-		gc->DrawRoundedRectangle(0, 0, m_bestSize.GetWidth() - 1, m_bestSize.GetHeight() - 1, 10);
+		gc->DrawRectangle(0, 0, width, height);
 		
-		gc->SetBrush(*wxBLUE_BRUSH);
-		gc->SetFont(font, *wxBLACK);
-		i = 0;
-		// Draw the inputs
-		for (InputParam p : m_node.GetInputs()) {
-			gc->DrawEllipse(10, (i+0.5f)*height / m_maxParamsPerColumn, 25, 25);
-			gc->DrawText(p.GetName(), 50, (i + 0.5f)*height / m_maxParamsPerColumn);
-			i++;
-		}
-		i = 0;
-		// Draw the outputs
-		for (Parameter p : m_node.GetOutputs()) {
-			gc->DrawEllipse(width-50, (i+0.5f)*height / m_maxParamsPerColumn, 25, 25);
-			gc->DrawText(p.GetName(), width-100, (i + 0.5f)*height / m_maxParamsPerColumn);
-			i++;
-		}
-
 		delete gc;
-	}*/
-
-	
+	}
+	*/
 	event.Skip();
 }
 

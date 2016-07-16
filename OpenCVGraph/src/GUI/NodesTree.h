@@ -9,13 +9,12 @@
 class MyTreeItemData : public wxTreeItemData
 {
 public:
-	MyTreeItemData(const wxString& desc) : m_desc(desc) { }
+	MyTreeItemData(const std::shared_ptr<ModelNode> model) : m_model(model) { }
 
-	void ShowInfo(wxTreeCtrl *tree);
-	wxString const& GetDesc() const { return m_desc; }
+	std::shared_ptr<ModelNode> const Get() const { return m_model; }
 
 private:
-	wxString m_desc;
+	std::shared_ptr<ModelNode> m_model;
 };
 
 class MyTreeCtrl : public wxTreeCtrl

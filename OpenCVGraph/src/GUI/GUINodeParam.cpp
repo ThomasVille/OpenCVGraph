@@ -19,16 +19,6 @@ Parameter GUINodeParam::GetParameter()
 void GUINodeParam::Init()
 {
 	m_graphView = (GraphView*)(((GUINode*)m_parent)->GetParent());
-	// Compute the best width
-	//m_bestSize.SetWidth(200); // Must be computed depending on the lengths of the inputs and outputs parameters
-	// Compute the best height
-	//int nbInputs = m_node.GetInputs().size();
-	//int nbOutputs = m_node.GetOutputs().size();
-	//m_maxParamsPerColumn = nbInputs > nbOutputs ? nbInputs : nbOutputs;
-	//m_bestSize.SetHeight((1 + m_maxParamsPerColumn) * 50); // MAGIC NUMBER here : we say 50 pixels per param and 50 pixels for the node's name
-
-	// Defines the size of the widget
-	//SetSize(m_bestSize);
 
 	wxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
 	pinImage = new wxStaticText(this, wxID_ANY, "O", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
