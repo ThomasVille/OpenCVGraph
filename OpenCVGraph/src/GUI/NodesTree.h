@@ -36,8 +36,6 @@ public:
 	void OnBeginDrag(wxTreeEvent& event);
 	void OnBeginRDrag(wxTreeEvent& event);
 	void OnEndDrag(wxTreeEvent& event);
-	void OnBeginLabelEdit(wxTreeEvent& event);
-	void OnEndLabelEdit(wxTreeEvent& event);
 	void OnDeleteItem(wxTreeEvent& event);
 	void OnContextMenu(wxContextMenuEvent& event);
 	void OnItemMenu(wxTreeEvent& event);
@@ -46,7 +44,6 @@ public:
 	void OnItemExpanded(wxTreeEvent& event);
 	void OnItemExpanding(wxTreeEvent& event);
 	void OnItemCollapsed(wxTreeEvent& event);
-	void OnItemCollapsing(wxTreeEvent& event);
 	void OnSelChanged(wxTreeEvent& event);
 	void OnSelChanging(wxTreeEvent& event);
 	void OnTreeKeyDown(wxTreeEvent& event);
