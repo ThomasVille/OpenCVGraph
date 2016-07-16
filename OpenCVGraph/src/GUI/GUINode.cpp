@@ -54,7 +54,7 @@ void GUINode::Init()
 	Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
 	Bind(wxEVT_PAINT, &GUINode::OnPaint, this);
 
-	((GraphView*)m_parent)->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
+	//((GraphView*)m_parent)->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
 
 }
 
