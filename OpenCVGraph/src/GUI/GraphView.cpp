@@ -26,6 +26,7 @@ void GraphView::Init()
 	Bind(wxEVT_MOTION, &GraphView::OnMouseMotion, this);
 	Bind(wxEVT_LEFT_UP, &GraphView::OnMouseUp, this);
 
+	// Initialize the graph engine
 }
 
 wxSize GraphView::DoGetBestSize() const
@@ -118,6 +119,7 @@ void GraphView::SetLinkState(LinkState state)
 void GraphView::AddNode(shared_ptr<Node> node)
 {
 	new GUINode(this, node);
+	m_graphEngine->AddNode(node);
 }
 
 void GraphView::Redraw()

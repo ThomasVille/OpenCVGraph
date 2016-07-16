@@ -8,6 +8,7 @@ e.g. when the mouse is released on a pin, it's the GUINodeParam parent which sho
 #include <memory>
 #include <wx/wx.h>
 #include "GUINode.h"
+#include "../GraphEngine.h"
 
 class GraphView : public wxScrolledWindow
 {
@@ -15,10 +16,12 @@ public:
 	GraphView() : wxScrolledWindow() { Init(); }
 	GraphView(wxWindow *parent,
 		wxWindowID winid,
+		GraphEngine* graphEngine,
 		const wxPoint& pos = wxDefaultPosition,
 		const wxSize& size = wxDefaultSize,
 		long style = 0) :
-		wxScrolledWindow(parent, winid, pos, size, style)
+		wxScrolledWindow(parent, winid, pos, size, style),
+		m_graphEngine(graphEngine)
 	{
 		Init();
 	}
@@ -61,6 +64,8 @@ protected:
 	LinkState m_linkState = END_MISSING; // State of the link we are currently dragging with the mouse
 
 	std::vector<std::pair<GUINodeParam*, GUINodeParam*>> m_wires;
+
+	GraphEngine* m_graphEngine = nullptr;
 
 private:
 	wxDECLARE_DYNAMIC_CLASS(GraphView);

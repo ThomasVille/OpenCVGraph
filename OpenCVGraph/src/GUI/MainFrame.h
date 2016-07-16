@@ -7,6 +7,7 @@
 #include <wx/treectrl.h>
 #include "GraphView.h"
 #include "NodesTree.h"
+#include "../GraphEngine.h"
 #include "../NodesProvider.h"
 class MyFrame : public wxFrame
 {
@@ -39,6 +40,7 @@ private:
 	long m_notebookTheme;
 
 	std::shared_ptr<NodesProvider> m_nodesProvider;
+	GraphEngine m_graphEngine;
 
 	enum
 	{

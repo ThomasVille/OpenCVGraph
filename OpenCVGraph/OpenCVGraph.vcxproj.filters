@@ -56,6 +56,9 @@
     <ClCompile Include="src\ModelNode.cpp">
       <Filter>Fichiers sources\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\GraphEngine.cpp">
+      <Filter>Fichiers sources\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GUI\MainFrame.h">
@@ -83,6 +86,9 @@
       <Filter>Fichiers sources\src</Filter>
     </ClInclude>
     <ClInclude Include="src\ModelNode.h">
+      <Filter>Fichiers sources\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GraphEngine.h">
       <Filter>Fichiers sources\src</Filter>
     </ClInclude>
   </ItemGroup>

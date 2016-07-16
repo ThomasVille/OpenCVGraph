@@ -36,5 +36,9 @@ std::vector<std::shared_ptr<ModelNode>> NodesProvider::GetItems()
 
 std::shared_ptr<Node> NodesProvider::GetNewNode(std::shared_ptr<ModelNode> description)
 {
-	return make_shared<Node>(vector<Parameter>({Parameter("test", m_types["int"], INPUT_PARAM)}), vector<Parameter>({ Parameter("test", m_types["int"], OUTPUT_PARAM) }));
+	shared_ptr<Node> tmp = make_shared<Node>();
+	tmp->SetName(description->GetName());
+	tmp->SetInputs(vector<Parameter>({ Parameter("test", m_types["int"], INPUT_PARAM) }));
+	tmp->SetOutputs(vector<Parameter>({ Parameter("test", m_types["int"], OUTPUT_PARAM) }));
+	return tmp;
 }

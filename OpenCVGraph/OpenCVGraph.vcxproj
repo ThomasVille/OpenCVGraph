@@ -500,6 +500,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Parameter.cpp" />
+    <ClCompile Include="src\GraphEngine.cpp" />
     <ClCompile Include="src\GUI\GraphView.cpp" />
     <ClCompile Include="src\GUI\GUINode.cpp" />
     <ClCompile Include="src\GUI\GUINodeParam.cpp" />
@@ -512,6 +513,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parameter.h" />
+    <ClInclude Include="src\GraphEngine.h" />
     <ClInclude Include="src\GUI\GraphView.h" />
     <ClInclude Include="src\GUI\GUINode.h" />
     <ClInclude Include="src\GUI\GUINodeParam.h" />

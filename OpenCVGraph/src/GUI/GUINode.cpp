@@ -19,7 +19,7 @@ void GUINode::Init()
 
 	// Add a sizer to manage the space inside the node
 	wxSizer* verticalSizer = new wxBoxSizer(wxVERTICAL);
-	wxStaticText* titleText = new wxStaticText(this, wxID_ANY, "Title", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
+	wxStaticText* titleText = new wxStaticText(this, wxID_ANY, m_node->GetName(), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
 	verticalSizer->Add(titleText, 1, wxALL | wxEXPAND);
 
 	for (int i = 0; i < m_maxParamsPerColumn; i++) {
