@@ -97,8 +97,8 @@ void GUINodeParam::OnPinLeftMouseUp(wxMouseEvent& event)
 void GUINodeParam::OnPinMouseMotion(wxMouseEvent& event)
 {
 	if (m_graphView->isWiring()) { // If we are wiring right now, check the link and tell the GraphView if it is allowed
-		// If the two pins are inputs or outputs, error
-		if (m_graphView->GetSelectedPin()->GetParameter().GetType() == m_parameter.GetType()) {
+		// If the two pins are not compatible, error
+		if (!m_graphView->GetSelectedPin()->GetParameter().IsCompatible(m_parameter)) {
 			m_graphView->SetLinkState(ERROR_SAME_WAY);
 		}
 		else {

@@ -15,7 +15,7 @@ void GraphView::OnMouseUp(wxMouseEvent& event)
 {
 	m_mouseWiring = false;
 	m_selectedPin = nullptr;
-	//ContinuousRefresh(false);
+	Redraw();
 }
 
 void GraphView::Init()
