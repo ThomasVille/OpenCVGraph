@@ -3,7 +3,9 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <map>
 #include "ModelNode.h"
+#include "Node.h"
 
 class NodesProvider
 {
@@ -13,8 +15,17 @@ public:
 
 	std::vector<std::shared_ptr<ModelNode>> GetItems();
 
+	// Factory method : returns a new node following the node description
+	std::shared_ptr<Node> GetNewNode(std::shared_ptr<ModelNode> description);
+
 private:
+	// First level of nodes
+	// ModelNodes containing other nodes are like folders
 	std::vector<std::shared_ptr<ModelNode>> m_rootNodes;
+
+	// Types available
+	// They are managed by the NodesProvider
+	std::map<std::string, std::shared_ptr<Type>> m_types;
 };
 
 

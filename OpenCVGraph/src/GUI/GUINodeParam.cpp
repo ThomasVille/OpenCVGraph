@@ -5,7 +5,7 @@ wxIMPLEMENT_DYNAMIC_CLASS(GUINodeParam, wxControl);
 
 wxPoint GUINodeParam::GetPinPosition()
 {
-	if(m_parameter.GetType() == INPUT_PARAM) // Return the middle of the left border of the image
+	if(m_parameter.GetParamType() == INPUT_PARAM) // Return the middle of the left border of the image
 		return m_graphView->ScreenToClient(ClientToScreen( pinImage->GetPosition()+wxPoint(0,pinImage->GetRect().GetHeight()/2) ));
 	else // Return the middle of the right border of the image
 		return m_graphView->ScreenToClient(ClientToScreen(pinImage->GetPosition() + wxPoint(pinImage->GetRect().GetWidth(), pinImage->GetRect().GetHeight() / 2)));
@@ -23,7 +23,7 @@ void GUINodeParam::Init()
 	wxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
 	pinImage = new wxStaticText(this, wxID_ANY, "O", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
 	pinImage->SetBackgroundColour(*wxRED); // Helps to visualize the space taken by the pin
-	if (m_parameter.GetType() == INPUT_PARAM) {
+	if (m_parameter.GetParamType() == INPUT_PARAM) {
 		nameText = new wxStaticText(this, wxID_ANY, m_parameter.GetName(), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
 		sizer->Add(pinImage, 1, wxALL | wxALIGN_CENTER_VERTICAL); // From left to right, add the pin then the name for an input
 		sizer->Add(nameText, 1, wxALL | wxALIGN_CENTER_VERTICAL);
@@ -86,7 +86,8 @@ void GUINodeParam::OnPinLeftMouseUp(wxMouseEvent& event)
 	// If we are wiring two pins together (and thus, this is a second one)
 	// We add the wire between the twos after checking if it's possible
 	if (m_graphView->isWiring()) {
-		m_graphView->AddWire(this, m_graphView->GetSelectedPin());
+		if(m_parameter.IsCompatible(m_graphView->GetSelectedPin()->GetParameter()))
+			m_graphView->AddWire(this, m_graphView->GetSelectedPin());
 	}
 	// Convert from pinImage coordinates to GUINode coordinates before sending it to GUINode
 	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(pinImage->ClientToScreen(event.GetPosition())));

@@ -5,6 +5,7 @@
 class Node
 {
 public:
+	Node();
 	Node(std::vector<Parameter>, std::vector<Parameter>);
 	~Node();
 

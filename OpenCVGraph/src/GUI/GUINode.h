@@ -1,5 +1,6 @@
 #ifndef _GUI_GUINODE_H_
 #define _GUI_GUINODE_H_
+#include <memory>
 #include <wx/wx.h>
 #include <wx/graphics.h>
 #include "../Node.h"
@@ -10,9 +11,9 @@ class GUINode : public wxControl
 public:
 	GUINode():
 		wxControl(),
-		m_node(Node({}, {}))
+		m_node(std::make_shared<Node>())
 	{ Init(); };
-	GUINode(wxWindow *parent, Node node):
+	GUINode(wxWindow *parent, std::shared_ptr<Node> node):
 		wxControl(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE, wxDefaultValidator),
 		m_node(node)
 	{
@@ -41,7 +42,7 @@ protected:
 	wxPoint m_firstDraggingPoint;
 
 	// The node to represent
-	Node m_node;
+	std::shared_ptr<Node> m_node;
 
 	// Pointer to the GraphView
 	// For convenience

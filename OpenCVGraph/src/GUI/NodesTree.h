@@ -5,6 +5,7 @@
 #include <wx/treectrl.h>
 #include <wx/imaglist.h>
 #include "../NodesProvider.h"
+#include "GraphView.h"
 
 class MyTreeItemData : public wxTreeItemData
 {
@@ -30,7 +31,7 @@ public:
 	};
 
 	MyTreeCtrl() {}
-	MyTreeCtrl(wxWindow *parent, std::shared_ptr<NodesProvider> nodesProvider);
+	MyTreeCtrl(wxWindow *parent, std::shared_ptr<NodesProvider> nodesProvider, GraphView* graphView);
 	virtual ~MyTreeCtrl() {};
 
 	void OnBeginDrag(wxTreeEvent& event);
@@ -81,6 +82,7 @@ private:
 	int          m_imageSize;               // current size of images
 	
 	std::shared_ptr<NodesProvider> m_nodesProvider;
+	GraphView* m_graphView;
 
 	wxDECLARE_DYNAMIC_CLASS(MyTreeCtrl);
 };

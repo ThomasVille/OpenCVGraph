@@ -1,5 +1,6 @@
 #include "GraphView.h"
 
+using namespace std;
 wxIMPLEMENT_DYNAMIC_CLASS(GraphView, wxControl);
 
 void GraphView::OnPinLeftMouseDown(GUINodeParam* param, wxPoint pos)
@@ -20,8 +21,6 @@ void GraphView::OnMouseUp(wxMouseEvent& event)
 void GraphView::Init()
 {
 	SetVirtualSize(wxSize(1920, 1080));
-	new GUINode(this, Node({ Parameter("a", INPUT_PARAM), Parameter("b", INPUT_PARAM) }, { Parameter("y", OUTPUT_PARAM) }));
-	new GUINode(this, Node({ Parameter("x", INPUT_PARAM), Parameter("y", INPUT_PARAM) }, { Parameter("z", OUTPUT_PARAM) }));
 
 	Bind(wxEVT_PAINT, &GraphView::OnPaint, this);
 	Bind(wxEVT_MOTION, &GraphView::OnMouseMotion, this);
@@ -105,15 +104,20 @@ GUINodeParam * GraphView::GetSelectedPin()
 
 void GraphView::AddWire(GUINodeParam * first, GUINodeParam * second)
 {
-	if(first->GetParameter().GetType() == INPUT_PARAM)
+	if(first->GetParameter().GetParamType() == INPUT_PARAM)
 		m_wires.push_back(std::pair<GUINodeParam*, GUINodeParam*>(second, first));
-	if (first->GetParameter().GetType() == OUTPUT_PARAM)
+	if (first->GetParameter().GetParamType() == OUTPUT_PARAM)
 		m_wires.push_back(std::pair<GUINodeParam*, GUINodeParam*>(first, second));
 }
 
 void GraphView::SetLinkState(LinkState state)
 {
 	m_linkState = state;
+}
+
+void GraphView::AddNode(shared_ptr<Node> node)
+{
+	new GUINode(this, node);
 }
 
 void GraphView::Redraw()

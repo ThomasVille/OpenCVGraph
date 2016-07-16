@@ -9,8 +9,8 @@ void GUINode::Init()
 	// Compute the best width
 	m_bestSize.SetWidth(200); // Must be computed depending on the lengths of the inputs and outputs parameters
 	// Compute the best height
-	int nbInputs = m_node.GetInputs().size();
-	int nbOutputs = m_node.GetOutputs().size();
+	int nbInputs = m_node->GetInputs().size();
+	int nbOutputs = m_node->GetOutputs().size();
 	m_maxParamsPerColumn = nbInputs > nbOutputs ? nbInputs : nbOutputs;
 	m_bestSize.SetHeight((1 + m_maxParamsPerColumn) * 50); // MAGIC NUMBER here : we say 50 pixels per param and 50 pixels for the node's name
 
@@ -26,13 +26,13 @@ void GUINode::Init()
 		wxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 		// Add a pin if needed or an empty text to fill up the space if there's no pin
 		if (i < nbInputs) {
-			GUINodeParam* guiNodeInput = new GUINodeParam(this, m_node.GetInputs()[i]);
+			GUINodeParam* guiNodeInput = new GUINodeParam(this, m_node->GetInputs()[i]);
 			horizontalSizer->Add(guiNodeInput, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
 		}else {
 			horizontalSizer->Add(new wxStaticText(this, wxID_ANY, "EMPTY"), 2, wxALL | wxALIGN_CENTER_VERTICAL);
 		}
 		if (i < nbOutputs) {
-			GUINodeParam* guiNodeOutput = new GUINodeParam(this, m_node.GetOutputs()[i]);
+			GUINodeParam* guiNodeOutput = new GUINodeParam(this, m_node->GetOutputs()[i]);
 			horizontalSizer->Add(guiNodeOutput, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
 		}else{
 			horizontalSizer->Add(new wxStaticText(this, wxID_ANY, ""), 2, wxALL | wxALIGN_CENTER_VERTICAL);

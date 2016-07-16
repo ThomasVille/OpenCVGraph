@@ -31,15 +31,18 @@ using namespace std;
 wxIMPLEMENT_DYNAMIC_CLASS(MyTreeCtrl, wxTreeCtrl);
 
 // Hide the root
-MyTreeCtrl::MyTreeCtrl(wxWindow *parent, std::shared_ptr<NodesProvider> nodesProvider)
+MyTreeCtrl::MyTreeCtrl(wxWindow *parent, std::shared_ptr<NodesProvider> nodesProvider, GraphView* graphView)
 	: wxTreeCtrl(parent, wxID_ANY, wxDefaultPosition, wxSize(200, 200), wxTR_HIDE_ROOT | wxTR_LINES_AT_ROOT | wxTR_ROW_LINES | wxTR_HAS_BUTTONS | wxTR_TWIST_BUTTONS),
-	m_nodesProvider(nodesProvider)
+	m_nodesProvider(nodesProvider),
+	m_graphView(graphView)
 {
 	CreateImageList();
 
 	wxTreeItemId rootId = AddRoot(wxT("Root"), TreeCtrlIcon_Folder, TreeCtrlIcon_Folder, new MyTreeItemData(nullptr));
 	AddItemsRecursively(rootId, m_nodesProvider->GetItems());
 	ExpandAll();
+
+	Bind(wxEVT_TREE_ITEM_ACTIVATED, &MyTreeCtrl::OnItemActivated, this);
 }
 
 void MyTreeCtrl::CreateImageList(int size)
@@ -143,6 +146,7 @@ void MyTreeCtrl::OnItemActivated(wxTreeEvent& event)
 
 	if (item != NULL)
 	{
+		m_graphView->AddNode(m_nodesProvider->GetNewNode(item->Get()));
 	}
 
 	wxLogMessage(wxT("OnItemActivated"));

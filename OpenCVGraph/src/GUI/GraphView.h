@@ -5,7 +5,7 @@
 /* Events must be handled at the innermost level of hierarchy
 e.g. when the mouse is released on a pin, it's the GUINodeParam parent which should do the job
 (check if the types are compatible, ...) and tell the GraphView to do something if needed */
-
+#include <memory>
 #include <wx/wx.h>
 #include "GUINode.h"
 
@@ -43,6 +43,8 @@ public:
 	// Called from a GUINodeParam when it accepts a connection with another pin
 	void AddWire(GUINodeParam* first, GUINodeParam* second);
 	void SetLinkState(LinkState state);
+
+	void AddNode(std::shared_ptr<Node> node);
 
 protected:
 	void Init();

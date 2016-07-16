@@ -32,6 +32,7 @@ private:
 	wxAuiToolBar* m_mainToolbar;
 	wxAuiNotebook *m_graphNotebook;
 	wxTreeCtrl* m_nodesTree;
+	GraphView* m_graphView;
 
 	// Default style & theme for the notebooks
 	long m_notebookStyle;
