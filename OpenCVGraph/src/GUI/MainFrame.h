@@ -1,11 +1,13 @@
 #ifndef _GUI_MAINFRAME_H_
 #define _GUI_MAINFRAME_H_
-
+#include <memory>
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
 #include <wx/artprov.h>
+#include <wx/treectrl.h>
 #include "GraphView.h"
-
+#include "NodesTree.h"
+#include "../NodesProvider.h"
 class MyFrame : public wxFrame
 {
 public:
@@ -19,6 +21,7 @@ public:
 	void CreateMenuBar();
 	void CreateGraphNotebook();
 	void CreatePanes();
+	void CreateNodesTree();
 
 	// Events callbacks
 	void OnQuit(wxCommandEvent& event);
@@ -28,10 +31,13 @@ private:
 	wxAuiManager m_mgr;
 	wxAuiToolBar* m_mainToolbar;
 	wxAuiNotebook *m_graphNotebook;
+	wxTreeCtrl* m_nodesTree;
 
 	// Default style & theme for the notebooks
 	long m_notebookStyle;
 	long m_notebookTheme;
+
+	std::shared_ptr<NodesProvider> m_nodesProvider;
 
 	enum
 	{

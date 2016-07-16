@@ -504,7 +504,9 @@
     <ClCompile Include="src\GUI\GUINode.cpp" />
     <ClCompile Include="src\GUI\GUINodeParam.cpp" />
     <ClCompile Include="src\GUI\MainFrame.cpp" />
+    <ClCompile Include="src\GUI\NodesTree.cpp" />
     <ClCompile Include="src\Node.cpp" />
+    <ClCompile Include="src\NodesProvider.cpp" />
     <ClCompile Include="src\OpenCVGraph.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -513,7 +515,9 @@
     <ClInclude Include="src\GUI\GUINode.h" />
     <ClInclude Include="src\GUI\GUINodeParam.h" />
     <ClInclude Include="src\GUI\MainFrame.h" />
+    <ClInclude Include="src\GUI\NodesTree.h" />
     <ClInclude Include="src\Node.h" />
+    <ClInclude Include="src\NodesProvider.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

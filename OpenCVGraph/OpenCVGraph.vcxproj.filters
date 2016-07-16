@@ -47,6 +47,12 @@
     <ClCompile Include="Parameter.cpp">
       <Filter>Fichiers sources\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\GUI\NodesTree.cpp">
+      <Filter>Fichiers sources\src\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NodesProvider.cpp">
+      <Filter>Fichiers sources\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GUI\MainFrame.h">
@@ -65,6 +71,12 @@
       <Filter>Fichiers sources\src\GUI</Filter>
     </ClInclude>
     <ClInclude Include="Parameter.h">
+      <Filter>Fichiers sources\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\NodesTree.h">
+      <Filter>Fichiers sources\src\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NodesProvider.h">
       <Filter>Fichiers sources\src</Filter>
     </ClInclude>
   </ItemGroup>

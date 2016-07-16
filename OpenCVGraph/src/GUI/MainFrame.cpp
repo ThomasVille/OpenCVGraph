@@ -1,4 +1,5 @@
 #include "MainFrame.h"
+using namespace std;
 
 // frame constructor
 MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
@@ -6,6 +7,8 @@ MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
 {
 	m_notebookStyle = wxAUI_NB_DEFAULT_STYLE | wxAUI_NB_TAB_EXTERNAL_MOVE | wxNO_BORDER;
 	m_notebookTheme = 0;
+
+	m_nodesProvider = make_shared<NodesProvider>();
 
 	SetIcon(wxICON(sample));
 
@@ -16,6 +19,7 @@ MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
 	CreateStatus();
 	CreateMenuBar();
 	CreateGraphNotebook();
+	CreateNodesTree();
 	CreatePanes();
 
 	// Allows to resize panes with real-time preview
@@ -132,8 +136,7 @@ void MyFrame::CreatePanes()
 	m_mgr.AddPane(new wxTextCtrl(this, wxID_ANY, "Here goes the file explorer", wxPoint(0, 0), wxSize(200, 90), wxNO_BORDER | wxTE_MULTILINE),
 		wxAuiPaneInfo().Name(wxT("file_explorer")).Caption(wxT("File explorer")).
 		Left().Row(0).Position(0).Hide());
-	m_mgr.AddPane(new wxTextCtrl(this, wxID_ANY, "Here goes all the available nodes", wxPoint(0, 0), wxSize(200, 90), wxNO_BORDER | wxTE_MULTILINE),
-		wxAuiPaneInfo().Name(wxT("available_nodes")).Caption(wxT("Available nodes")).
+	m_mgr.AddPane(m_nodesTree, wxAuiPaneInfo().Name(wxT("available_nodes")).Caption(wxT("Available nodes")).
 		Left().Row(1).Position(0));
 
 	m_mgr.AddPane(new wxTextCtrl(this, wxID_ANY, "Here goes the nodes properties", wxPoint(0, 0), wxSize(200, 90), wxNO_BORDER | wxTE_MULTILINE),
@@ -145,6 +148,11 @@ void MyFrame::CreatePanes()
 		Bottom().Row(0).Position(0));
 
 	m_mgr.AddPane(m_graphNotebook, wxAuiPaneInfo().Name(wxT("graph_notebook")).Caption(wxT("Graph notebook")).Center().CaptionVisible(false));
+}
+
+void MyFrame::CreateNodesTree()
+{
+	m_nodesTree = new MyTreeCtrl(this, m_nodesProvider);
 }
 
 void MyFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
