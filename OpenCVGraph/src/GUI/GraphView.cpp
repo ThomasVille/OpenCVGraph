@@ -119,7 +119,7 @@ void GraphView::SetLinkState(LinkState state)
 void GraphView::AddNode(shared_ptr<Node> node)
 {
 	new GUINode(this, node);
-	m_graphEngine->AddNode(node);
+	m_graphEngine.AddNode(node);
 }
 
 void GraphView::Redraw()

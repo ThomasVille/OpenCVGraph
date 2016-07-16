@@ -40,7 +40,6 @@ private:
 	long m_notebookTheme;
 
 	std::shared_ptr<NodesProvider> m_nodesProvider;
-	GraphEngine m_graphEngine;
 
 	enum
 	{

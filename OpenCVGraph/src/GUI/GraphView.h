@@ -16,12 +16,10 @@ public:
 	GraphView() : wxScrolledWindow() { Init(); }
 	GraphView(wxWindow *parent,
 		wxWindowID winid,
-		GraphEngine* graphEngine,
 		const wxPoint& pos = wxDefaultPosition,
 		const wxSize& size = wxDefaultSize,
 		long style = 0) :
-		wxScrolledWindow(parent, winid, pos, size, style),
-		m_graphEngine(graphEngine)
+		wxScrolledWindow(parent, winid, pos, size, style)
 	{
 		Init();
 	}
@@ -65,7 +63,7 @@ protected:
 
 	std::vector<std::pair<GUINodeParam*, GUINodeParam*>> m_wires;
 
-	GraphEngine* m_graphEngine = nullptr;
+	GraphEngine m_graphEngine;
 
 private:
 	wxDECLARE_DYNAMIC_CLASS(GraphView);
