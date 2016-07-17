@@ -510,6 +510,7 @@
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\NodesProvider.cpp" />
     <ClCompile Include="src\OpenCVGraph.cpp" />
+    <ClCompile Include="src\Package.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Parameter.h" />
@@ -522,6 +523,7 @@
     <ClInclude Include="src\ModelNode.h" />
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\NodesProvider.h" />
+    <ClInclude Include="src\Package.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
