@@ -97,5 +97,8 @@
     <ClInclude Include="src\Package.h">
       <Filter>Fichiers sources\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\PDll.h">
+      <Filter>Fichiers sources\src</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

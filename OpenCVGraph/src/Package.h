@@ -1,15 +1,14 @@
 #ifndef _PACKAGE_H_
 #define _PACKAGE_H_
 #include <string>
+#include "PDll.h"
 
-class Package
+class Package : public PDLL
 {
 public:
-	Package(std::string dllPath);
-	~Package();
-
+	DECLARE_CLASS(Package)
+	DECLARE_FUNCTION0(int, GetNumTypes)
 private:
-	std::string m_dllPath;
 };
 
 

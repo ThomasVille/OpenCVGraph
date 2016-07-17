@@ -31,7 +31,8 @@ void NodesProvider::Init()
 	{
 		wxLogDebug("Load Package : %s", filename);
 		// Implementation specific here
-		m_packages.push_back(make_shared<Package>("packages/"+filename.ToStdString()+"/package.dll"));
+		m_packages.push_back(make_shared<Package>(string("packages/"+filename.ToStdString()+"/package.dll").c_str()));
+		wxLogDebug("Package GetNumTypes : %i", m_packages.back()->GetNumTypes());
 		cont = dir.GetNext(&filename);
 	}
 

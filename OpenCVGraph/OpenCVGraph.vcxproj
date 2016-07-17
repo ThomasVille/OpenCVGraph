@@ -524,6 +524,7 @@
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\NodesProvider.h" />
     <ClInclude Include="src\Package.h" />
+    <ClInclude Include="src\PDll.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
