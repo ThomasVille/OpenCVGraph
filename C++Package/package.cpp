@@ -1,6 +1,8 @@
 #include <string>
-// ajouter dllexport
-__declspec(dllexport)
-int GetNumTypes() {
-	return 42;
+
+extern "C" {
+	__declspec(dllexport)
+		int GetNumTypes() {
+		return 42;
+	}
 }
