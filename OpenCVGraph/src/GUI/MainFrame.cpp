@@ -9,6 +9,7 @@ MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
 	m_notebookTheme = 0;
 
 	m_nodesProvider = make_shared<NodesProvider>();
+	m_nodesProvider->Init();
 
 	SetIcon(wxICON(sample));
 

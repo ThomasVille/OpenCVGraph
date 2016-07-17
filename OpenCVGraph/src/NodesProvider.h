@@ -13,6 +13,8 @@ public:
 	NodesProvider();
 	~NodesProvider();
 
+	void Init();
+
 	std::vector<std::shared_ptr<ModelNode>> GetItems();
 
 	// Factory method : returns a new node following the node description

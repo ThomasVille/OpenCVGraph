@@ -37,6 +37,10 @@ NodesProvider::~NodesProvider()
 {
 }
 
+void NodesProvider::Init()
+{
+}
+
 std::vector<std::shared_ptr<ModelNode>> NodesProvider::GetItems()
 {
 	return m_rootNodes;
