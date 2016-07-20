@@ -499,7 +499,6 @@
     <ResourceCompile Include="sample.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Parameter.cpp" />
     <ClCompile Include="src\GraphEngine.cpp" />
     <ClCompile Include="src\GUI\GraphView.cpp" />
     <ClCompile Include="src\GUI\GUINode.cpp" />
@@ -511,9 +510,9 @@
     <ClCompile Include="src\NodesProvider.cpp" />
     <ClCompile Include="src\OpenCVGraph.cpp" />
     <ClCompile Include="src\Package.cpp" />
+    <ClCompile Include="src\Parameter.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Parameter.h" />
     <ClInclude Include="src\GraphEngine.h" />
     <ClInclude Include="src\GUI\GraphView.h" />
     <ClInclude Include="src\GUI\GUINode.h" />
@@ -524,7 +523,12 @@
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\NodesProvider.h" />
     <ClInclude Include="src\Package.h" />
+    <ClInclude Include="src\Parameter.h" />
     <ClInclude Include="src\PDll.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

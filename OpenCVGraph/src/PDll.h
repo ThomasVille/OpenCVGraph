@@ -28,7 +28,7 @@
 // otherwise return a NULL cast to the return parameter.
 
 #define DECLARE_FUNCTION0(retVal, FuncName) \
-    typedef retVal (CALLBACK* TYPE_##FuncName)(); \
+    typedef retVal (__cdecl* TYPE_##FuncName)(); \
     TYPE_##FuncName m_##FuncName; \
     short m_is##FuncName; \
     retVal FuncName() \
@@ -51,7 +51,7 @@
     }       
 
 #define DECLARE_FUNCTION1(retVal, FuncName, Param1) \
-    typedef retVal (CALLBACK* TYPE_##FuncName)(Param1); \
+    typedef retVal (__cdecl* TYPE_##FuncName)(Param1); \
     TYPE_##FuncName m_##FuncName; \
     short m_is##FuncName; \
     retVal FuncName(Param1 p1) \
@@ -76,7 +76,7 @@
     }
 
 #define DECLARE_FUNCTION2(retVal, FuncName, Param1, Param2) \
-    typedef  retVal (CALLBACK* TYPE_##FuncName)(Param1, Param2); \
+    typedef  retVal (__cdecl* TYPE_##FuncName)(Param1, Param2); \
     TYPE_##FuncName m_##FuncName; \
     short m_is##FuncName;\
     retVal FuncName (Param1 p1, Param2 p2) \
@@ -99,7 +99,7 @@
     }
 
 #define DECLARE_FUNCTION3(retVal, FuncName, Param1, Param2, Param3) \
-    typedef  retVal (CALLBACK* TYPE_##FuncName)(Param1, Param2, Param3); \
+    typedef  retVal (__cdecl* TYPE_##FuncName)(Param1, Param2, Param3); \
     TYPE_##FuncName m_##FuncName; \
     short m_is##FuncName;\
     retVal FuncName (Param1 p1, Param2 p2, Param3 p3) \
@@ -122,7 +122,7 @@
     }
 
 #define DECLARE_FUNCTION4(retVal, FuncName, Param1, Param2, Param3, Param4) \
-    typedef  retVal (CALLBACK* TYPE_##FuncName)(Param1, Param2, Param3, Param4); \
+    typedef  retVal (__cdecl* TYPE_##FuncName)(Param1, Param2, Param3, Param4); \
     TYPE_##FuncName m_##FuncName; \
     short m_is##FuncName;\
     retVal FuncName (Param1 p1, Param2 p2, Param3 p3, Param4 p4) \
@@ -145,7 +145,7 @@
     }
 
 #define DECLARE_FUNCTION5(retVal, FuncName, Param1, Param2, Param3, Param4, Param5) \
-    typedef  retVal (CALLBACK* TYPE_##FuncName)(Param1, Param2, Param3, Param4, Param5); \
+    typedef  retVal (__cdecl* TYPE_##FuncName)(Param1, Param2, Param3, Param4, Param5); \
     TYPE_##FuncName m_##FuncName; \
     short m_is##FuncName; \
     retVal FuncName (Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) \
@@ -168,7 +168,7 @@
     }
 
 #define DECLARE_FUNCTION6(retVal, FuncName, Param1, Param2, Param3, Param4, Param5, Param6) \
-    typedef  retVal (CALLBACK* TYPE_##FuncName)(Param1, Param2, Param3, Param4, Param5, Param6); \
+    typedef  retVal (__cdecl* TYPE_##FuncName)(Param1, Param2, Param3, Param4, Param5, Param6); \
     TYPE_##FuncName m_##FuncName; \
     short m_is##FuncName;\
     retVal FuncName (Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) \
@@ -191,7 +191,7 @@
     }
 
 #define DECLARE_FUNCTION7(retVal, FuncName, Param1, Param2, Param3, Param4, Param5, Param6, Param7) \
-    typedef  retVal (CALLBACK* TYPE_##FuncName)(Param1, Param2, Param3, Param4, Param5, Param6, Param7); \
+    typedef  retVal (__cdecl* TYPE_##FuncName)(Param1, Param2, Param3, Param4, Param5, Param6, Param7); \
     TYPE_##FuncName m_##FuncName; \
     short m_is##FuncName;\
     retVal FuncName (Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) \
@@ -214,7 +214,7 @@
     }
 
 #define DECLARE_FUNCTION8(retVal, FuncName, Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8) \
-    typedef  retVal (CALLBACK* TYPE_##FuncName)(Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8); \
+    typedef  retVal (__cdecl* TYPE_##FuncName)(Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8); \
     TYPE_##FuncName m_##FuncName; \
     short m_is##FuncName;\
     retVal FuncName (Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) \
@@ -237,7 +237,7 @@
     }
 
 #define DECLARE_FUNCTION9(retVal, FuncName, Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8, Param9) \
-    typedef  retVal (CALLBACK* TYPE_##FuncName)(Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8, Param9); \
+    typedef  retVal (__cdecl* TYPE_##FuncName)(Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8, Param9); \
     TYPE_##FuncName m_##FuncName; \
     short m_is##FuncName; \
     retVal FuncName (Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8, Param9 p9) \
@@ -260,7 +260,7 @@
     }
 
 #define DECLARE_FUNCTION10(retVal, FuncName, Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8, Param9, Param10) \
-    typedef  retVal (CALLBACK* TYPE_##FuncName)FuncName(Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8, Param9, Param10); \
+    typedef  retVal (__cdecl* TYPE_##FuncName)FuncName(Param1, Param2, Param3, Param4, Param5, Param6, Param7, Param8, Param9, Param10); \
     TYPE_##FuncName m_##FuncName; \
     short m_is##FuncName;\
     retVal FuncName (Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8, Param9 p9, Param10 p10) \

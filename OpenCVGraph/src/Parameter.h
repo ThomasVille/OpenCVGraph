@@ -21,6 +21,8 @@ private:
 	ParamType m_paramType;
 	// Type of the data
 	std::shared_ptr<Type> m_type;
+	// Data which will be passed in parameter
+	void* m_data;
 public:
 	Parameter();
 	Parameter(std::string name, std::shared_ptr<Type> type, ParamType paramType);
@@ -37,6 +39,9 @@ public:
 	}
 	inline ParamType GetParamType() {
 		return m_paramType;
+	}
+	inline void* GetData() {
+		return m_data;
 	}
 };
 

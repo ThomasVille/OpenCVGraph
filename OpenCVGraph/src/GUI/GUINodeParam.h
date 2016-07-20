@@ -2,7 +2,7 @@
 #define _GUI_GUINODEPARAM_H_
 #include <wx/wx.h>
 #include <wx/graphics.h>
-#include "Parameter.h"
+#include "../Parameter.h"
 
 class GraphView;
 enum LinkState { ERROR_SAME_WAY, LINK_OK, END_MISSING };
