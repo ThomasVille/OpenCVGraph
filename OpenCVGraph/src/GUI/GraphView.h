@@ -47,6 +47,9 @@ public:
 
 	void AddNode(std::shared_ptr<Node> node);
 
+	GraphEngine* GetGraphEngine();
+
+	Node* GetEntryPoint();
 protected:
 	void Init();
 	virtual wxSize DoGetBestSize() const;
@@ -65,6 +68,7 @@ protected:
 
 	GraphEngine m_graphEngine;
 
+	Node* m_entryPoint = nullptr;
 private:
 	wxDECLARE_DYNAMIC_CLASS(GraphView);
 };

@@ -10,12 +10,13 @@
 
 // Creates the preview panel with the specified parent
 typedef std::function<PreviewPanel*(wxWindow*)> PreviewPanelMakerType;
-// The computer takes in parameter the node's inputs and outputs
-typedef std::function<void(std::map<std::string, std::shared_ptr<BaseData>>, std::map<std::string, std::shared_ptr<BaseData>>)> ComputerType;
-// The initializer takes in parameter the node's outputs
-typedef std::function<void(std::map<std::string, std::shared_ptr<BaseData>>)> InitializerType;
-
+// List of parameters
 typedef std::unordered_map<std::string, std::shared_ptr<Parameter>> ParamList;
+// The computer takes in parameter the node's inputs and outputs
+typedef std::function<void(ParamList, ParamList)> ComputerType;
+// The initializer takes in parameter the node's outputs
+typedef std::function<void(ParamList)> InitializerType;
+
 class Node
 {
 public:
@@ -58,17 +59,17 @@ public:
 		m_computer = computer;
 	}
 
-	void AddOutputLink(std::string sourceParam, std::shared_ptr<Node> dstNode) {
+	void AddOutputLink(std::string sourceParam, std::shared_ptr<Parameter> dstParam) {
 		// First check if the sourceParam exists
 		if (m_outputs.find(sourceParam) == m_outputs.end())
 			return;
 		// Then add the link
-		m_outputs[sourceParam]->AddLink(dstNode);
+		m_outputs[sourceParam]->AddLink(dstParam);
 	}
-	void AddInputLink(std::string sourceParam, std::shared_ptr<Node> dstNode) {
-		if (m_inputs.find(sourceParam) == m_inputs.end())
+	void AddInputLink(std::string dstParam, std::shared_ptr<Parameter> srcParam) {
+		if (m_inputs.find(dstParam) == m_inputs.end())
 			return;
-		m_inputs[sourceParam]->AddLink(dstNode);
+		m_inputs[dstParam]->AddLink(srcParam);
 	}
 private:
 	ParamList m_inputs;

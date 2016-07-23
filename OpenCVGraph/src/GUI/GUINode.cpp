@@ -12,7 +12,8 @@ void GUINode::Init()
 	int nbInputs = m_node->GetInputs().size();
 	int nbOutputs = m_node->GetOutputs().size();
 	m_maxParamsPerColumn = nbInputs > nbOutputs ? nbInputs : nbOutputs;
-	m_bestSize.SetHeight((1 + m_maxParamsPerColumn) * 50); // MAGIC NUMBER here : we say 50 pixels per param and 50 pixels for the node's name
+	// MAGIC NUMBER here : we say 50 pixels per param + 50 pixels for the node's name + another 50 for the preview panel
+	m_bestSize.SetHeight((2 + m_maxParamsPerColumn) * 50);
 
 	// Defines the size of the widget
 	SetSize(m_bestSize);
@@ -23,6 +24,8 @@ void GUINode::Init()
 	verticalSizer->Add(titleText, 1, wxALL | wxEXPAND);
 
 	// Add a preview panel into the node
+	//PreviewPanel* preview = m_node->GetPreviewPanel()(this);
+	//verticalSizer->Add(preview, 1, wxALL | wxEXPAND);
 
 	// Add the parameters
 	auto inputs = m_node->GetInputs();

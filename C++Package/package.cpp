@@ -5,7 +5,6 @@
 #include <iostream>
 #include "../OpenCVGraph/src/Node.h"
 #include "../OpenCVGraph/src/Parameter.h"
-#include "../OpenCVGraph/src/BaseData.h"
 #include "../OpenCVGraph/src/Data.h"
 
 using namespace std;
@@ -24,12 +23,12 @@ extern "C"
 			ParamList inputs{};
 			ParamList outputs{ {"value", make_shared<Parameter>("value", Type("int"), OUTPUT_PARAM) } };
 
-			InitializerType init = [](std::map<std::string, std::shared_ptr<BaseData>> outputs) {
-				outputs["value"] = make_shared<Data<int>>(make_shared<int>(120));
+			InitializerType init = [](ParamList outputs) {
+				outputs["value"]->AllocateData(make_shared<Data<int>>(make_shared<int>(120)));
 			};
 
-			ComputerType computer = [](std::map<std::string, std::shared_ptr<BaseData>> in, std::map<std::string, std::shared_ptr<BaseData>> out) {
-				(*static_pointer_cast<Data<int>>(out["value"])->Get().get()) = 42;
+			ComputerType computer = [](ParamList in, ParamList out) {
+				(*static_pointer_cast<Data<int>>(out["value"]->GetData())->Get()) = 42;
 			};
 
 			PreviewPanelMakerType previewPanel = [](wxWindow* parent) {
@@ -43,12 +42,12 @@ extern "C"
 			ParamList inputs{ {"a", make_shared<Parameter>("a", Type("int"), INPUT_PARAM) } , {"b", make_shared<Parameter>("b", Type("int"), INPUT_PARAM) } };
 			ParamList outputs{ {"sum", make_shared<Parameter>("sum", Type("int"), OUTPUT_PARAM) }};
 
-			InitializerType init = [](std::map<std::string, std::shared_ptr<BaseData>> outputs) {
-				outputs["sum"] = make_shared<Data<int>>(make_shared<int>(0));
+			InitializerType init = [](ParamList outputs) {
+				outputs["sum"]->AllocateData(make_shared<Data<int>>(make_shared<int>(0)));
 			};
 
-			ComputerType computer = [](std::map<std::string, std::shared_ptr<BaseData>> in, std::map<std::string, std::shared_ptr<BaseData>> out) {
-				(*static_pointer_cast<Data<int>>(out["value"])->Get()) = (*static_pointer_cast<Data<int>>(in["a"])->Get()) + (*static_pointer_cast<Data<int>>(in["b"])->Get());
+			ComputerType computer = [](ParamList in, ParamList out) {
+				(*static_pointer_cast<Data<int>>(out["sum"]->GetData())->Get()) = (*static_pointer_cast<Data<int>>(in["a"]->GetData())->Get()) + (*static_pointer_cast<Data<int>>(in["b"]->GetData())->Get());
 			};
 
 			PreviewPanelMakerType previewPanel = [](wxWindow* parent) {

@@ -175,7 +175,10 @@ void MyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 void MyFrame::OnStartSimulation(wxCommandEvent & event)
 {
 	if (event.GetId() == TB_START) {
-		
+		if (m_graphView->GetEntryPoint() == nullptr)
+			return;
+
+		m_graphView->GetGraphEngine()->RunOneShot(m_graphView->GetEntryPoint());
 		wxLogDebug("START !");
 	}
 	if (event.GetId() == TB_NEW_FILE) {

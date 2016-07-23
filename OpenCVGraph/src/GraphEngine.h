@@ -15,7 +15,7 @@ public:
 	void Stop();
 
 	// Run the graph from the entry point specified until the end and stops
-	void RunOneShot(std::shared_ptr<Node> entryPoint);
+	void RunOneShot(Node* entryPoint);
 	
 	void AddNode(std::shared_ptr<Node> node);
 };

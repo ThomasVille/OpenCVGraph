@@ -20,7 +20,11 @@ bool Parameter::IsCompatible(std::shared_ptr<Parameter> other)
 	return ( GetParamType() != other->GetParamType() ) && ( GetType().CompatibleWith(other->GetType()) );
 }
 
-void Parameter::AddLink(std::shared_ptr<Node> dstNode)
+void Parameter::AddLink(std::shared_ptr<Parameter> dstParam)
 {
-	m_links.push_back(dstNode);
+	// Link to the node
+	m_links.push_back(dstParam);
+	// Set the the node to be the data source only if this param is the input
+	if(m_paramType == INPUT_PARAM)
+		m_data = dstParam->GetData();
 }

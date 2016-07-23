@@ -109,14 +109,14 @@ void GraphView::AddWire(GUINodeParam * first, GUINodeParam * second)
 		// Add the graphical wire
 		m_wires.push_back(std::pair<GUINodeParam*, GUINodeParam*>(second, first));
 		// Add the link between the two nodes
-		second->GetParameter()->AddLink(((GUINode*)first->GetParent())->GetNode());
-		first->GetParameter()->AddLink(((GUINode*)second->GetParent())->GetNode());
+		second->GetParameter()->AddLink(first->GetParameter());
+		first->GetParameter()->AddLink(second->GetParameter());
 	}
 	if (first->GetParameter()->GetParamType() == OUTPUT_PARAM) {
 		m_wires.push_back(std::pair<GUINodeParam*, GUINodeParam*>(first, second));
 		// Add the link between the two nodes
-		first->GetParameter()->AddLink(((GUINode*)second->GetParent())->GetNode());
-		second->GetParameter()->AddLink(((GUINode*)first->GetParent())->GetNode());
+		first->GetParameter()->AddLink(second->GetParameter());
+		second->GetParameter()->AddLink(first->GetParameter());
 	}
 }
 
@@ -129,6 +129,18 @@ void GraphView::AddNode(shared_ptr<Node> node)
 {
 	new GUINode(this, node);
 	m_graphEngine.AddNode(node);
+	// Let's make the last added node the entry point for the moment
+	m_entryPoint = node.get();
+}
+
+GraphEngine * GraphView::GetGraphEngine()
+{
+	return &m_graphEngine;
+}
+
+Node * GraphView::GetEntryPoint()
+{
+	return m_entryPoint;
 }
 
 void GraphView::Redraw()
