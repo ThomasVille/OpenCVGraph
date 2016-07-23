@@ -8,8 +8,6 @@
 #include "BaseData.h"
 #include "GUI\PreviewPanel.h"
 
-// Creates the preview panel with the specified parent
-typedef std::function<PreviewPanel*(wxWindow*)> PreviewPanelMakerType;
 // List of parameters
 typedef std::unordered_map<std::string, std::shared_ptr<Parameter>> ParamList;
 // The computer takes in parameter the node's inputs and outputs
@@ -21,7 +19,7 @@ class Node
 {
 public:
 	Node();
-	Node(std::string name, ParamList, ParamList, InitializerType, ComputerType, PreviewPanelMakerType);
+	Node(std::string name, ParamList, ParamList, InitializerType, ComputerType);
 	~Node();
 
 	ParamList GetInputs() {
@@ -38,9 +36,6 @@ public:
 	}
 	ComputerType GetComputer() {
 		return m_computer;
-	}
-	PreviewPanelMakerType GetPreviewPanel() {
-		return m_previewPanelMaker;
 	}
 
 	void SetInputs(ParamList in) {
@@ -76,7 +71,6 @@ private:
 	ParamList m_outputs;
 	ComputerType m_computer;
 	InitializerType m_initializer;
-	PreviewPanelMakerType m_previewPanelMaker;
 	std::string m_name;
 };
 

@@ -31,11 +31,7 @@ extern "C"
 				(*static_pointer_cast<Data<int>>(out["value"]->GetData())->Get()) = 42;
 			};
 
-			PreviewPanelMakerType previewPanel = [](wxWindow* parent) {
-				return new PreviewPanel(parent);
-			};
-
-			return new Data<Node>(make_shared<Node>(name, inputs, outputs, init, computer, previewPanel));
+			return new Data<Node>(make_shared<Node>(name, inputs, outputs, init, computer));
 		}
 		if (name == "Add") {
 			string name = "Add";
@@ -49,11 +45,7 @@ extern "C"
 			ComputerType computer = [](ParamList in, ParamList out) {
 				(*static_pointer_cast<Data<int>>(out["sum"]->GetData())->Get()) = (*static_pointer_cast<Data<int>>(in["a"]->GetData())->Get()) + (*static_pointer_cast<Data<int>>(in["b"]->GetData())->Get());
 			};
-
-			PreviewPanelMakerType previewPanel = [](wxWindow* parent) {
-				return new PreviewPanel(parent);
-			};
-			return new Data<Node>(make_shared<Node>(name, inputs, outputs, init, computer, previewPanel));
+			return new Data<Node>(make_shared<Node>(name, inputs, outputs, init, computer));
 		}
 		return nullptr;
 	}

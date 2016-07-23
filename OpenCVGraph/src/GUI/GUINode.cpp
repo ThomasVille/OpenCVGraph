@@ -24,8 +24,8 @@ void GUINode::Init()
 	verticalSizer->Add(titleText, 1, wxALL | wxEXPAND);
 
 	// Add a preview panel into the node
-	//PreviewPanel* preview = m_node->GetPreviewPanel()(this);
-	//verticalSizer->Add(preview, 1, wxALL | wxEXPAND);
+	PreviewPanel* preview = new PreviewPanel(this);
+	verticalSizer->Add(preview, 1, wxALL | wxEXPAND);
 
 	// Add the parameters
 	auto inputs = m_node->GetInputs();
