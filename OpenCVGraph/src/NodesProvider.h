@@ -22,7 +22,7 @@ public:
 	std::shared_ptr<Node> GetNewNode(std::shared_ptr<ModelNode> description);
 
 private:
-	std::vector<std::shared_ptr<Package>> m_packages;
+	std::map<std::string, std::shared_ptr<Package>> m_packages;
 
 	// First level of nodes
 	// ModelNodes containing other nodes are like folders

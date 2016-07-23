@@ -52,8 +52,10 @@ void MyFrame::CreateToolbar()
 	m_mainToolbar->SetToolBitmapSize(wxSize(16, 16));
 	m_mainToolbar->AddTool(TB_NEW_FILE, wxT("New file"), wxArtProvider::GetBitmap(wxART_NEW, wxART_OTHER, wxSize(16, 16)));
 	m_mainToolbar->AddSeparator();
-	m_mainToolbar->AddTool(TB_OPEN_FILE, wxT("Open file"), wxArtProvider::GetBitmap(wxART_FILE_OPEN, wxART_OTHER, wxSize(16, 16)));
+	m_mainToolbar->AddTool(TB_START, wxT("Start simulation"), wxArtProvider::GetBitmap(wxART_GO_FORWARD, wxART_OTHER, wxSize(16, 16)));
 	m_mainToolbar->Realize();
+
+	Bind(wxEVT_TOOL, &MyFrame::OnStartSimulation, this);
 }
 
 void MyFrame::CreateStatus()
@@ -168,4 +170,15 @@ void MyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 		"Copyright (c) 2016 Thomas Ville",
 		"About OpenCVGraph",
 		wxOK | wxICON_INFORMATION, this);
+}
+
+void MyFrame::OnStartSimulation(wxCommandEvent & event)
+{
+	if (event.GetId() == TB_START) {
+		
+		wxLogDebug("START !");
+	}
+	if (event.GetId() == TB_NEW_FILE) {
+		wxLogDebug("OPEN !");
+	}
 }

@@ -6,6 +6,7 @@
 #include <wx/imaglist.h>
 #include "../NodesProvider.h"
 #include "GraphView.h"
+#include "../GraphEngine.h"
 
 class MyTreeItemData : public wxTreeItemData
 {
@@ -67,13 +68,6 @@ public:
 
 protected:
 	virtual int OnCompareItems(const wxTreeItemId& i1, const wxTreeItemId& i2) wxOVERRIDE;
-
-	// is this the test item which we use in several event handlers?
-	bool IsTestItem(const wxTreeItemId& item)
-	{
-		// the test item is the first child folder
-		return GetItemParent(item) == GetRootItem() && !GetPrevSibling(item);
-	}
 
 private:
 	// Find the very last item in the tree.

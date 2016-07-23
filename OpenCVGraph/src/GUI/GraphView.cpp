@@ -105,10 +105,19 @@ GUINodeParam * GraphView::GetSelectedPin()
 
 void GraphView::AddWire(GUINodeParam * first, GUINodeParam * second)
 {
-	if(first->GetParameter().GetParamType() == INPUT_PARAM)
+	if (first->GetParameter()->GetParamType() == INPUT_PARAM) {
+		// Add the graphical wire
 		m_wires.push_back(std::pair<GUINodeParam*, GUINodeParam*>(second, first));
-	if (first->GetParameter().GetParamType() == OUTPUT_PARAM)
+		// Add the link between the two nodes
+		second->GetParameter()->AddLink(((GUINode*)first->GetParent())->GetNode());
+		first->GetParameter()->AddLink(((GUINode*)second->GetParent())->GetNode());
+	}
+	if (first->GetParameter()->GetParamType() == OUTPUT_PARAM) {
 		m_wires.push_back(std::pair<GUINodeParam*, GUINodeParam*>(first, second));
+		// Add the link between the two nodes
+		first->GetParameter()->AddLink(((GUINode*)second->GetParent())->GetNode());
+		second->GetParameter()->AddLink(((GUINode*)first->GetParent())->GetNode());
+	}
 }
 
 void GraphView::SetLinkState(LinkState state)

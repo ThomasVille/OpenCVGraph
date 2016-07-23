@@ -144,6 +144,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\OpenCVGraph\src\Node.cpp" />
+    <ClCompile Include="..\OpenCVGraph\src\Parameter.cpp" />
     <ClCompile Include="package.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

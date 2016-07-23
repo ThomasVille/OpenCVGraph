@@ -140,13 +140,15 @@ TREE_EVENT_HANDLER(OnSelChanging)
 
 void MyTreeCtrl::OnItemActivated(wxTreeEvent& event)
 {
-	// show some info about this item
 	wxTreeItemId itemId = event.GetItem();
 	MyTreeItemData *item = (MyTreeItemData *)GetItemData(itemId);
 
-	if (item != NULL)
+	// Do nothing if we clicked on a folder
+	if (item != NULL && !item->Get()->HasChildren())
 	{
-		m_graphView->AddNode(m_nodesProvider->GetNewNode(item->Get()));
+		// Create the new node and add it to the graphView and the graphEngine
+		auto newNode = m_nodesProvider->GetNewNode(item->Get());
+		m_graphView->AddNode(newNode);
 	}
 }
 

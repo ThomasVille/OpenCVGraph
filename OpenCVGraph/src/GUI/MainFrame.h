@@ -27,6 +27,7 @@ public:
 	// Events callbacks
 	void OnQuit(wxCommandEvent& event);
 	void OnAbout(wxCommandEvent& event);
+	void OnStartSimulation(wxCommandEvent& event);
 
 private:
 	wxAuiManager m_mgr;
@@ -55,7 +56,7 @@ private:
 
 		// toolbar
 		TB_NEW_FILE,
-		TB_OPEN_FILE
+		TB_START
 	};
 
 };

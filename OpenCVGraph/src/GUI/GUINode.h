@@ -20,6 +20,11 @@ public:
 		Init();
 	}
 
+	inline std::shared_ptr<Node> GetNode() {
+		return m_node;
+	}
+
+
 	void OnLeftMouseDown(wxMouseEvent&);
 	void OnLeftMouseUp(wxMouseEvent&);
 	void OnMouseMotion(wxMouseEvent& event);

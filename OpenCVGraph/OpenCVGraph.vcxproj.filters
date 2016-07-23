@@ -100,9 +100,14 @@
     <ClInclude Include="src\Parameter.h">
       <Filter>Fichiers sources\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\BaseData.h">
+      <Filter>Fichiers sources\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Data.h">
+      <Filter>Fichiers sources\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-    <None Include="ClassDiagram1.cd" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

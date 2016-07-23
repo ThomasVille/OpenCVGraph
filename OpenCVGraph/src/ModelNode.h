@@ -4,10 +4,11 @@
 #include <string>
 #include <vector>
 #include "Parameter.h"
+#include "Node.h"
 class ModelNode
 {
 public:
-	ModelNode(std::string name) : m_name(name){}
+	ModelNode(std::string nodeName, std::string pkgName) : m_name(nodeName), m_pkgName(pkgName){}
 	~ModelNode() {}
 
 	bool HasChildren() {
@@ -19,30 +20,15 @@ public:
 	void AddChild(std::shared_ptr<ModelNode> newNode) {
 		m_children.push_back(newNode);
 	}
-
-	std::vector<Parameter> GetInputs() {
-		return m_inputs;
-	}
-	std::vector<Parameter> GetOutputs() {
-		return m_outputs;
-	}
 	std::string GetName() {
 		return m_name;
 	}
-
-	void SetInputs(std::vector<Parameter> in) {
-		m_inputs = in;
-	}
-	void SetOutputs(std::vector<Parameter> out) {
-		m_outputs = out;
-	}
-	void SetName(std::string name) {
-		m_name = name;
+	std::string GetPkgName() {
+		return m_pkgName;
 	}
 private:
 	std::string m_name;
-	std::vector<Parameter> m_inputs;
-	std::vector<Parameter> m_outputs;
+	std::string m_pkgName;
 	std::vector<std::shared_ptr<ModelNode>> m_children;
 };
 

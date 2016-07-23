@@ -1,5 +1,6 @@
 #ifndef _GUI_GUINODEPARAM_H_
 #define _GUI_GUINODEPARAM_H_
+#include <memory>
 #include <wx/wx.h>
 #include <wx/graphics.h>
 #include "../Parameter.h"
@@ -10,9 +11,11 @@ class GUINodeParam : public wxControl
 {
 public:
 	GUINodeParam():
-		wxControl()
-	{ Init(); };
-	GUINodeParam(wxWindow *parent, Parameter param):
+		wxControl(), m_parameter(std::make_shared<Parameter>("empty", Type("empty"), INPUT_PARAM))
+	{ 
+		Init();
+	};
+	GUINodeParam(wxWindow *parent, std::shared_ptr<Parameter> param):
 		wxControl(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE, wxDefaultValidator),
 		m_parameter(param)
 	{
@@ -22,7 +25,7 @@ public:
 	// Return the position of the pin in *GraphView* coordinates
 	wxPoint GetPinPosition();
 
-	Parameter GetParameter();
+	std::shared_ptr<Parameter> GetParameter();
 
 protected:
 	void Init();
@@ -43,7 +46,7 @@ protected:
 	wxStaticText* nameText;
 	wxStaticText* pinImage;
 
-	Parameter m_parameter;
+	std::shared_ptr<Parameter> m_parameter;
 
 	// Pointer to the GraphView
 	// For convenience

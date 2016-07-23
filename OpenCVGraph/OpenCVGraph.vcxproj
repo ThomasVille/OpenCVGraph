@@ -513,6 +513,8 @@
     <ClCompile Include="src\Parameter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BaseData.h" />
+    <ClInclude Include="src\Data.h" />
     <ClInclude Include="src\GraphEngine.h" />
     <ClInclude Include="src\GUI\GraphView.h" />
     <ClInclude Include="src\GUI\GUINode.h" />
@@ -527,8 +529,7 @@
     <ClInclude Include="src\PDll.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-    <None Include="ClassDiagram1.cd" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

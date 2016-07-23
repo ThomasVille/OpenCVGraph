@@ -39,7 +39,9 @@
             {\
                 m_##FuncName = NULL; \
                 m_##FuncName = (TYPE_##FuncName)GetProcAddress(m_dllHandle, #FuncName); \
+                std::cerr << GetLastError() << std::endl; \
                 m_is##FuncName = FUNC_LOADED;\
+                std::cerr << "Function " << #FuncName << " in " << m_dllName << "(" << m_dllHandle << ") is at the address: " << GetProcAddress(m_dllHandle, #FuncName) << std::endl; \
             }\
             if (NULL != m_##FuncName) \
                 return m_##FuncName(); \
@@ -64,7 +66,7 @@
                 m_##FuncName = (TYPE_##FuncName)GetProcAddress(m_dllHandle, #FuncName); \
                 std::cerr << GetLastError() << std::endl; \
                 m_is##FuncName = FUNC_LOADED;\
-                std::cerr << "The function " << #FuncName << " in " << m_dllName << "(" << m_dllHandle << ") is at the address: " << GetProcAddress(m_dllHandle, #FuncName) << std::endl; \
+                std::cerr << "Function " << #FuncName << " in " << m_dllName << "(" << m_dllHandle << ") is at the address: " << GetProcAddress(m_dllHandle, #FuncName) << std::endl; \
             }\
             if (NULL != m_##FuncName) \
                 return m_##FuncName(p1); \

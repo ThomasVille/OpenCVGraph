@@ -22,18 +22,26 @@ void GUINode::Init()
 	wxStaticText* titleText = new wxStaticText(this, wxID_ANY, m_node->GetName(), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
 	verticalSizer->Add(titleText, 1, wxALL | wxEXPAND);
 
+	// Add the parameters
+	auto inputs = m_node->GetInputs();
+	auto outputs = m_node->GetOutputs();
+	ParamList::iterator inputIt = inputs.begin();
+	ParamList::iterator outputIt = outputs.begin();
 	for (int i = 0; i < m_maxParamsPerColumn; i++) {
+		// The sizer we have to fit the two parameters in
 		wxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 		// Add a pin if needed or an empty text to fill up the space if there's no pin
 		if (i < nbInputs) {
-			GUINodeParam* guiNodeInput = new GUINodeParam(this, m_node->GetInputs()[i]);
+			GUINodeParam* guiNodeInput = new GUINodeParam(this, inputIt->second);
 			horizontalSizer->Add(guiNodeInput, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
+			inputIt++;
 		}else {
-			horizontalSizer->Add(new wxStaticText(this, wxID_ANY, "EMPTY"), 2, wxALL | wxALIGN_CENTER_VERTICAL);
+			horizontalSizer->Add(new wxStaticText(this, wxID_ANY, ""), 2, wxALL | wxALIGN_CENTER_VERTICAL);
 		}
 		if (i < nbOutputs) {
-			GUINodeParam* guiNodeOutput = new GUINodeParam(this, m_node->GetOutputs()[i]);
+			GUINodeParam* guiNodeOutput = new GUINodeParam(this, outputIt->second);
 			horizontalSizer->Add(guiNodeOutput, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
+			outputIt++;
 		}else{
 			horizontalSizer->Add(new wxStaticText(this, wxID_ANY, ""), 2, wxALL | wxALIGN_CENTER_VERTICAL);
 		}
@@ -54,7 +62,7 @@ void GUINode::Init()
 	Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
 	Bind(wxEVT_PAINT, &GUINode::OnPaint, this);
 
-	//((GraphView*)m_parent)->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
+	Refresh();
 
 }
 

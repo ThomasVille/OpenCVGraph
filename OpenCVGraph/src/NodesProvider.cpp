@@ -30,39 +30,24 @@ void NodesProvider::Init()
 	while (cont)
 	{
 		wxLogDebug("Load Package : %s", filename);
-		// Implementation specific here
-		m_packages.push_back(make_shared<Package>(string("packages/"+filename.ToStdString()+"/package.dll").c_str()));
-		wxLogDebug("Package GetNumTypes : %i", m_packages.back()->GetNumTypes());
+
+		m_packages[filename.ToStdString()] = make_shared<Package>(string("packages/"+filename.ToStdString()+"/package.dll").c_str());
+		// Create the package node in the tree
+		shared_ptr<ModelNode> packageNode = make_shared<ModelNode>(filename.ToStdString(), filename.ToStdString());
+		// Add a node for each nodes we can create with this package
+		vector<string>* nodesName = m_packages[filename.ToStdString()]->GetNodesNames();
+		for (auto nodeName : *nodesName) {
+			packageNode->AddChild(make_shared<ModelNode>(nodeName, filename.ToStdString()));
+		}
+		// We must delete all the objets we created in the DLL
+		// Even with this, it seems there is still a memory leak...
+		m_packages[filename.ToStdString()]->DeleteNodesName(nodesName);
+
+		// Add the package node to the tree
+		m_rootNodes.push_back(packageNode);
+		// Iterate to the next package
 		cont = dir.GetNext(&filename);
 	}
-
-	// Constructs the Types list
-	m_types["int"] = make_shared<Type>("int");
-	m_types["string"] = make_shared<Type>("string");
-	m_types["bool"] = make_shared<Type>("bool");
-	m_types[".flow"] = make_shared<Type>(".flow");
-
-	// Constructs the nodes description list
-	shared_ptr<ModelNode> node = make_shared<ModelNode>("C++");
-	auto tmp = make_shared<ModelNode>("If");
-	tmp->SetInputs({ Parameter("Condition", m_types["bool"], INPUT_PARAM) });
-	tmp->SetOutputs({ Parameter("True", m_types[".flow"], OUTPUT_PARAM), Parameter("False", m_types[".flow"], OUTPUT_PARAM) });
-	node->AddChild(tmp);
-	tmp = make_shared<ModelNode>("String");
-	tmp->SetOutputs({ Parameter("Value", m_types["string"], OUTPUT_PARAM), Parameter("Flow", m_types[".flow"], OUTPUT_PARAM) });
-	node->AddChild(tmp);
-	tmp = make_shared<ModelNode>("Concatenate");
-	tmp->SetInputs({ Parameter("First", m_types["string"], INPUT_PARAM), Parameter("Second", m_types["string"], INPUT_PARAM) });
-	tmp->SetOutputs({ Parameter("Result", m_types["string"], OUTPUT_PARAM), Parameter("Flow", m_types[".flow"], OUTPUT_PARAM) });
-	node->AddChild(tmp);
-	m_rootNodes.push_back(node);
-
-	node = make_shared<ModelNode>("OpenCV");
-	node->AddChild(make_shared<ModelNode>("imread"));
-	node->AddChild(make_shared<ModelNode>("imwrite"));
-	node->AddChild(make_shared<ModelNode>("Mat"));
-	node->AddChild(make_shared<ModelNode>("Scalar"));
-	m_rootNodes.push_back(node);
 }
 
 std::vector<std::shared_ptr<ModelNode>> NodesProvider::GetItems()
@@ -72,9 +57,11 @@ std::vector<std::shared_ptr<ModelNode>> NodesProvider::GetItems()
 
 std::shared_ptr<Node> NodesProvider::GetNewNode(std::shared_ptr<ModelNode> description)
 {
-	shared_ptr<Node> tmp = make_shared<Node>();
-	tmp->SetName(description->GetName());
-	tmp->SetInputs(description->GetInputs());
-	tmp->SetOutputs(description->GetOutputs());
-	return tmp;
+	// Get the new node from the DLL
+	Data<Node>* nodePtr = m_packages[description->GetPkgName()]->CreateNode(description->GetName());
+	// Get the shared_ptr associated to it
+	shared_ptr<Node> newNode = nodePtr->Get();
+	// Delete the pointer and leave the shared_ptr in this program
+	m_packages[description->GetPkgName()]->DeleteNode(nodePtr);
+	return	newNode;
 }
