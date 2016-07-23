@@ -6,6 +6,7 @@
 #include "../Node.h"
 #include "GUINodeParam.h"
 
+class GraphView;
 class GUINode : public wxControl
 {
 public:

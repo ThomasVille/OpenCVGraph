@@ -22,6 +22,8 @@ void GUINode::Init()
 	wxStaticText* titleText = new wxStaticText(this, wxID_ANY, m_node->GetName(), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
 	verticalSizer->Add(titleText, 1, wxALL | wxEXPAND);
 
+	// Add a preview panel into the node
+
 	// Add the parameters
 	auto inputs = m_node->GetInputs();
 	auto outputs = m_node->GetOutputs();

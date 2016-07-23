@@ -48,7 +48,7 @@ bool MyApp::OnInit()
 		return false;
 
 	// create the main application window
-	MyFrame *frame = new MyFrame(wxT("OpenCVGraph v0.0.0.0.0.0.1"),
+	MyFrame *frame = new MyFrame(wxT("OpenCVGraph v0.0.0.0.0.0.2"),
 		wxPoint(50, 50), wxSize(600, 340));
 
 	// and show it (the frames, unlike simple controls, are not shown when

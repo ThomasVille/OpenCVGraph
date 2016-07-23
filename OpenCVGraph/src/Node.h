@@ -6,7 +6,10 @@
 #include <functional>
 #include "Parameter.h"
 #include "BaseData.h"
+#include "GUI\PreviewPanel.h"
 
+// Creates the preview panel with the specified parent
+typedef std::function<PreviewPanel*(wxWindow*)> PreviewPanelMakerType;
 // The computer takes in parameter the node's inputs and outputs
 typedef std::function<void(std::map<std::string, std::shared_ptr<BaseData>>, std::map<std::string, std::shared_ptr<BaseData>>)> ComputerType;
 // The initializer takes in parameter the node's outputs
@@ -17,7 +20,7 @@ class Node
 {
 public:
 	Node();
-	Node(std::string name, ParamList, ParamList, InitializerType, ComputerType);
+	Node(std::string name, ParamList, ParamList, InitializerType, ComputerType, PreviewPanelMakerType);
 	~Node();
 
 	ParamList GetInputs() {
@@ -34,6 +37,9 @@ public:
 	}
 	ComputerType GetComputer() {
 		return m_computer;
+	}
+	PreviewPanelMakerType GetPreviewPanel() {
+		return m_previewPanelMaker;
 	}
 
 	void SetInputs(ParamList in) {
@@ -69,6 +75,7 @@ private:
 	ParamList m_outputs;
 	ComputerType m_computer;
 	InitializerType m_initializer;
+	PreviewPanelMakerType m_previewPanelMaker;
 	std::string m_name;
 };
 
