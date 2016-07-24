@@ -24,8 +24,8 @@ void GUINode::Init()
 	verticalSizer->Add(titleText, 1, wxALL | wxEXPAND);
 
 	// Add a preview panel into the node
-	PreviewPanel* preview = new PreviewPanel(this);
-	verticalSizer->Add(preview, 1, wxALL | wxEXPAND);
+	m_preview = new PreviewPanel(this, m_node);
+	verticalSizer->Add(m_preview, 1, wxALL | wxEXPAND);
 
 	// Add the parameters
 	auto inputs = m_node->GetInputs();
@@ -78,6 +78,7 @@ wxSize GUINode::DoGetBestSize() const
 
 void GUINode::OnPaint(wxPaintEvent &event)
 {
+	UpdatePreview();
 	wxPaintDC dc(this);
 	/*wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
 
@@ -94,6 +95,11 @@ void GUINode::OnPaint(wxPaintEvent &event)
 	}
 	*/
 	event.Skip();
+}
+
+void GUINode::UpdatePreview()
+{
+	m_preview->Update();
 }
 
 void GUINode::OnLeftMouseDown(wxMouseEvent& event)

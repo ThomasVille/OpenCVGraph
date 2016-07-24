@@ -65,6 +65,15 @@
     <ClCompile Include="src\GUI\PreviewPanel.cpp">
       <Filter>Fichiers sources\src\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="src\GUI\IntPreview.cpp">
+      <Filter>Fichiers sources\src\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\PreviewElement.cpp">
+      <Filter>Fichiers sources\src\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GUI\PreviewFactory.cpp">
+      <Filter>Fichiers sources\src\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GUI\MainFrame.h">
@@ -111,6 +120,15 @@
     </ClInclude>
     <ClInclude Include="src\GUI\PreviewPanel.h">
       <Filter>Fichiers sources\src\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\PreviewFactory.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\PreviewElement.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\IntPreview.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

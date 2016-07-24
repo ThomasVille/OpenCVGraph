@@ -178,7 +178,11 @@ void MyFrame::OnStartSimulation(wxCommandEvent & event)
 		if (m_graphView->GetEntryPoint() == nullptr)
 			return;
 
+		// Run a one shot simulation
 		m_graphView->GetGraphEngine()->RunOneShot(m_graphView->GetEntryPoint());
+		
+		m_graphView->Refresh();
+
 		wxLogDebug("START !");
 	}
 	if (event.GetId() == TB_NEW_FILE) {

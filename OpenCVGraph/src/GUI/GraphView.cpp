@@ -127,8 +127,8 @@ void GraphView::SetLinkState(LinkState state)
 
 void GraphView::AddNode(shared_ptr<Node> node)
 {
-	new GUINode(this, node);
 	m_graphEngine.AddNode(node);
+	new GUINode(this, node);
 	// Let's make the last added node the entry point for the moment
 	m_entryPoint = node.get();
 }

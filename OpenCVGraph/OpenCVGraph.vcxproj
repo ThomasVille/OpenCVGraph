@@ -503,8 +503,11 @@
     <ClCompile Include="src\GUI\GraphView.cpp" />
     <ClCompile Include="src\GUI\GUINode.cpp" />
     <ClCompile Include="src\GUI\GUINodeParam.cpp" />
+    <ClCompile Include="src\GUI\IntPreview.cpp" />
     <ClCompile Include="src\GUI\MainFrame.cpp" />
     <ClCompile Include="src\GUI\NodesTree.cpp" />
+    <ClCompile Include="src\GUI\PreviewElement.cpp" />
+    <ClCompile Include="src\GUI\PreviewFactory.cpp" />
     <ClCompile Include="src\GUI\PreviewPanel.cpp" />
     <ClCompile Include="src\ModelNode.cpp" />
     <ClCompile Include="src\Node.cpp" />
@@ -520,8 +523,11 @@
     <ClInclude Include="src\GUI\GraphView.h" />
     <ClInclude Include="src\GUI\GUINode.h" />
     <ClInclude Include="src\GUI\GUINodeParam.h" />
+    <ClInclude Include="src\GUI\IntPreview.h" />
     <ClInclude Include="src\GUI\MainFrame.h" />
     <ClInclude Include="src\GUI\NodesTree.h" />
+    <ClInclude Include="src\GUI\PreviewElement.h" />
+    <ClInclude Include="src\GUI\PreviewFactory.h" />
     <ClInclude Include="src\GUI\PreviewPanel.h" />
     <ClInclude Include="src\ModelNode.h" />
     <ClInclude Include="src\Node.h" />

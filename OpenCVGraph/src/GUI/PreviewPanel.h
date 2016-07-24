@@ -6,6 +6,7 @@
 #include <wx/sizer.h>
 #include "../Parameter.h"
 
+class Node;
 class PreviewPanel : public wxControl
 {
 public:
@@ -14,16 +15,19 @@ public:
 	{ 
 		Init();
 	};
-	PreviewPanel(wxWindow *parent):
-		wxControl(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE)
+	PreviewPanel(wxWindow *parent, std::shared_ptr<Node> node):
+		wxControl(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE),
+		m_node(node)
 	{
 		Init();
 	}
 
+	void Update();
+
 protected:
 	void Init();
-
-	wxStaticText* m_valueText;
+	std::vector<wxWindow*> m_valuesTexts;
+	std::shared_ptr<Node> m_node;
 
 private:
 	wxDECLARE_DYNAMIC_CLASS(PreviewPanel);

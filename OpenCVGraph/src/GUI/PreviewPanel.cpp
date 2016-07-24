@@ -1,7 +1,14 @@
 #include "PreviewPanel.h"
-
+#include "../Node.h"
+#include "PreviewFactory.h"
 wxIMPLEMENT_DYNAMIC_CLASS(PreviewPanel, wxControl);
 
+
+void PreviewPanel::Update()
+{
+	for (auto value : m_valuesTexts)
+		((PreviewElement*)value)->UpdateValue();
+}
 
 void PreviewPanel::Init()
 {
@@ -13,14 +20,11 @@ void PreviewPanel::Init()
 	bSizer1->Add(m_label, 0, wxALL, 5);
 	m_label->SetForegroundColour(*wxWHITE);
 
-	m_valueText = new wxStaticText(this, wxID_ANY, wxT("Awesome value"), wxDefaultPosition, wxDefaultSize, 0);
-	m_valueText->Wrap(-1);
-	bSizer1->Add(m_valueText, 0, wxALL, 5);
-	m_valueText->SetForegroundColour(*wxWHITE);
-
-
-	this->SetSizer(bSizer1);
-	this->Layout();
+	// Create a text for each outputs of the node
+	for (auto out : m_node->GetOutputs()) {
+		m_valuesTexts.push_back(PreviewFactory::CreatePreviewElement(this, out.second));
+		bSizer1->Add(m_valuesTexts.back(), 1, wxALL, 5);
+	}
 
 	SetSizer(bSizer1);
 	Layout();

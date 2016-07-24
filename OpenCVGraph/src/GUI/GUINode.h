@@ -25,6 +25,7 @@ public:
 		return m_node;
 	}
 
+	void UpdatePreview();
 
 	void OnLeftMouseDown(wxMouseEvent&);
 	void OnLeftMouseUp(wxMouseEvent&);
@@ -35,6 +36,8 @@ public:
 protected:
 	void Init();
 	virtual wxSize DoGetBestSize() const;
+
+	PreviewPanel* m_preview;
 
 	// Draws the node's body
 	void OnPaint(wxPaintEvent&);
