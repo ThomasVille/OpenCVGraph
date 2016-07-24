@@ -29,6 +29,8 @@ public:
 	void OnAbout(wxCommandEvent& event);
 	void OnStartSimulation(wxCommandEvent& event);
 
+	void SetSimulationStatus(std::string msg);
+
 private:
 	wxAuiManager m_mgr;
 	wxAuiToolBar* m_mainToolbar;
@@ -56,7 +58,8 @@ private:
 
 		// toolbar
 		TB_NEW_FILE,
-		TB_START
+		TB_START,
+		TB_START_REALTIME
 	};
 
 };

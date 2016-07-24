@@ -1,5 +1,5 @@
 #include "GraphView.h"
-
+#include "MainFrame.h"
 using namespace std;
 wxIMPLEMENT_DYNAMIC_CLASS(GraphView, wxControl);
 
@@ -40,9 +40,11 @@ void GraphView::OnPaint(wxPaintEvent& event)
 	wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
 	wxFont font = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
 
-
 	if (gc)
 	{
+		// Display the simulation status
+		gc->SetFont(font, *wxBLACK);
+		gc->DrawText(m_simulationStatus, 0, 0);
 		// Draw the link when we draw a link with the mouse
 		if (m_mouseWiring) {
 			gc->SetBrush(*wxTRANSPARENT_BRUSH);
@@ -84,6 +86,12 @@ void GraphView::OnPaint(wxPaintEvent& event)
 	event.Skip();
 }
 
+void GraphView::UpdateRealtime()
+{
+	if (m_realtimeStarted)
+		m_graphEngine.RunOneShot(m_entryPoint);
+}
+
 void GraphView::OnMouseMotion(wxMouseEvent &event)
 {
 	m_mousePosition = event.GetPosition();
@@ -117,7 +125,8 @@ void GraphView::AddWire(GUINodeParam * first, GUINodeParam * second)
 		// Add the link between the two nodes
 		first->GetParameter()->AddLink(second->GetParameter());
 		second->GetParameter()->AddLink(first->GetParameter());
-	}		
+	}
+	UpdateRealtime();
 }
 
 void GraphView::SetLinkState(LinkState state)
@@ -131,6 +140,7 @@ void GraphView::AddNode(shared_ptr<Node> node)
 	new GUINode(this, node);
 	// Let's make the last added node the entry point for the moment
 	m_entryPoint = node.get();
+	UpdateRealtime();
 }
 
 void GraphView::DeleteNode(Node * node)
@@ -147,6 +157,7 @@ void GraphView::DeleteNode(Node * node)
 	}
 	// Delete the node in the graph engine
 	m_graphEngine.DeleteNode(node);
+	UpdateRealtime();
 	Refresh();
 }
 
@@ -158,6 +169,19 @@ GraphEngine * GraphView::GetGraphEngine()
 void GraphView::RunOneShot()
 {
 	m_graphEngine.RunOneShot(m_entryPoint);
+	Refresh();
+}
+void GraphView::RunRealtime()
+{
+	m_realtimeStarted = true;
+	m_graphEngine.RunOneShot(m_entryPoint);
+	Refresh();
+}
+
+void GraphView::SimulationError(std::string msg)
+{
+	m_simulationStatus = msg;
+	//((MyFrame*)m_parent)->SetSimulationStatus(msg);
 }
 
 Node * GraphView::GetEntryPoint()

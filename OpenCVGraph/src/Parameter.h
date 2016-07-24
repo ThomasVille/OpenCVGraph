@@ -37,6 +37,9 @@ public:
 	// Returns true if the other parameter is compatible with this one
 	bool IsCompatible(std::shared_ptr<Parameter> other);
 
+	// Return true if connected to 1 node or if a default value is available
+	bool HasEntry();
+
 	inline std::string GetName() {
 		return m_name;
 	}

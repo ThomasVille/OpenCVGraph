@@ -53,6 +53,7 @@ void MyFrame::CreateToolbar()
 	m_mainToolbar->AddTool(TB_NEW_FILE, wxT("New file"), wxArtProvider::GetBitmap(wxART_NEW, wxART_OTHER, wxSize(16, 16)));
 	m_mainToolbar->AddSeparator();
 	m_mainToolbar->AddTool(TB_START, wxT("Start simulation"), wxArtProvider::GetBitmap(wxART_GO_FORWARD, wxART_OTHER, wxSize(16, 16)));
+	m_mainToolbar->AddTool(TB_START_REALTIME, wxT("Start realtime simulation"), wxArtProvider::GetBitmap(wxART_REDO, wxART_OTHER, wxSize(16, 16)));
 	m_mainToolbar->Realize();
 
 	Bind(wxEVT_TOOL, &MyFrame::OnStartSimulation, this);
@@ -152,17 +153,20 @@ void MyFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 void MyFrame::OnStartSimulation(wxCommandEvent & event)
 {
 	if (event.GetId() == TB_START) {
-		if (m_graphView->GetEntryPoint() == nullptr)
-			return;
-
-		// Run a one shot simulation
+		// Run one shot simulation
 		m_graphView->RunOneShot();
-		
-		m_graphView->Refresh();
-
 		wxLogDebug("START !");
 	}
-	if (event.GetId() == TB_NEW_FILE) {
+	else if (event.GetId() == TB_START_REALTIME) {
+		m_graphView->RunRealtime();
+		wxLogDebug("START REALTIME !");
+	}
+	else if (event.GetId() == TB_NEW_FILE) {
 		wxLogDebug("OPEN !");
 	}
+}
+
+void MyFrame::SetSimulationStatus(std::string msg)
+{
+	SetStatusText(msg, SB_CORRECT);
 }

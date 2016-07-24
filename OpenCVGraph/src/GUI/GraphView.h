@@ -13,13 +13,14 @@ e.g. when the mouse is released on a pin, it's the GUINodeParam parent which sho
 class GraphView : public wxScrolledWindow
 {
 public:
-	GraphView() : wxScrolledWindow() { Init(); }
+	GraphView() : wxScrolledWindow(), m_graphEngine(this) { Init(); }
 	GraphView(wxWindow *parent,
 		wxWindowID winid,
 		const wxPoint& pos = wxDefaultPosition,
 		const wxSize& size = wxDefaultSize,
 		long style = 0) :
-		wxScrolledWindow(parent, winid, pos, size, style)
+		wxScrolledWindow(parent, winid, pos, size, style),
+		m_graphEngine(this)
 	{
 		Init();
 	}
@@ -53,12 +54,16 @@ public:
 	GraphEngine* GetGraphEngine();
 
 	void RunOneShot();
+	void RunRealtime();
+	void SimulationError(std::string msg);
 
 	Node* GetEntryPoint();
 protected:
 	void Init();
 	virtual wxSize DoGetBestSize() const;
 	void OnPaint(wxPaintEvent&);
+	// Proceed to a new RunOneShot if we are in realtime mode
+	void UpdateRealtime();
 
 	std::vector<GUINode*> m_selectedNodes;
 
@@ -72,7 +77,8 @@ protected:
 	std::vector<std::pair<GUINodeParam*, GUINodeParam*>> m_wires;
 
 	GraphEngine m_graphEngine;
-
+	bool m_realtimeStarted = false;
+	std::string m_simulationStatus;
 	Node* m_entryPoint = nullptr;
 private:
 	wxDECLARE_DYNAMIC_CLASS(GraphView);

@@ -33,6 +33,11 @@ bool Parameter::IsCompatible(std::shared_ptr<Parameter> other)
 	return true;
 }
 
+bool Parameter::HasEntry()
+{
+	return !m_links.empty();
+}
+
 void Parameter::AddLink(std::shared_ptr<Parameter> dstParam)
 {
 	// Link to the node
