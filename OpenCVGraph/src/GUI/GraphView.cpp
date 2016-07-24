@@ -143,7 +143,7 @@ void GraphView::SetLinkState(LinkState state)
 void GraphView::AddNode(shared_ptr<Node> node)
 {
 	m_graphEngine.AddNode(node);
-	new GUINode(this, node);
+	m_GUINodes.push_back(new GUINode(this, node));
 	// Let's make the last added node the entry point for the moment
 	m_entryPoint = node.get();
 	UpdateRealtime();
@@ -161,8 +161,17 @@ void GraphView::DeleteNode(Node * node)
 			continue;
 		}
 	}
+	// Delete the associated GUINode
+	for(int i = 0; i < m_GUINodes.size(); i++)
+		if (m_GUINodes[i]->GetNode().get() == node) {
+			m_GUINodes.erase(m_GUINodes.begin() + i);
+			break;
+		}
 	// Delete the node in the graph engine
 	m_graphEngine.DeleteNode(node);
+	// Check if it's the entry point, in this case, reset the entry point
+	if (m_entryPoint == node)
+		m_entryPoint = nullptr;
 	UpdateRealtime();
 	Refresh();
 }

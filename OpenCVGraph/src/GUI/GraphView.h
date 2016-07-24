@@ -67,7 +67,7 @@ protected:
 	// Proceed to a new RunOneShot if we are in realtime mode
 	void UpdateRealtime();
 
-	std::vector<GUINode*> m_selectedNodes;
+	std::vector<GUINode*> m_GUINodes;
 
 	wxPoint m_mouseWiringStartingPoint;
 	// Selected pin when we first left clicked on a pin and began dragging
