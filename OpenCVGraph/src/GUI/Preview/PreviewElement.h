@@ -8,7 +8,7 @@ protected:
 	// Parameter to show
 	std::shared_ptr<Parameter> m_value;
 public:
-	PreviewElement(wxWindow* parent) : wxControl(parent, wxID_ANY) {
+	PreviewElement(wxWindow* parent) : wxControl(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER) {
 
 	}
 	// Show the new value of the parameter

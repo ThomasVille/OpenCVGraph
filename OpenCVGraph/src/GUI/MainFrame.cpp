@@ -156,7 +156,7 @@ void MyFrame::OnStartSimulation(wxCommandEvent & event)
 			return;
 
 		// Run a one shot simulation
-		m_graphView->GetGraphEngine()->RunOneShot(m_graphView->GetEntryPoint());
+		m_graphView->RunOneShot();
 		
 		m_graphView->Refresh();
 

@@ -15,11 +15,6 @@ void PreviewPanel::Init()
 	wxBoxSizer* bSizer1;
 	bSizer1 = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText* m_label = new wxStaticText(this, wxID_ANY, wxT("Value :"), wxDefaultPosition, wxDefaultSize, 0);
-	m_label->Wrap(-1);
-	bSizer1->Add(m_label, 0, wxALL, 5);
-	m_label->SetForegroundColour(*wxWHITE);
-
 	// Create a text for each outputs of the node
 	for (auto out : m_node->GetOutputs()) {
 		m_valuesTexts.push_back(PreviewFactory::CreatePreviewElement(this, out.second));

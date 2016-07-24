@@ -52,6 +52,8 @@ public:
 
 	GraphEngine* GetGraphEngine();
 
+	void RunOneShot();
+
 	Node* GetEntryPoint();
 protected:
 	void Init();

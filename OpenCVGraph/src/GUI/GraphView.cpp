@@ -117,7 +117,7 @@ void GraphView::AddWire(GUINodeParam * first, GUINodeParam * second)
 		// Add the link between the two nodes
 		first->GetParameter()->AddLink(second->GetParameter());
 		second->GetParameter()->AddLink(first->GetParameter());
-	}
+	}		
 }
 
 void GraphView::SetLinkState(LinkState state)
@@ -135,8 +135,6 @@ void GraphView::AddNode(shared_ptr<Node> node)
 
 void GraphView::DeleteNode(Node * node)
 {
-	// Delete the node in the graph engine
-	m_graphEngine.DeleteNode(node);
 	// Delete all the wires related to this node
 	for (int i = 0; i < m_wires.size(); i++) {
 		// If either end of the wire is the node we are deleting
@@ -147,12 +145,19 @@ void GraphView::DeleteNode(Node * node)
 			continue;
 		}
 	}
+	// Delete the node in the graph engine
+	m_graphEngine.DeleteNode(node);
 	Refresh();
 }
 
 GraphEngine * GraphView::GetGraphEngine()
 {
 	return &m_graphEngine;
+}
+
+void GraphView::RunOneShot()
+{
+	m_graphEngine.RunOneShot(m_entryPoint);
 }
 
 Node * GraphView::GetEntryPoint()
