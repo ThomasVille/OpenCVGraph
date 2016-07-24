@@ -18,6 +18,7 @@ public:
 	void RunOneShot(Node* entryPoint);
 	
 	void AddNode(std::shared_ptr<Node> node);
+	void DeleteNode(Node* node);
 };
 
 #endif

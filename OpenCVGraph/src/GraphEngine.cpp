@@ -35,3 +35,17 @@ void GraphEngine::AddNode(std::shared_ptr<Node> node)
 	m_nodes.push_back(node);
 	node->GetInitializer()(node->GetOutputs());
 }
+
+void GraphEngine::DeleteNode(Node * node)
+{
+	for(int i = 0; i < m_nodes.size(); i++)
+		if (m_nodes[i].get() == node) {
+			m_nodes.erase(m_nodes.begin() + i);
+			break;
+		}
+
+	for (auto n : m_nodes) {
+		// Remove reference to this node in all the other nodes
+		n->RemoveLinksTo(node);
+	}
+}

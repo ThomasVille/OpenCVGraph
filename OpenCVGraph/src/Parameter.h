@@ -66,6 +66,14 @@ public:
 	*/
 	void AddLink(std::shared_ptr<Parameter> dstParam);
 
+	void RemoveLinksTo(Node* node) {
+		for(int i = 0; i < m_links.size(); i++)
+			if (m_links[i]->GetParent() == node) {
+				m_links.erase(m_links.begin() + i);
+				i--;
+			}
+	}
+
 	void AllocateData(std::shared_ptr<BaseData> initValue) {
 		m_data = initValue;
 	}

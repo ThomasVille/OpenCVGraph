@@ -28,6 +28,8 @@ public:
 
 	void UpdatePreview();
 
+	void OnRightMouseUp(wxMouseEvent& event);
+
 	void OnLeftMouseDown(wxMouseEvent&);
 	void OnLeftMouseUp(wxMouseEvent&);
 	void OnMouseMotion(wxMouseEvent& event);

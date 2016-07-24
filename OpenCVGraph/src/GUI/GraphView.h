@@ -46,6 +46,9 @@ public:
 	void SetLinkState(LinkState state);
 
 	void AddNode(std::shared_ptr<Node> node);
+	// Delete the node at this address
+	// Called by a node when right clicked
+	void DeleteNode(Node* node);
 
 	GraphEngine* GetGraphEngine();
 

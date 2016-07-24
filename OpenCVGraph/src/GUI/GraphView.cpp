@@ -133,6 +133,23 @@ void GraphView::AddNode(shared_ptr<Node> node)
 	m_entryPoint = node.get();
 }
 
+void GraphView::DeleteNode(Node * node)
+{
+	// Delete the node in the graph engine
+	m_graphEngine.DeleteNode(node);
+	// Delete all the wires related to this node
+	for (int i = 0; i < m_wires.size(); i++) {
+		// If either end of the wire is the node we are deleting
+		if (((GUINode*)m_wires[i].first->GetParent())->GetNode().get() == node ||
+			((GUINode*)m_wires[i].second->GetParent())->GetNode().get() == node) {
+			m_wires.erase(m_wires.begin()+i); // delete the link
+			i--;
+			continue;
+		}
+	}
+	Refresh();
+}
+
 GraphEngine * GraphView::GetGraphEngine()
 {
 	return &m_graphEngine;

@@ -65,6 +65,15 @@ public:
 			return;
 		m_inputs[dstParam]->AddLink(srcParam);
 	}
+
+	void RemoveLinksTo(Node* node) {
+		for (auto in : m_inputs) {
+			in.second->RemoveLinksTo(node);
+		}
+		for (auto out : m_outputs) {
+			out.second->RemoveLinksTo(node);
+		}
+	}
 private:
 	ParamList m_inputs;
 	ParamList m_outputs;

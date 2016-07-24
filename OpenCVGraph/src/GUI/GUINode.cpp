@@ -61,7 +61,8 @@ void GUINode::Init()
 	titleText->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
 	titleText->Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);
 	titleText->Bind(wxEVT_LEFT_UP, &GUINode::OnLeftMouseUp, this);
-
+	
+	Bind(wxEVT_RIGHT_UP, &GUINode::OnRightMouseUp, this);
 	Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);
 	Bind(wxEVT_LEFT_UP, &GUINode::OnLeftMouseUp, this);
 	Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
@@ -100,6 +101,12 @@ void GUINode::OnPaint(wxPaintEvent &event)
 void GUINode::UpdatePreview()
 {
 	m_preview->Update();
+}
+
+void GUINode::OnRightMouseUp(wxMouseEvent & event)
+{
+	((GraphView*)m_parent)->DeleteNode(m_node.get());
+	this->Destroy();
 }
 
 void GUINode::OnLeftMouseDown(wxMouseEvent& event)
