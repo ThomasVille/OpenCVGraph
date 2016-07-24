@@ -24,7 +24,7 @@ extern "C"
 			ParamList outputs{ {"value", make_shared<Parameter>("value", Type("int"), OUTPUT_PARAM) } };
 
 			InitializerType init = [](ParamList outputs) {
-				outputs["value"]->AllocateData(make_shared<Data<int>>(make_shared<int>(120)));
+				outputs["value"]->AllocateData(make_shared<Data<int>>(make_shared<int>(42)));
 			};
 
 			ComputerType computer = [](ParamList in, ParamList out) {
