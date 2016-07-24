@@ -76,6 +76,29 @@ public:
 				i--;
 			}
 	}
+	void RemoveLinksTo(Parameter* param) {
+		for (int i = 0; i < m_links.size(); i++)
+			if (m_links[i].get() == param) {
+				m_links.erase(m_links.begin() + i);
+				i--;
+			}
+	}
+
+	// Remove all the links to other nodes
+	// When adding default values, don't forget to set it there too
+	void RemoveAllLinks() {
+		// Remove the links in the other nodes
+		for (auto l : m_links) { // Iterates through the links of this parameter (input : 0..1, output : 0..n)
+			// For each parameter connected, remove this parameter from its link list
+			l->RemoveLinksTo(this);
+		}
+		// Remove the links here
+		m_links.clear();
+		// m_data is a reference to an output's data if we are in an input
+		// m_data has been allocated by the package if we are in an output
+		if(m_paramType == INPUT_PARAM)
+			m_data.reset();
+	}
 
 	void AllocateData(std::shared_ptr<BaseData> initValue) {
 		m_data = initValue;

@@ -45,6 +45,7 @@ void GUINodeParam::Init()
 	pinImage->Bind(wxEVT_MOTION, &GUINodeParam::OnPinMouseMotion, this);
 	pinImage->Bind(wxEVT_LEFT_DOWN, &GUINodeParam::OnPinLeftMouseDown, this);
 	pinImage->Bind(wxEVT_LEFT_UP, &GUINodeParam::OnPinLeftMouseUp, this);
+	pinImage->Bind(wxEVT_RIGHT_UP, &GUINodeParam::OnPinRightMouseUp, this);
 
 	Bind(wxEVT_LEFT_DOWN, &GUINodeParam::OnLeftMouseDown, this);
 	Bind(wxEVT_LEFT_UP, &GUINodeParam::OnLeftMouseUp, this);
@@ -74,6 +75,11 @@ void GUINodeParam::OnMouseMotion(wxMouseEvent& event)
 {
 	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(ClientToScreen(event.GetPosition())));
 	((GUINode*)m_parent)->OnMouseMotion(event);
+}
+
+void GUINodeParam::OnPinRightMouseUp(wxMouseEvent & event)
+{
+	((GraphView*)((GUINode*)m_parent)->GetParent())->DeleteWiresConnectedTo(this);
 }
 
 void GUINodeParam::OnPinLeftMouseDown(wxMouseEvent& event)

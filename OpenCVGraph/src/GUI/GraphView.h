@@ -50,6 +50,8 @@ public:
 	// Delete the node at this address
 	// Called by a node when right clicked
 	void DeleteNode(Node* node);
+	// Delete all the wires connected to this pin and its links
+	void DeleteWiresConnectedTo(GUINodeParam* pin);
 
 	GraphEngine* GetGraphEngine();
 

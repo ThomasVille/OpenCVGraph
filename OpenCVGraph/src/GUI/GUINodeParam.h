@@ -35,6 +35,7 @@ protected:
 	void OnLeftMouseUp(wxMouseEvent&);
 	void OnMouseMotion(wxMouseEvent& event);
 
+	void OnPinRightMouseUp(wxMouseEvent& event);
 	void OnPinLeftMouseDown(wxMouseEvent&);
 	void OnPinLeftMouseUp(wxMouseEvent&);
 	void OnPinMouseMotion(wxMouseEvent& event);

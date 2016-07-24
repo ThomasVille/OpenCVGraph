@@ -1,4 +1,5 @@
 #include "GraphView.h"
+#include <wx/dcbuffer.h>
 #include "MainFrame.h"
 using namespace std;
 wxIMPLEMENT_DYNAMIC_CLASS(GraphView, wxControl);
@@ -25,7 +26,7 @@ void GraphView::Init()
 	Bind(wxEVT_PAINT, &GraphView::OnPaint, this);
 	Bind(wxEVT_MOTION, &GraphView::OnMouseMotion, this);
 	Bind(wxEVT_LEFT_UP, &GraphView::OnMouseUp, this);
-
+	SetBackgroundStyle(wxBG_STYLE_PAINT);
 	// Initialize the graph engine
 }
 
@@ -36,12 +37,17 @@ wxSize GraphView::DoGetBestSize() const
 
 void GraphView::OnPaint(wxPaintEvent& event)
 {
-	wxPaintDC dc(this);
+	wxAutoBufferedPaintDC dc(this);
 	wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
 	wxFont font = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
 
 	if (gc)
 	{
+		wxDouble width, height;
+		gc->GetSize(&width, &height);
+		gc->SetPen(*wxWHITE_PEN);
+		gc->SetBrush(*wxWHITE_BRUSH);
+		gc->DrawRectangle(0, 0, width, height);
 		// Display the simulation status
 		gc->SetFont(font, *wxBLACK);
 		gc->DrawText(m_simulationStatus, 0, 0);
@@ -157,6 +163,21 @@ void GraphView::DeleteNode(Node * node)
 	}
 	// Delete the node in the graph engine
 	m_graphEngine.DeleteNode(node);
+	UpdateRealtime();
+	Refresh();
+}
+
+void GraphView::DeleteWiresConnectedTo(GUINodeParam * pin)
+{
+	// Delete the links
+	pin->GetParameter()->RemoveAllLinks();
+	// Delete the wires
+	for (int i = 0; i < m_wires.size(); i++) {
+		if (m_wires[i].first == pin || m_wires[i].second == pin) {
+			m_wires.erase(m_wires.begin() + i);
+			i--;
+		}
+	}
 	UpdateRealtime();
 	Refresh();
 }

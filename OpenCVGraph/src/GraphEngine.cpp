@@ -42,7 +42,6 @@ void GraphEngine::RunOneShot(Node* entryPoint)
 	}
 	// Display Ok at the beginning and change during runtime if there was an error
 	m_graphView->SimulationError("Graph Ok");
-
 	OneShotRecursive(entryPoint);
 }
 
