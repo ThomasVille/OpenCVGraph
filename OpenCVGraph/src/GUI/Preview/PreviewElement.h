@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <wx/control.h>
-#include "../Parameter.h"
+#include "../../Parameter.h"
 class PreviewElement : public wxControl
 {
 protected:

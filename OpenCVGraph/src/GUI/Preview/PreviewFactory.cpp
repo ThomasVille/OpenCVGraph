@@ -1,4 +1,4 @@
-#include "src\GUI\PreviewFactory.h"
+#include "PreviewFactory.h"
 #include "IntPreview.h"
 
 

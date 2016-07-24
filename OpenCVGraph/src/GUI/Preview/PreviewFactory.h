@@ -2,7 +2,7 @@
 #include <string>
 #include <memory>
 #include "PreviewElement.h"
-#include "../Parameter.h"
+#include "../../Parameter.h"
 class PreviewFactory
 {
 public:

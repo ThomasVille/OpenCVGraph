@@ -6,7 +6,6 @@
 #include <functional>
 #include "Parameter.h"
 #include "BaseData.h"
-#include "GUI\PreviewPanel.h"
 
 // List of parameters
 typedef std::unordered_map<std::string, std::shared_ptr<Parameter>> ParamList;

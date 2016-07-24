@@ -1,6 +1,6 @@
 #include "PreviewPanel.h"
-#include "../Node.h"
 #include "PreviewFactory.h"
+#include "../../Node.h"
 wxIMPLEMENT_DYNAMIC_CLASS(PreviewPanel, wxControl);
 
 

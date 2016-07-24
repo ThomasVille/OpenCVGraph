@@ -19,6 +19,9 @@
     <Filter Include="Fichiers sources\src\GUI">
       <UniqueIdentifier>{bd3b09cc-f3a1-49ca-a84b-a701ee0233cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\src\GUI\Preview">
+      <UniqueIdentifier>{dd0ed998-0481-42ea-a170-40ceb3194592}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="sample.rc">
@@ -62,17 +65,14 @@
     <ClCompile Include="src\Parameter.cpp">
       <Filter>Fichiers sources\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\PreviewPanel.cpp">
-      <Filter>Fichiers sources\src\GUI</Filter>
+    <ClCompile Include="src\GUI\Preview\PreviewFactory.cpp">
+      <Filter>Fichiers sources\src\GUI\Preview</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\IntPreview.cpp">
-      <Filter>Fichiers sources\src\GUI</Filter>
+    <ClCompile Include="src\GUI\Preview\PreviewPanel.cpp">
+      <Filter>Fichiers sources\src\GUI\Preview</Filter>
     </ClCompile>
-    <ClCompile Include="src\GUI\PreviewElement.cpp">
-      <Filter>Fichiers sources\src\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GUI\PreviewFactory.cpp">
-      <Filter>Fichiers sources\src\GUI</Filter>
+    <ClCompile Include="src\GUI\Preview\IntPreview.cpp">
+      <Filter>Fichiers sources\src\GUI\Preview</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -118,17 +118,17 @@
     <ClInclude Include="src\Data.h">
       <Filter>Fichiers sources\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\GUI\PreviewPanel.h">
-      <Filter>Fichiers sources\src\GUI</Filter>
+    <ClInclude Include="src\GUI\Preview\PreviewFactory.h">
+      <Filter>Fichiers sources\src\GUI\Preview</Filter>
     </ClInclude>
-    <ClInclude Include="src\GUI\PreviewFactory.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="src\GUI\Preview\PreviewPanel.h">
+      <Filter>Fichiers sources\src\GUI\Preview</Filter>
     </ClInclude>
-    <ClInclude Include="src\GUI\PreviewElement.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="src\GUI\Preview\IntPreview.h">
+      <Filter>Fichiers sources\src\GUI\Preview</Filter>
     </ClInclude>
-    <ClInclude Include="src\GUI\IntPreview.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="src\GUI\Preview\PreviewElement.h">
+      <Filter>Fichiers sources\src\GUI\Preview</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

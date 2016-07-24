@@ -5,6 +5,7 @@
 #include <wx/graphics.h>
 #include "../Node.h"
 #include "GUINodeParam.h"
+#include "Preview\PreviewPanel.h"
 
 class GraphView;
 class GUINode : public wxControl

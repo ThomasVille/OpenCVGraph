@@ -4,7 +4,7 @@
 #include <wx/control.h>
 #include <wx/stattext.h>
 #include <wx/sizer.h>
-#include "../Parameter.h"
+#include "../../Parameter.h"
 
 class Node;
 class PreviewPanel : public wxControl

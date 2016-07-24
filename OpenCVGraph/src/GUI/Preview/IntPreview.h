@@ -2,7 +2,7 @@
 #include <memory>
 #include <wx/stattext.h>
 #include "PreviewElement.h"
-#include "../Data.h"
+#include "../../Data.h"
 
 class IntPreview :
 	public PreviewElement
