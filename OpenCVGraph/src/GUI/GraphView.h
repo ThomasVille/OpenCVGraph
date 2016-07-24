@@ -46,6 +46,9 @@ public:
 	void AddWire(GUINodeParam* first, GUINodeParam* second);
 	void SetLinkState(LinkState state);
 
+	// Set the selected node
+	void SetSelected(GUINode* node);
+
 	void AddNode(std::shared_ptr<Node> node);
 	// Delete the node at this address
 	// Called by a node when right clicked
@@ -66,12 +69,13 @@ protected:
 	void OnPaint(wxPaintEvent&);
 	// Proceed to a new RunOneShot if we are in realtime mode
 	void UpdateRealtime();
-
+	// List of all the children GUINodes
 	std::vector<GUINode*> m_GUINodes;
 
 	wxPoint m_mouseWiringStartingPoint;
 	// Selected pin when we first left clicked on a pin and began dragging
 	GUINodeParam* m_selectedPin = nullptr;
+	GUINode* m_selectedNode = nullptr;
 	wxPoint m_mousePosition;
 	bool m_mouseWiring = false;
 	LinkState m_linkState = END_MISSING; // State of the link we are currently dragging with the mouse

@@ -43,6 +43,7 @@ void GraphView::OnPaint(wxPaintEvent& event)
 
 	if (gc)
 	{
+		// Draw the background
 		wxDouble width, height;
 		gc->GetSize(&width, &height);
 		gc->SetPen(*wxWHITE_PEN);
@@ -79,10 +80,18 @@ void GraphView::OnPaint(wxPaintEvent& event)
 			path.MoveToPoint(wire.first->GetPinPosition());
 			int distance = abs(wire.first->GetPinPosition().x - wire.second->GetPinPosition().x);
 			path.AddCurveToPoint(wire.first->GetPinPosition()+wxPoint(distance/2,0), wire.second->GetPinPosition()-wxPoint(distance/2,0), wire.second->GetPinPosition());
-			//path.AddLineToPoint(wire.second->GetPinPosition());
 		}
 		gc->DrawPath(path);
-
+		// Draw something to distinguish the selected node
+		if (m_selectedNode != nullptr) {
+			gc->SetBrush(*wxTRANSPARENT_BRUSH);
+			gc->SetPen(wxPen(*wxBLACK, 4));
+			gc->DrawRectangle(m_selectedNode->GetPosition().x,
+				m_selectedNode->GetPosition().y,
+				m_selectedNode->GetSize().GetWidth(),
+				m_selectedNode->GetSize().GetHeight());
+		}
+		
 		delete gc;
 	}
 	// Reset the link's state
@@ -140,6 +149,11 @@ void GraphView::SetLinkState(LinkState state)
 	m_linkState = state;
 }
 
+void GraphView::SetSelected(GUINode * node)
+{
+	m_selectedNode = node;
+}
+
 void GraphView::AddNode(shared_ptr<Node> node)
 {
 	m_graphEngine.AddNode(node);
@@ -172,6 +186,9 @@ void GraphView::DeleteNode(Node * node)
 	// Check if it's the entry point, in this case, reset the entry point
 	if (m_entryPoint == node)
 		m_entryPoint = nullptr;
+	// Check if it's selected
+	if (node == m_selectedNode->GetNode().get())
+		m_selectedNode = nullptr;
 	UpdateRealtime();
 	Refresh();
 }

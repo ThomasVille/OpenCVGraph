@@ -113,6 +113,7 @@ void GUINode::OnLeftMouseDown(wxMouseEvent& event)
 {
 	m_isDragging = true;
 	m_firstDraggingPoint = ScreenToClient(ClientToScreen(event.GetPosition()));
+	m_graphView->SetSelected(this);
 }
 
 void GUINode::OnLeftMouseUp(wxMouseEvent& event)
