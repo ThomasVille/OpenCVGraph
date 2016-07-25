@@ -1,6 +1,7 @@
 #include "GUINodeParam.h"
 #include "GraphView.h"
 #include "GUINode.h"
+#include "Resources.h"
 wxIMPLEMENT_DYNAMIC_CLASS(GUINodeParam, wxControl);
 
 wxPoint GUINodeParam::GetPinPosition()
@@ -22,7 +23,9 @@ void GUINodeParam::Init()
 
 	wxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
 	pinImage = new wxStaticText(this, wxID_ANY, "O", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
-	pinImage->SetBackgroundColour(*wxRED); // Helps to visualize the space taken by the pin
+
+	pinImage->SetBackgroundColour(RES_NODE_PIN_GOOD_STATE);
+
 	if (m_parameter->GetParamType() == INPUT_PARAM) {
 		nameText = new wxStaticText(this, wxID_ANY, m_parameter->GetName(), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
 		sizer->Add(pinImage, 1, wxALL | wxALIGN_CENTER_VERTICAL); // From left to right, add the pin then the name for an input
@@ -37,7 +40,7 @@ void GUINodeParam::Init()
 
 	SetSizer(sizer);
 	Layout();
-	SetBackgroundColour(*wxBLUE);
+	SetBackgroundColour(RES_NODE_MAIN_COLOR);
 
 	nameText->Bind(wxEVT_MOTION, &GUINodeParam::OnNameMouseMotion, this);
 	nameText->Bind(wxEVT_LEFT_DOWN, &GUINodeParam::OnNameLeftMouseDown, this);

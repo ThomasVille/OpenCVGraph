@@ -1,5 +1,6 @@
 #include "IntPreview.h"
 #include <wx/sizer.h>
+#include "../Resources.h"
 using namespace std;
 IntPreview::IntPreview(wxWindow* parent, std::shared_ptr<Parameter> newValue):
 	PreviewElement(parent)
@@ -15,7 +16,7 @@ IntPreview::IntPreview(wxWindow* parent, std::shared_ptr<Parameter> newValue):
 	m_text->SetForegroundColour(*wxWHITE);
 	bSizer1->Add(m_text, 1, wxALL, 5);
 
-	SetBackgroundColour(*wxBLUE);
+	SetBackgroundColour(RES_NODE_MAIN_COLOR);
 
 	SetSizer(bSizer1);
 	Layout();

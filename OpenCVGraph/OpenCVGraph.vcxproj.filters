@@ -130,6 +130,9 @@
     <ClInclude Include="src\GUI\Preview\PreviewElement.h">
       <Filter>Fichiers sources\src\GUI\Preview</Filter>
     </ClInclude>
+    <ClInclude Include="src\GUI\Resources.h">
+      <Filter>Fichiers sources\src\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

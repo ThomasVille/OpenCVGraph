@@ -528,6 +528,7 @@
     <ClInclude Include="src\GUI\Preview\PreviewElement.h" />
     <ClInclude Include="src\GUI\Preview\PreviewFactory.h" />
     <ClInclude Include="src\GUI\Preview\PreviewPanel.h" />
+    <ClInclude Include="src\GUI\Resources.h" />
     <ClInclude Include="src\ModelNode.h" />
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\NodesProvider.h" />

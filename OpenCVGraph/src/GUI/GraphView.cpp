@@ -82,7 +82,7 @@ void GraphView::OnPaint(wxPaintEvent& event)
 			path.AddCurveToPoint(wire.first->GetPinPosition()+wxPoint(distance/2,0), wire.second->GetPinPosition()-wxPoint(distance/2,0), wire.second->GetPinPosition());
 		}
 		gc->DrawPath(path);
-		// Draw something to distinguish the selected node
+		// Draw something to distinguish the selected node from the others
 		if (m_selectedNode != nullptr) {
 			gc->SetBrush(*wxTRANSPARENT_BRUSH);
 			gc->SetPen(wxPen(*wxBLACK, 4));

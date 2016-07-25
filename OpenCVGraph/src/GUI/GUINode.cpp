@@ -1,5 +1,6 @@
 #include "GUINode.h"
 #include "GraphView.h"
+#include "Resources.h"
 wxIMPLEMENT_DYNAMIC_CLASS(GUINode, wxControl);
 
 void GUINode::Init()
@@ -56,7 +57,7 @@ void GUINode::Init()
 
 	SetSizer(verticalSizer);
 	Layout();
-	SetBackgroundColour(*wxGREEN);
+	SetBackgroundColour(RES_NODE_MAIN_COLOR);
 
 	titleText->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
 	titleText->Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);

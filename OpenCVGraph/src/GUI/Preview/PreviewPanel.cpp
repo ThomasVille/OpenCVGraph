@@ -1,6 +1,7 @@
 #include "PreviewPanel.h"
 #include "PreviewFactory.h"
 #include "../../Node.h"
+#include "../Resources.h"
 wxIMPLEMENT_DYNAMIC_CLASS(PreviewPanel, wxControl);
 
 
@@ -23,5 +24,5 @@ void PreviewPanel::Init()
 
 	SetSizer(bSizer1);
 	Layout();
-	SetBackgroundColour(*wxBLUE);
+	SetBackgroundColour(RES_NODE_MAIN_COLOR);
 }
