@@ -1,8 +1,47 @@
 #include "GraphView.h"
 #include <wx/dcbuffer.h>
 #include "MainFrame.h"
+#include "Resources.h"
 using namespace std;
 wxIMPLEMENT_DYNAMIC_CLASS(GraphView, wxControl);
+
+void GraphView::OnLeftMouseDown(wxMouseEvent& event)
+{
+	// Remove previously selected node
+	SetSelected(nullptr);
+	// Check if we are inside a node and select it
+	for(auto node : m_GUINodes)
+		if (node->IsInside(event.GetPosition())) {
+			m_isDragging = true;
+			SetSelected(node);
+			node->StartDrag(event.GetPosition());
+			break;
+		}
+}
+
+void GraphView::OnLeftMouseUp(wxMouseEvent& event)
+{
+	m_isDragging = false;
+	m_mouseWiring = false;
+	m_selectedPin = nullptr;
+	Redraw();
+}
+
+void GraphView::OnMouseMotion(wxMouseEvent& event)
+{
+	// If we are dragging a node around
+	if (m_isDragging && event.LeftIsDown()) {
+		m_selectedNode->Drag(event.GetPosition());
+		Redraw();
+	}
+	else
+	{
+		m_mousePosition = event.GetPosition();
+		// Redraw the graph only if we are dragging a link
+		if (isWiring())
+			Redraw();
+	}
+}
 
 void GraphView::OnPinLeftMouseDown(GUINodeParam* param, wxPoint pos)
 {
@@ -12,12 +51,6 @@ void GraphView::OnPinLeftMouseDown(GUINodeParam* param, wxPoint pos)
 	m_linkState = END_MISSING;
 	//ContinuousRefresh(true);
 }
-void GraphView::OnMouseUp(wxMouseEvent& event)
-{
-	m_mouseWiring = false;
-	m_selectedPin = nullptr;
-	Redraw();
-}
 
 void GraphView::Init()
 {
@@ -25,7 +58,8 @@ void GraphView::Init()
 
 	Bind(wxEVT_PAINT, &GraphView::OnPaint, this);
 	Bind(wxEVT_MOTION, &GraphView::OnMouseMotion, this);
-	Bind(wxEVT_LEFT_UP, &GraphView::OnMouseUp, this);
+	Bind(wxEVT_LEFT_UP, &GraphView::OnLeftMouseUp, this);
+	Bind(wxEVT_LEFT_DOWN, &GraphView::OnLeftMouseDown, this);
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
 	// Initialize the graph engine
 }
@@ -52,6 +86,9 @@ void GraphView::OnPaint(wxPaintEvent& event)
 		// Display the simulation status
 		gc->SetFont(font, *wxBLACK);
 		gc->DrawText(m_simulationStatus, 0, 0);
+		// Draw the nodes
+		for (auto node : m_GUINodes)
+			node->Draw(gc);
 		// Draw the link when we draw a link with the mouse
 		if (m_mouseWiring) {
 			gc->SetBrush(*wxTRANSPARENT_BRUSH);
@@ -85,11 +122,11 @@ void GraphView::OnPaint(wxPaintEvent& event)
 		// Draw something to distinguish the selected node from the others
 		if (m_selectedNode != nullptr) {
 			gc->SetBrush(*wxTRANSPARENT_BRUSH);
-			gc->SetPen(wxPen(*wxBLACK, 4));
-			gc->DrawRectangle(m_selectedNode->GetPosition().x,
-				m_selectedNode->GetPosition().y,
-				m_selectedNode->GetSize().GetWidth(),
-				m_selectedNode->GetSize().GetHeight());
+			gc->SetPen(wxPen(RES_NODE_HIGHLIGHT, 1));
+			gc->DrawRectangle(m_selectedNode->GetRect().x-1,
+				m_selectedNode->GetRect().y-1,
+				m_selectedNode->GetRect().GetWidth()+1,
+				m_selectedNode->GetRect().GetHeight()+1);
 		}
 		
 		delete gc;
@@ -105,15 +142,6 @@ void GraphView::UpdateRealtime()
 {
 	if (m_realtimeStarted)
 		m_graphEngine.RunOneShot(m_entryPoint);
-}
-
-void GraphView::OnMouseMotion(wxMouseEvent &event)
-{
-	m_mousePosition = event.GetPosition();
-	
-	// Redraw the graph only if we are dragging a link
-	if(isWiring())
-		Redraw();
 }
 
 bool GraphView::isWiring()
@@ -161,6 +189,7 @@ void GraphView::AddNode(shared_ptr<Node> node)
 	// Let's make the last added node the entry point for the moment
 	m_entryPoint = node.get();
 	UpdateRealtime();
+	Redraw();
 }
 
 void GraphView::DeleteNode(Node * node)

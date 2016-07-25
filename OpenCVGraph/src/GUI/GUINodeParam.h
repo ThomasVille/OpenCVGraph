@@ -6,32 +6,38 @@
 #include "../Parameter.h"
 
 class GraphView;
+class GUINode;
 enum LinkState { ERROR_SAME_WAY, LINK_OK, END_MISSING };
-class GUINodeParam : public wxControl
+class GUINodeParam
 {
 public:
-	GUINodeParam():
-		wxControl(), m_parameter(std::make_shared<Parameter>("empty", Type("empty"), INPUT_PARAM))
-	{ 
-		Init();
-	};
-	GUINodeParam(wxWindow *parent, std::shared_ptr<Parameter> param):
-		wxControl(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE, wxDefaultValidator),
-		m_parameter(param)
+	GUINodeParam(GUINode* parent, GraphView* graphView, std::shared_ptr<Parameter> param, wxRect rect):
+		m_parent(parent),
+		m_graphView(graphView),
+		m_parameter(param),
+		m_rect(rect)
 	{
 		Init();
 	}
+
+	void Draw(wxGraphicsContext* gc);
+
+	void Move(wxPoint offset);
 
 	// Return the position of the pin in *GraphView* coordinates
 	wxPoint GetPinPosition();
 
 	std::shared_ptr<Parameter> GetParameter();
 
+	GUINode* GetParent();
+
+	// Return true if the point is inside this object
+	bool IsInside(wxPoint p);
+
 protected:
 	void Init();
-	virtual wxSize DoGetBestSize() const;
 
-	void OnLeftMouseDown(wxMouseEvent&);
+	/*void OnLeftMouseDown(wxMouseEvent&);
 	void OnLeftMouseUp(wxMouseEvent&);
 	void OnMouseMotion(wxMouseEvent& event);
 
@@ -42,18 +48,16 @@ protected:
 
 	void OnNameLeftMouseDown(wxMouseEvent&);
 	void OnNameLeftMouseUp(wxMouseEvent&);
-	void OnNameMouseMotion(wxMouseEvent& event);
+	void OnNameMouseMotion(wxMouseEvent& event);*/
 
-	wxStaticText* nameText;
-	wxStaticText* pinImage;
+	wxRect m_rect; // Rect of this widget
+	GUINode *m_parent;
 
 	std::shared_ptr<Parameter> m_parameter;
 
 	// Pointer to the GraphView
 	// For convenience
 	GraphView* m_graphView;
-private:
-	wxDECLARE_DYNAMIC_CLASS(GUINodeParam);
 };
 
 #endif

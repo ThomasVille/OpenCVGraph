@@ -24,5 +24,5 @@ void PreviewPanel::Init()
 
 	SetSizer(bSizer1);
 	Layout();
-	SetBackgroundColour(RES_NODE_MAIN_COLOR);
+	SetBackgroundColour(*wxRED);
 }

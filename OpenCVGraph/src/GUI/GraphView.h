@@ -25,6 +25,9 @@ public:
 		Init();
 	}
 
+	void OnLeftMouseDown(wxMouseEvent&);
+	void OnLeftMouseUp(wxMouseEvent&);
+
 	// Begin the drawing of the wire
 	// Called when the user click on a parameter
 	void OnPinLeftMouseDown(GUINodeParam* param, wxPoint pos);
@@ -79,6 +82,9 @@ protected:
 	wxPoint m_mousePosition;
 	bool m_mouseWiring = false;
 	LinkState m_linkState = END_MISSING; // State of the link we are currently dragging with the mouse
+	// Dragging stuff
+	bool m_isDragging = false;
+
 
 	std::vector<std::pair<GUINodeParam*, GUINodeParam*>> m_wires;
 

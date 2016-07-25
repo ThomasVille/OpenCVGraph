@@ -1,32 +1,25 @@
 #include "GUINode.h"
 #include "GraphView.h"
 #include "Resources.h"
-wxIMPLEMENT_DYNAMIC_CLASS(GUINode, wxControl);
-
+using namespace std;
 void GUINode::Init()
 {
-	m_graphView = (GraphView*)m_parent;
 
-	// Compute the best width
-	m_bestSize.SetWidth(200); // Must be computed depending on the lengths of the inputs and outputs parameters
-	// Compute the best height
 	int nbInputs = m_node->GetInputs().size();
 	int nbOutputs = m_node->GetOutputs().size();
 	m_maxParamsPerColumn = nbInputs > nbOutputs ? nbInputs : nbOutputs;
 	// MAGIC NUMBER here : we say 50 pixels per param + 50 pixels for the node's name + another 50 for the preview panel
-	m_bestSize.SetHeight((2 + m_maxParamsPerColumn) * 50);
-
-	// Defines the size of the widget
-	SetSize(m_bestSize);
+	m_rect.SetHeight((2 + m_maxParamsPerColumn) * 50);
+	m_rect.SetWidth(200);
 
 	// Add a sizer to manage the space inside the node
-	wxSizer* verticalSizer = new wxBoxSizer(wxVERTICAL);
+	/*wxSizer* verticalSizer = new wxBoxSizer(wxVERTICAL);
 	wxStaticText* titleText = new wxStaticText(this, wxID_ANY, m_node->GetName(), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
 	verticalSizer->Add(titleText, 1, wxALL | wxEXPAND);
 
 	// Add a preview panel into the node
 	m_preview = new PreviewPanel(this, m_node);
-	verticalSizer->Add(m_preview, 1, wxALL | wxEXPAND);
+	verticalSizer->Add(m_preview, 1, wxALL);
 
 	// Add the parameters
 	auto inputs = m_node->GetInputs();
@@ -35,110 +28,70 @@ void GUINode::Init()
 	ParamList::iterator outputIt = outputs.begin();
 	for (int i = 0; i < m_maxParamsPerColumn; i++) {
 		// The sizer we have to fit the two parameters in
-		wxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 		// Add a pin if needed or an empty text to fill up the space if there's no pin
 		if (i < nbInputs) {
-			GUINodeParam* guiNodeInput = new GUINodeParam(this, inputIt->second);
-			horizontalSizer->Add(guiNodeInput, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
+			m_params.push_back(make_shared<GUINodeParam>(this, inputIt->second, wxRect(GetPosition().x, i * 50 + GetPosition().y, 200, 50)));
 			inputIt++;
-		}else {
-			horizontalSizer->Add(new wxStaticText(this, wxID_ANY, ""), 2, wxALL | wxALIGN_CENTER_VERTICAL);
 		}
 		if (i < nbOutputs) {
-			GUINodeParam* guiNodeOutput = new GUINodeParam(this, outputIt->second);
-			horizontalSizer->Add(guiNodeOutput, 1, wxALL | wxALIGN_CENTRE_VERTICAL);
+			m_params.push_back(make_shared<GUINodeParam>(this, outputIt->second, wxRect(GetPosition().x + GetSize().GetWidth() / 2, i * 50 + GetPosition().y, 200, 50)));
 			outputIt++;
-		}else{
-			horizontalSizer->Add(new wxStaticText(this, wxID_ANY, ""), 2, wxALL | wxALIGN_CENTER_VERTICAL);
 		}
-
-		verticalSizer->Add(horizontalSizer, 1, wxALL | wxEXPAND);
-	}
-
-	SetSizer(verticalSizer);
-	Layout();
-	SetBackgroundColour(RES_NODE_MAIN_COLOR);
-
-	titleText->Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
-	titleText->Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);
-	titleText->Bind(wxEVT_LEFT_UP, &GUINode::OnLeftMouseUp, this);
-	
-	Bind(wxEVT_RIGHT_UP, &GUINode::OnRightMouseUp, this);
-	Bind(wxEVT_LEFT_DOWN, &GUINode::OnLeftMouseDown, this);
-	Bind(wxEVT_LEFT_UP, &GUINode::OnLeftMouseUp, this);
-	Bind(wxEVT_MOTION, &GUINode::OnMouseMotion, this);
-	Bind(wxEVT_PAINT, &GUINode::OnPaint, this);
-
-	Refresh();
-
-}
-
-wxSize GUINode::DoGetBestSize() const
-{
-	return m_bestSize;
-}
-
-void GUINode::OnPaint(wxPaintEvent &event)
-{
-	UpdatePreview();
-	wxPaintDC dc(this);
-	/*wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
-
-	int height = GetSize().GetHeight() - 1;
-	int width = GetSize().GetWidth() - 1;
-	if (gc)
-	{
-		// Draw the body
-		gc->SetBrush(*wxTRANSPARENT_BRUSH);
-		gc->SetPen(wxPen(*wxBLACK, 1));
-		gc->DrawRectangle(0, 0, width, height);
-		
-		delete gc;
 	}
 	*/
-	event.Skip();
 }
 
 void GUINode::UpdatePreview()
 {
-	m_preview->Update();
+	//m_preview->Update();
 }
 
+void GUINode::Draw(wxGraphicsContext * gc)
+{
+	// Draw the body
+	gc->SetBrush(RES_NODE_MAIN_COLOR);
+	gc->SetPen(RES_NODE_MAIN_COLOR);
+	gc->DrawRectangle(m_rect.x, m_rect.y, m_rect.GetWidth(), m_rect.GetHeight());
+	// Draw the name
+	wxFont font = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT).Larger();
+	gc->SetFont(font, RES_NODE_TITLE_COLOR);
+	gc->DrawText(m_node->GetName(), m_rect.x+5, m_rect.y+5);
+	for (auto& p : m_params)
+		p->Draw(gc);
+}
+
+void GUINode::StartDrag(wxPoint startingPoint)
+{
+	m_offset = m_rect.GetPosition() - startingPoint;
+}
+
+void GUINode::Drag(wxPoint p)
+{
+	SetPosition(p + m_offset);
+}
+
+void GUINode::SetPosition(wxPoint p)
+{
+	m_rect.x = p.x;
+	m_rect.y = p.y;
+}
+
+wxRect GUINode::GetRect()
+{
+	return m_rect;
+}
+
+bool GUINode::IsInside(wxPoint p)
+{
+	return GetRect().Contains(p);
+}
+/*
 void GUINode::OnRightMouseUp(wxMouseEvent & event)
 {
 	((GraphView*)m_parent)->DeleteNode(m_node.get());
 	this->Destroy();
-}
-
-void GUINode::OnLeftMouseDown(wxMouseEvent& event)
-{
-	m_isDragging = true;
-	m_firstDraggingPoint = ScreenToClient(ClientToScreen(event.GetPosition()));
-	m_graphView->SetSelected(this);
-}
-
-void GUINode::OnLeftMouseUp(wxMouseEvent& event)
-{
-	m_isDragging = false;
-	// Send the event to the GraphView
-	event.SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())));
-	m_graphView->OnMouseUp(event);
-}
-
-void GUINode::OnMouseMotion(wxMouseEvent& event)
-{
-	if (m_isDragging && event.LeftIsDown()) {
-		SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())) - m_firstDraggingPoint);
-		m_graphView->Redraw();
-	}
-	else
-	{
-		// Send the event to the GraphView, in case he wants to handle a wiring event
-		event.SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())));
-		m_graphView->OnMouseMotion(event);
-	}
-}
-
+}*/
+/*
 void GUINode::OnPinLeftMouseUp(wxMouseEvent& event)
 {
 	// If we release the node when the mouse is above a pin, we just stop the dragging
@@ -162,3 +115,4 @@ void GUINode::OnPinMouseMotion(wxMouseEvent& event)
 		m_graphView->OnMouseMotion(event);
 	}
 }
+*/

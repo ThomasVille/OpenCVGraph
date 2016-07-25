@@ -2,14 +2,25 @@
 #include "GraphView.h"
 #include "GUINode.h"
 #include "Resources.h"
-wxIMPLEMENT_DYNAMIC_CLASS(GUINodeParam, wxControl);
+void GUINodeParam::Draw(wxGraphicsContext * gc)
+{
+	gc->SetBrush(*wxGREEN_BRUSH);
+	gc->SetPen(*wxGREEN_PEN);
+	gc->DrawRectangle(m_rect.x, m_rect.y, m_rect.GetWidth(), m_rect.GetHeight());
+}
+
+void GUINodeParam::Move(wxPoint offset)
+{
+	m_rect.x += offset.x;
+	m_rect.y += offset.y;
+}
 
 wxPoint GUINodeParam::GetPinPosition()
 {
-	if(m_parameter->GetParamType() == INPUT_PARAM) // Return the middle of the left border of the image
-		return m_graphView->ScreenToClient(ClientToScreen( pinImage->GetPosition()+wxPoint(0,pinImage->GetRect().GetHeight()/2) ));
-	else // Return the middle of the right border of the image
-		return m_graphView->ScreenToClient(ClientToScreen(pinImage->GetPosition() + wxPoint(pinImage->GetRect().GetWidth(), pinImage->GetRect().GetHeight() / 2)));
+	if(m_parameter->GetParamType() == INPUT_PARAM) // Return the middle of the left border
+		return m_rect.GetPosition() + wxPoint(0,m_rect.GetHeight()/2);
+	else // Return the middle of the right border
+		return m_rect.GetPosition() + wxPoint(m_rect.GetWidth(), m_rect.GetHeight() / 2);
 }
 
 std::shared_ptr<Parameter> GUINodeParam::GetParameter()
@@ -17,11 +28,19 @@ std::shared_ptr<Parameter> GUINodeParam::GetParameter()
 	return m_parameter;
 }
 
+GUINode * GUINodeParam::GetParent()
+{
+	return m_parent;
+}
+
+bool GUINodeParam::IsInside(wxPoint p)
+{
+	return m_rect.Contains(p);
+}
+
 void GUINodeParam::Init()
 {
-	m_graphView = (GraphView*)(((GUINode*)m_parent)->GetParent());
-
-	wxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
+	/*wxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
 	pinImage = new wxStaticText(this, wxID_ANY, "O", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
 
 	pinImage->SetBackgroundColour(RES_NODE_PIN_GOOD_STATE);
@@ -38,10 +57,6 @@ void GUINodeParam::Init()
 	}
 	nameText->SetForegroundColour(*wxWHITE);
 
-	SetSizer(sizer);
-	Layout();
-	SetBackgroundColour(RES_NODE_MAIN_COLOR);
-
 	nameText->Bind(wxEVT_MOTION, &GUINodeParam::OnNameMouseMotion, this);
 	nameText->Bind(wxEVT_LEFT_DOWN, &GUINodeParam::OnNameLeftMouseDown, this);
 	nameText->Bind(wxEVT_LEFT_UP, &GUINodeParam::OnNameLeftMouseUp, this);
@@ -53,14 +68,9 @@ void GUINodeParam::Init()
 	Bind(wxEVT_LEFT_DOWN, &GUINodeParam::OnLeftMouseDown, this);
 	Bind(wxEVT_LEFT_UP, &GUINodeParam::OnLeftMouseUp, this);
 	Bind(wxEVT_MOTION, &GUINodeParam::OnMouseMotion, this);
-	Bind(wxEVT_PAINT, &GUINodeParam::OnPaint, this);
+	Bind(wxEVT_PAINT, &GUINodeParam::OnPaint, this);*/
 }
-
-wxSize GUINodeParam::DoGetBestSize() const
-{
-	return wxSize(100,100);
-}
-
+/*
 void GUINodeParam::OnLeftMouseDown(wxMouseEvent& event)
 {
 	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(ClientToScreen(event.GetPosition())));
@@ -140,3 +150,4 @@ void GUINodeParam::OnNameMouseMotion(wxMouseEvent & event)
 	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(nameText->ClientToScreen(event.GetPosition())));
 	((GUINode*)m_parent)->OnMouseMotion(event);
 }
+*/

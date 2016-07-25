@@ -8,15 +8,14 @@
 #include "Preview\PreviewPanel.h"
 
 class GraphView;
-class GUINode : public wxControl
+class GUINode
 {
 public:
 	GUINode():
-		wxControl(),
 		m_node(std::make_shared<Node>())
 	{ Init(); };
-	GUINode(wxWindow *parent, std::shared_ptr<Node> node):
-		wxControl(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE, wxDefaultValidator),
+	GUINode(GraphView *parent, std::shared_ptr<Node> node):
+		m_graphView(parent),
 		m_node(node)
 	{
 		Init();
@@ -28,39 +27,39 @@ public:
 
 	void UpdatePreview();
 
+	void Draw(wxGraphicsContext *gc);
+
+	void StartDrag(wxPoint startingPoint);
+
+	void Drag(wxPoint p);
+
+	void SetPosition(wxPoint p);
+
+	wxRect GetRect();
+
+	bool IsInside(wxPoint p);
+
 	void OnRightMouseUp(wxMouseEvent& event);
-
-	void OnLeftMouseDown(wxMouseEvent&);
-	void OnLeftMouseUp(wxMouseEvent&);
-	void OnMouseMotion(wxMouseEvent& event);
-
-	void OnPinLeftMouseUp(wxMouseEvent&);
-	void OnPinMouseMotion(wxMouseEvent&);
 protected:
 	void Init();
-	virtual wxSize DoGetBestSize() const;
 
 	PreviewPanel* m_preview;
 
-	// Draws the node's body
-	void OnPaint(wxPaintEvent&);
+	wxRect m_rect;
+	wxPoint m_offset;
 
 	// Best size for the node according to its content
 	wxSize m_bestSize;
 	int m_maxParamsPerColumn;
 
-	// Dragging stuff
-	bool m_isDragging = false;
-	wxPoint m_firstDraggingPoint;
-
 	// The node to represent
 	std::shared_ptr<Node> m_node;
+
+	std::vector<std::shared_ptr<GUINodeParam>> m_params;
 
 	// Pointer to the GraphView
 	// For convenience
 	GraphView* m_graphView;
-private:
-	wxDECLARE_DYNAMIC_CLASS(GUINode);
 };
 
 #endif
