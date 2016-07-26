@@ -7,7 +7,12 @@ void GUINodeParam::Draw(wxGraphicsContext * gc)
 	wxSize fontSize = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT).GetPixelSize();
 	// Draw the pin and the param name
 	gc->SetPen(wxPen(wxColor(255, 255, 255), 2));
-	gc->SetBrush(*wxTRANSPARENT_BRUSH);
+	// If the pin is connected, fill the pin
+	if(m_parameter->HasEntry())
+		gc->SetBrush(wxBrush(wxColor(255, 255, 255)));
+	else
+		gc->SetBrush(*wxTRANSPARENT_BRUSH);
+
 	// Draw the pin
 	DrawCircle(*gc, GetPinPosition(), m_rect.GetHeight() / 6);
 

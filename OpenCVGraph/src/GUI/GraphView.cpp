@@ -22,6 +22,7 @@ void GraphView::OnLeftMouseDown(wxMouseEvent& event)
 					m_mouseWiring = true;
 					m_linkState = END_MISSING;
 					inPin = true;
+					break;
 				}
 			// If we are not in a pin, drag the node
 			if (!inPin) {
@@ -34,26 +35,27 @@ void GraphView::OnLeftMouseDown(wxMouseEvent& event)
 
 void GraphView::OnLeftMouseUp(wxMouseEvent& event)
 {
-	m_isDragging = false;
-	m_mouseWiring = false;
-
 	// Check if we are inside a pin
-	if (isWiring()) {
-		for (auto node : m_GUINodes)
-			if (node->IsInside(event.GetPosition())) {
-				for (auto& p : node->GetParams())
-					if (p->IsInsidePin(event.GetPosition())) {
-						if(p->GetParameter()->IsCompatible(GetSelectedPin()->GetParameter()))
-							AddWire(p, GetSelectedPin());
-
-						Redraw();
-						return;
+	if (isWiring()) { // If we are wiring
+		bool nodeFound = false;
+		for (auto node : m_GUINodes) { // Iterate the nodes
+			if (node->IsInside(event.GetPosition())) { // When we found the node we are in
+				for (auto& p : node->GetParams()) // Iterate the params
+					if (p->IsInsidePin(event.GetPosition())) { // When we found the param we are in
+						if (p->GetParameter()->IsCompatible(GetSelectedPin()->GetParameter())) // Check if this param is compatible with the one we selected earlier
+							AddWire(p, GetSelectedPin()); // If so, add the wire
+						break; // When we found the pin we are in, no need to continue
 					}
+				nodeFound = true; // Same thing here, we've found the node
 			}
+			if (nodeFound)
+				break;
+		}
 	}
 	
-
-	
+	m_isDragging = false;
+	m_mouseWiring = false;
+	Redraw();
 }
 
 void GraphView::OnMouseMotion(wxMouseEvent& event)
@@ -61,15 +63,30 @@ void GraphView::OnMouseMotion(wxMouseEvent& event)
 	// If we are dragging a node around
 	if (m_isDragging && event.LeftIsDown()) {
 		m_selectedNode->Drag(event.GetPosition());
-		Redraw();
 	}
-	else
-	{
+	else if (isWiring()) {
+		// Check if we are inside a pin
+		bool nodeFound = false;
+		for (auto node : m_GUINodes) {
+			if (node->IsInside(event.GetPosition())) {
+				for (auto& p : node->GetParams())
+					if (p->IsInsidePin(event.GetPosition())) {
+						// Check if the two parameters are compatible
+						if (p->GetParameter()->IsCompatible(GetSelectedPin()->GetParameter()))
+							SetLinkState(LINK_OK);
+						else
+							SetLinkState(ERROR_SAME_WAY);
+					}
+				// We've found the node we are in, so don't try the others
+				nodeFound = true;
+			}
+			if (nodeFound)
+				break;
+		}
 		m_mousePosition = event.GetPosition();
-		// Redraw the graph only if we are dragging a link
-		if (isWiring())
-			Redraw();
 	}
+
+	Redraw();
 }
 
 void GraphView::Init()
@@ -100,8 +117,8 @@ void GraphView::OnPaint(wxPaintEvent& event)
 		// Draw the background
 		wxDouble width, height;
 		gc->GetSize(&width, &height);
-		gc->SetPen(*wxWHITE_PEN);
-		gc->SetBrush(*wxWHITE_BRUSH);
+		gc->SetPen(wxPen(RES_GRAPHVIEW_BACKGROUND, 1));
+		gc->SetBrush(wxBrush(RES_GRAPHVIEW_BACKGROUND));
 		gc->DrawRectangle(0, 0, width, height);
 		// Display the simulation status
 		gc->SetFont(font, *wxBLACK);
@@ -131,7 +148,7 @@ void GraphView::OnPaint(wxPaintEvent& event)
 		}
 		// Draw the wires
 		gc->SetBrush(*wxTRANSPARENT_BRUSH);
-		gc->SetPen(wxPen(*wxBLACK, 2));
+		gc->SetPen(wxPen(*wxWHITE, 2));
 		wxGraphicsPath path = gc->CreatePath();
 		for (auto wire : m_wires) {
 			path.MoveToPoint(wire.first->GetPinPosition());
@@ -166,7 +183,7 @@ void GraphView::UpdateRealtime()
 
 bool GraphView::isWiring()
 {
-	return m_selectedPin != nullptr ? true : false;
+	return m_mouseWiring;
 }
 
 std::shared_ptr<GUINodeParam> GraphView::GetSelectedPin()
