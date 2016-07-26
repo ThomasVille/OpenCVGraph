@@ -4,9 +4,25 @@
 #include "Resources.h"
 void GUINodeParam::Draw(wxGraphicsContext * gc)
 {
-	gc->SetBrush(*wxGREEN_BRUSH);
-	gc->SetPen(*wxGREEN_PEN);
-	gc->DrawRectangle(m_rect.x, m_rect.y, m_rect.GetWidth(), m_rect.GetHeight());
+	wxSize fontSize = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT).GetPixelSize();
+	// Draw the pin and the param name
+	gc->SetPen(wxPen(wxColor(255, 255, 255), 2));
+	gc->SetBrush(*wxTRANSPARENT_BRUSH);
+	if (m_parameter->GetParamType() == INPUT_PARAM)
+	{
+		gc->DrawText(m_parameter->GetName(), m_rect.x + m_rect.GetWidth() / 6 + m_rect.GetHeight() / 2, m_rect.y + m_rect.GetHeight() / 2 - fontSize.GetY());
+
+		gc->DrawEllipse(m_rect.x + m_rect.GetWidth() / 6,
+			m_rect.y + m_rect.GetHeight() / 3,
+			m_rect.GetHeight() / 3, m_rect.GetHeight() / 3);
+	}
+	else {
+		gc->DrawText(m_parameter->GetName(), m_rect.x, m_rect.y + m_rect.GetHeight()/2 - fontSize.GetY());
+		gc->DrawEllipse(m_rect.x + m_rect.GetWidth() - m_rect.GetWidth() / 3,
+			m_rect.y + m_rect.GetHeight() / 3,
+			m_rect.GetHeight() / 3, m_rect.GetHeight() / 3);
+	}
+
 }
 
 void GUINodeParam::Move(wxPoint offset)
