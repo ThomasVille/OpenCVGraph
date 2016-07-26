@@ -8,6 +8,7 @@
 class GraphView;
 class GUINode;
 enum LinkState { ERROR_SAME_WAY, LINK_OK, END_MISSING };
+void DrawCircle(wxGraphicsContext&, wxPoint, int);
 class GUINodeParam
 {
 public:
@@ -24,8 +25,9 @@ public:
 
 	void Move(wxPoint offset);
 
-	// Return the position of the pin in *GraphView* coordinates
 	wxPoint GetPinPosition();
+
+	bool IsInsidePin(wxPoint p);
 
 	std::shared_ptr<Parameter> GetParameter();
 
@@ -36,6 +38,8 @@ public:
 
 protected:
 	void Init();
+
+
 
 	/*void OnLeftMouseDown(wxMouseEvent&);
 	void OnLeftMouseUp(wxMouseEvent&);

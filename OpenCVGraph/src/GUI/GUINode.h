@@ -21,6 +21,9 @@ public:
 	inline std::shared_ptr<Node> GetNode() {
 		return m_node;
 	}
+	inline std::vector<std::shared_ptr<GUINodeParam>> GetParams() {
+		return m_params;
+	}
 
 	void UpdatePreview();
 
@@ -35,6 +38,7 @@ public:
 	wxRect GetRect();
 
 	bool IsInside(wxPoint p);
+
 
 	void OnRightMouseUp(wxMouseEvent& event);
 protected:

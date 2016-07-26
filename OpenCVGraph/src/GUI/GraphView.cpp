@@ -12,9 +12,22 @@ void GraphView::OnLeftMouseDown(wxMouseEvent& event)
 	// Check if we are inside a node and select it
 	for(auto node : m_GUINodes)
 		if (node->IsInside(event.GetPosition())) {
-			m_isDragging = true;
 			SetSelected(node);
-			node->StartDrag(event.GetPosition());
+			// Check if we are clicking on a pin
+			bool inPin = false;
+			for(auto& p : node->GetParams())
+				if (p->IsInsidePin(event.GetPosition())) {
+					m_mouseWiringStartingPoint = p->GetPinPosition();
+					m_selectedPin = p;
+					m_mouseWiring = true;
+					m_linkState = END_MISSING;
+					inPin = true;
+				}
+			// If we are not in a pin, drag the node
+			if (!inPin) {
+				m_isDragging = true;
+				node->StartDrag(event.GetPosition());
+			}
 			break;
 		}
 }
@@ -23,8 +36,24 @@ void GraphView::OnLeftMouseUp(wxMouseEvent& event)
 {
 	m_isDragging = false;
 	m_mouseWiring = false;
-	m_selectedPin = nullptr;
-	Redraw();
+
+	// Check if we are inside a pin
+	if (isWiring()) {
+		for (auto node : m_GUINodes)
+			if (node->IsInside(event.GetPosition())) {
+				for (auto& p : node->GetParams())
+					if (p->IsInsidePin(event.GetPosition())) {
+						if(p->GetParameter()->IsCompatible(GetSelectedPin()->GetParameter()))
+							AddWire(p, GetSelectedPin());
+
+						Redraw();
+						return;
+					}
+			}
+	}
+	
+
+	
 }
 
 void GraphView::OnMouseMotion(wxMouseEvent& event)
@@ -41,15 +70,6 @@ void GraphView::OnMouseMotion(wxMouseEvent& event)
 		if (isWiring())
 			Redraw();
 	}
-}
-
-void GraphView::OnPinLeftMouseDown(GUINodeParam* param, wxPoint pos)
-{
-	m_mouseWiringStartingPoint = pos;
-	m_selectedPin = param;
-	m_mouseWiring = true;
-	m_linkState = END_MISSING;
-	//ContinuousRefresh(true);
 }
 
 void GraphView::Init()
@@ -149,22 +169,22 @@ bool GraphView::isWiring()
 	return m_selectedPin != nullptr ? true : false;
 }
 
-GUINodeParam * GraphView::GetSelectedPin()
+std::shared_ptr<GUINodeParam> GraphView::GetSelectedPin()
 {
 	return m_selectedPin;
 }
 
-void GraphView::AddWire(GUINodeParam * first, GUINodeParam * second)
+void GraphView::AddWire(shared_ptr<GUINodeParam> first, shared_ptr<GUINodeParam> second)
 {
 	if (first->GetParameter()->GetParamType() == INPUT_PARAM) {
 		// Add the graphical wire
-		m_wires.push_back(std::pair<GUINodeParam*, GUINodeParam*>(second, first));
+		m_wires.push_back(std::pair<shared_ptr<GUINodeParam>, shared_ptr<GUINodeParam>>(second, first));
 		// Add the link between the two nodes
 		second->GetParameter()->AddLink(first->GetParameter());
 		first->GetParameter()->AddLink(second->GetParameter());
 	}
 	if (first->GetParameter()->GetParamType() == OUTPUT_PARAM) {
-		m_wires.push_back(std::pair<GUINodeParam*, GUINodeParam*>(first, second));
+		m_wires.push_back(std::pair<shared_ptr<GUINodeParam>, shared_ptr<GUINodeParam>>(first, second));
 		// Add the link between the two nodes
 		first->GetParameter()->AddLink(second->GetParameter());
 		second->GetParameter()->AddLink(first->GetParameter());
@@ -228,7 +248,7 @@ void GraphView::DeleteWiresConnectedTo(GUINodeParam * pin)
 	pin->GetParameter()->RemoveAllLinks();
 	// Delete the wires
 	for (int i = 0; i < m_wires.size(); i++) {
-		if (m_wires[i].first == pin || m_wires[i].second == pin) {
+		if (m_wires[i].first.get() == pin || m_wires[i].second.get() == pin) {
 			m_wires.erase(m_wires.begin() + i);
 			i--;
 		}

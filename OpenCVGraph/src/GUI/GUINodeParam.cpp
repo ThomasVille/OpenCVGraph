@@ -8,20 +8,14 @@ void GUINodeParam::Draw(wxGraphicsContext * gc)
 	// Draw the pin and the param name
 	gc->SetPen(wxPen(wxColor(255, 255, 255), 2));
 	gc->SetBrush(*wxTRANSPARENT_BRUSH);
-	if (m_parameter->GetParamType() == INPUT_PARAM)
-	{
-		gc->DrawText(m_parameter->GetName(), m_rect.x + m_rect.GetWidth() / 6 + m_rect.GetHeight() / 2, m_rect.y + m_rect.GetHeight() / 2 - fontSize.GetY());
+	// Draw the pin
+	DrawCircle(*gc, GetPinPosition(), m_rect.GetHeight() / 6);
 
-		gc->DrawEllipse(m_rect.x + m_rect.GetWidth() / 6,
-			m_rect.y + m_rect.GetHeight() / 3,
-			m_rect.GetHeight() / 3, m_rect.GetHeight() / 3);
-	}
-	else {
+	// Draw the name
+	if (m_parameter->GetParamType() == INPUT_PARAM)
+		gc->DrawText(m_parameter->GetName(), m_rect.x + m_rect.GetWidth() / 6 + m_rect.GetHeight() / 2, m_rect.y + m_rect.GetHeight() / 2 - fontSize.GetY());
+	else
 		gc->DrawText(m_parameter->GetName(), m_rect.x, m_rect.y + m_rect.GetHeight()/2 - fontSize.GetY());
-		gc->DrawEllipse(m_rect.x + m_rect.GetWidth() - m_rect.GetWidth() / 3,
-			m_rect.y + m_rect.GetHeight() / 3,
-			m_rect.GetHeight() / 3, m_rect.GetHeight() / 3);
-	}
 
 }
 
@@ -33,10 +27,15 @@ void GUINodeParam::Move(wxPoint offset)
 
 wxPoint GUINodeParam::GetPinPosition()
 {
-	if(m_parameter->GetParamType() == INPUT_PARAM) // Return the middle of the left border
-		return m_rect.GetPosition() + wxPoint(0,m_rect.GetHeight()/2);
+	if (m_parameter->GetParamType() == INPUT_PARAM) // Return the middle of the left border
+		return m_rect.GetPosition() + wxPoint(m_rect.GetSize().GetWidth() / 5, m_rect.GetSize().GetHeight() / 2);
 	else // Return the middle of the right border
-		return m_rect.GetPosition() + wxPoint(m_rect.GetWidth(), m_rect.GetHeight() / 2);
+		return m_rect.GetPosition() + wxPoint(4 * m_rect.GetSize().GetWidth() / 5, m_rect.GetSize().GetHeight() / 2);
+}
+
+bool GUINodeParam::IsInsidePin(wxPoint p)
+{
+	return pow(GetPinPosition().x - p.x, 2) + pow(GetPinPosition().y - p.y, 2) < pow(m_rect.GetSize().GetHeight() / 2, 2);
 }
 
 std::shared_ptr<Parameter> GUINodeParam::GetParameter()
@@ -111,24 +110,6 @@ void GUINodeParam::OnPinRightMouseUp(wxMouseEvent & event)
 	((GraphView*)((GUINode*)m_parent)->GetParent())->DeleteWiresConnectedTo(this);
 }
 
-void GUINodeParam::OnPinLeftMouseDown(wxMouseEvent& event)
-{
-	// Convert from pinImage coordinates to GUINode coordinates before sending it to GUINode
-	m_graphView->OnPinLeftMouseDown(this, GetPinPosition());
-}
-
-void GUINodeParam::OnPinLeftMouseUp(wxMouseEvent& event)
-{
-	// If we are wiring two pins together (and thus, this is a second one)
-	// We add the wire between the twos after checking if it's possible
-	if (m_graphView->isWiring()) {
-		if(m_parameter->IsCompatible(m_graphView->GetSelectedPin()->GetParameter()))
-			m_graphView->AddWire(this, m_graphView->GetSelectedPin());
-	}
-	// Convert from pinImage coordinates to GUINode coordinates before sending it to GUINode
-	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(pinImage->ClientToScreen(event.GetPosition())));
-	((GUINode*)m_parent)->OnPinLeftMouseUp(event);
-}
 
 void GUINodeParam::OnPinMouseMotion(wxMouseEvent& event)
 {
@@ -167,3 +148,8 @@ void GUINodeParam::OnNameMouseMotion(wxMouseEvent & event)
 	((GUINode*)m_parent)->OnMouseMotion(event);
 }
 */
+
+void DrawCircle(wxGraphicsContext& gc, wxPoint p, int r)
+{
+	gc.DrawEllipse(p.x - r, p.y - r, 2*r, 2*r);
+}

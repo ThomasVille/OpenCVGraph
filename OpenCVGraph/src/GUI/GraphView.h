@@ -43,10 +43,10 @@ public:
 	// Are we wiring a pin to another at the moment ?
 	bool isWiring();
 	// Return the pin we selected when we began to wire a pin to another
-	GUINodeParam* GetSelectedPin();
+	std::shared_ptr<GUINodeParam> GetSelectedPin();
 	// Add a wire between to pins
 	// Called from a GUINodeParam when it accepts a connection with another pin
-	void AddWire(GUINodeParam* first, GUINodeParam* second);
+	void AddWire(std::shared_ptr<GUINodeParam> first, std::shared_ptr<GUINodeParam> second);
 	void SetLinkState(LinkState state);
 
 	// Set the selected node
@@ -77,7 +77,7 @@ protected:
 
 	wxPoint m_mouseWiringStartingPoint;
 	// Selected pin when we first left clicked on a pin and began dragging
-	GUINodeParam* m_selectedPin = nullptr;
+	std::shared_ptr<GUINodeParam> m_selectedPin;
 	GUINode* m_selectedNode = nullptr;
 	wxPoint m_mousePosition;
 	bool m_mouseWiring = false;
@@ -86,7 +86,7 @@ protected:
 	bool m_isDragging = false;
 
 
-	std::vector<std::pair<GUINodeParam*, GUINodeParam*>> m_wires;
+	std::vector<std::pair<std::shared_ptr<GUINodeParam>, std::shared_ptr<GUINodeParam>>> m_wires;
 
 	GraphEngine m_graphEngine;
 	bool m_realtimeStarted = false;
