@@ -11,9 +11,6 @@ class GraphView;
 class GUINode
 {
 public:
-	GUINode():
-		m_node(std::make_shared<Node>())
-	{ Init(); };
 	GUINode(GraphView *parent, std::shared_ptr<Node> node):
 		m_graphView(parent),
 		m_node(node)
