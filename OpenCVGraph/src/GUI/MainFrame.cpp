@@ -11,6 +11,8 @@ MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
 	m_nodesProvider = make_shared<NodesProvider>();
 	m_nodesProvider->Init();
 
+	m_previewPanel = new PreviewPanel(this);
+
 	SetIcon(wxICON(sample));
 
 	// tell wxAuiManager to manage this frame
@@ -99,7 +101,7 @@ void MyFrame::CreateGraphNotebook()
 
 	wxBitmap page_bmp = wxArtProvider::GetBitmap(wxART_NORMAL_FILE, wxART_OTHER, wxSize(16, 16));
 
-	m_graphView = new GraphView(m_graphNotebook, wxID_ANY);
+	m_graphView = new GraphView(m_graphNotebook, wxID_ANY, m_previewPanel);
 	m_graphNotebook->AddPage(m_graphView, wxT("Default Graph"), false, page_bmp);
 	m_graphNotebook->SetPageToolTip(0, "Welcome to OpenCVGraph");
 
@@ -117,12 +119,11 @@ void MyFrame::CreatePanes()
 	m_mgr.AddPane(new wxTextCtrl(this, wxID_ANY, "Here goes the file explorer", wxPoint(0, 0), wxSize(200, 90), wxNO_BORDER | wxTE_MULTILINE),
 		wxAuiPaneInfo().Name(wxT("file_explorer")).Caption(wxT("File explorer")).
 		Left().Row(0).Position(0).Hide());
+
 	m_mgr.AddPane(m_nodesTree, wxAuiPaneInfo().Name(wxT("available_nodes")).Caption(wxT("Available nodes")).
 		Left().Row(1).Position(0));
 
-	m_mgr.AddPane(new wxTextCtrl(this, wxID_ANY, "Here goes the nodes properties", wxPoint(0, 0), wxSize(200, 90), wxNO_BORDER | wxTE_MULTILINE),
-		wxAuiPaneInfo().Name(wxT("node_properties")).Caption(wxT("Node properties")).
-		Right().Row(0).Position(0));
+	m_mgr.AddPane(m_previewPanel, wxAuiPaneInfo().Name(wxT("preview_panel")).Caption(wxT("Preview panel")).Right().Row(0).Position(0).BestSize(wxSize(200, 200)));
 
 	m_mgr.AddPane(new wxTextCtrl(this, wxID_ANY, "Here goes the preview images", wxPoint(0, 0), wxSize(90, 200), wxNO_BORDER | wxTE_MULTILINE),
 		wxAuiPaneInfo().Name(wxT("preview_images")).Caption(wxT("Preview")).
@@ -164,6 +165,16 @@ void MyFrame::OnStartSimulation(wxCommandEvent & event)
 	else if (event.GetId() == TB_NEW_FILE) {
 		wxLogDebug("OPEN !");
 	}
+}
+
+void MyFrame::OnNodeSelected(std::shared_ptr<Node> node)
+{
+	m_previewPanel->SetNode(node);
+}
+
+void MyFrame::OnDeselectNode()
+{
+	m_previewPanel->DeselectNode();
 }
 
 void MyFrame::SetSimulationStatus(std::string msg)

@@ -9,18 +9,20 @@ e.g. when the mouse is released on a pin, it's the GUINodeParam parent which sho
 #include <wx/wx.h>
 #include "GUINode.h"
 #include "../GraphEngine.h"
-
+class PreviewPanel;
 class GraphView : public wxScrolledWindow
 {
 public:
 	GraphView() : wxScrolledWindow(), m_graphEngine(this) { Init(); }
 	GraphView(wxWindow *parent,
 		wxWindowID winid,
+		PreviewPanel* previewPanel,
 		const wxPoint& pos = wxDefaultPosition,
 		const wxSize& size = wxDefaultSize,
 		long style = 0) :
 		wxScrolledWindow(parent, winid, pos, size, style),
-		m_graphEngine(this)
+		m_graphEngine(this),
+		m_previewPanel(previewPanel)
 	{
 		Init();
 	}
@@ -46,6 +48,8 @@ public:
 
 	// Set the selected node
 	void SetSelected(std::shared_ptr<GUINode> node);
+	// Deselect any node previously selected
+	void DeselectNode();
 
 	void AddNode(std::shared_ptr<Node> node);
 	// Delete the node
@@ -66,6 +70,7 @@ protected:
 	void OnPaint(wxPaintEvent&);
 	// Proceed to a new RunOneShot if we are in realtime mode
 	void UpdateRealtime();
+
 	// List of all the children GUINodes
 	std::vector<std::shared_ptr<GUINode>> m_GUINodes;
 
@@ -86,6 +91,8 @@ protected:
 	bool m_realtimeStarted = false;
 	std::string m_simulationStatus;
 	std::shared_ptr<Node> m_entryPoint;
+
+	PreviewPanel* m_previewPanel;
 private:
 	wxDECLARE_DYNAMIC_CLASS(GraphView);
 };

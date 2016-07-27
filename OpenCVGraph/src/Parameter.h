@@ -70,14 +70,14 @@ public:
 	void AddLink(std::shared_ptr<Parameter> dstParam);
 
 	void RemoveLinksTo(std::shared_ptr<Node> node) {
-		for(int i = 0; i < m_links.size(); i++)
+		for(unsigned int i = 0; i < m_links.size(); i++)
 			if (m_links[i]->GetParent() == node.get()) {
 				m_links.erase(m_links.begin() + i);
 				i--;
 			}
 	}
 	void RemoveLinksTo(Parameter* param) {
-		for (int i = 0; i < m_links.size(); i++)
+		for (unsigned int i = 0; i < m_links.size(); i++)
 			if (m_links[i].get() == param) {
 				m_links.erase(m_links.begin() + i);
 				i--;

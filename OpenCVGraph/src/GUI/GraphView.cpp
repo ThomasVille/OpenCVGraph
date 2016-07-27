@@ -2,17 +2,18 @@
 #include <wx/dcbuffer.h>
 #include "MainFrame.h"
 #include "Resources.h"
+#include "Preview\PreviewPanel.h"
 using namespace std;
 wxIMPLEMENT_DYNAMIC_CLASS(GraphView, wxControl);
 
 void GraphView::OnLeftMouseDown(wxMouseEvent& event)
 {
-	// Remove previously selected node
-	SetSelected(nullptr);
 	// Check if we are inside a node and select it
+	bool nodeFound = false;
 	for(auto node : m_GUINodes)
 		if (node->IsInside(event.GetPosition())) {
 			SetSelected(node);
+			nodeFound = true;
 			// Check if we are clicking on a pin
 			bool inPin = false;
 			for(auto& p : node->GetParams())
@@ -31,6 +32,8 @@ void GraphView::OnLeftMouseDown(wxMouseEvent& event)
 			}
 			break;
 		}
+	if (!nodeFound)
+		DeselectNode();
 }
 
 void GraphView::OnLeftMouseUp(wxMouseEvent& event)
@@ -61,7 +64,6 @@ void GraphView::OnLeftMouseUp(wxMouseEvent& event)
 void GraphView::OnRightMouseUp(wxMouseEvent& event)
 {
 	// Check if we are inside a node or a pin
-	bool nodeFound = false;
 	for (auto node : m_GUINodes) {
 		if (node->IsInside(event.GetPosition())) {
 			for (auto& p : node->GetParams())
@@ -195,8 +197,10 @@ void GraphView::OnPaint(wxPaintEvent& event)
 
 void GraphView::UpdateRealtime()
 {
-	if (m_realtimeStarted)
+	if (m_realtimeStarted) {
 		m_graphEngine.RunOneShot(m_entryPoint.get());
+		m_previewPanel->Update();
+	}
 }
 
 bool GraphView::isWiring()
@@ -235,6 +239,14 @@ void GraphView::SetLinkState(LinkState state)
 void GraphView::SetSelected(shared_ptr<GUINode> node)
 {
 	m_selectedNode = node;
+	// Set the node in the preview panel
+	m_previewPanel->SetNode(node->GetNode());
+}
+
+void GraphView::DeselectNode()
+{
+	m_selectedNode.reset();
+	m_previewPanel->DeselectNode();
 }
 
 void GraphView::AddNode(shared_ptr<Node> node)
@@ -250,7 +262,7 @@ void GraphView::AddNode(shared_ptr<Node> node)
 void GraphView::DeleteNode(shared_ptr<GUINode> node)
 {
 	// Delete all the wires related to this node
-	for (int i = 0; i < m_wires.size(); i++) {
+	for (unsigned int i = 0; i < m_wires.size(); i++) {
 		// If either end of the wire is the node we are deleting
 		if (m_wires[i].first->GetParent() == node.get() ||
 			m_wires[i].second->GetParent() == node.get()) {
@@ -260,7 +272,7 @@ void GraphView::DeleteNode(shared_ptr<GUINode> node)
 		}
 	}
 	// Delete the associated GUINode
-	for(int i = 0; i < m_GUINodes.size(); i++)
+	for(unsigned int i = 0; i < m_GUINodes.size(); i++)
 		if (m_GUINodes[i] == node) {
 			m_GUINodes.erase(m_GUINodes.begin() + i);
 			break;
@@ -282,7 +294,7 @@ void GraphView::DeleteWiresConnectedTo(std::shared_ptr<GUINodeParam> pin)
 	// Delete the links
 	pin->GetParameter()->RemoveAllLinks();
 	// Delete the wires
-	for (int i = 0; i < m_wires.size(); i++) {
+	for (unsigned int i = 0; i < m_wires.size(); i++) {
 		if (m_wires[i].first == pin || m_wires[i].second == pin) {
 			m_wires.erase(m_wires.begin() + i);
 			i--;

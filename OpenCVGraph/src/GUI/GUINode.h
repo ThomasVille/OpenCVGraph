@@ -39,12 +39,8 @@ public:
 
 	bool IsInside(wxPoint p);
 
-
-	void OnRightMouseUp(wxMouseEvent& event);
 protected:
 	void Init();
-
-	PreviewPanel* m_preview;
 
 	wxRect m_rect;
 	wxPoint m_offset;

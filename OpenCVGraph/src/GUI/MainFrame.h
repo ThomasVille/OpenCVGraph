@@ -9,6 +9,8 @@
 #include "NodesTree.h"
 #include "../GraphEngine.h"
 #include "../NodesProvider.h"
+#include "../Node.h"
+#include "Preview\PreviewPanel.h"
 class MyFrame : public wxFrame
 {
 public:
@@ -29,6 +31,9 @@ public:
 	void OnAbout(wxCommandEvent& event);
 	void OnStartSimulation(wxCommandEvent& event);
 
+	void OnNodeSelected(std::shared_ptr<Node> node);
+	void OnDeselectNode();
+
 	void SetSimulationStatus(std::string msg);
 
 private:
@@ -37,6 +42,7 @@ private:
 	wxAuiNotebook *m_graphNotebook;
 	wxTreeCtrl* m_nodesTree;
 	GraphView* m_graphView;
+	PreviewPanel* m_previewPanel;
 
 	// Default style & theme for the notebooks
 	long m_notebookStyle;
