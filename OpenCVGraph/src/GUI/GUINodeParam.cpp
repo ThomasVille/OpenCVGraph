@@ -90,69 +90,6 @@ void GUINodeParam::Init()
 	Bind(wxEVT_MOTION, &GUINodeParam::OnMouseMotion, this);
 	Bind(wxEVT_PAINT, &GUINodeParam::OnPaint, this);*/
 }
-/*
-void GUINodeParam::OnLeftMouseDown(wxMouseEvent& event)
-{
-	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(ClientToScreen(event.GetPosition())));
-	((GUINode*)m_parent)->OnLeftMouseDown(event);
-}
-
-void GUINodeParam::OnLeftMouseUp(wxMouseEvent& event)
-{
-	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(ClientToScreen(event.GetPosition())));
-	((GUINode*)m_parent)->OnLeftMouseUp(event);
-
-}
-
-void GUINodeParam::OnMouseMotion(wxMouseEvent& event)
-{
-	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(ClientToScreen(event.GetPosition())));
-	((GUINode*)m_parent)->OnMouseMotion(event);
-}
-
-void GUINodeParam::OnPinRightMouseUp(wxMouseEvent & event)
-{
-	((GraphView*)((GUINode*)m_parent)->GetParent())->DeleteWiresConnectedTo(this);
-}
-
-
-void GUINodeParam::OnPinMouseMotion(wxMouseEvent& event)
-{
-	if (m_graphView->isWiring()) { // If we are wiring right now, check the link and tell the GraphView if it is allowed
-		// If the two pins are not compatible, error
-		if (!m_parameter->IsCompatible(m_graphView->GetSelectedPin()->GetParameter())) {
-			m_graphView->SetLinkState(ERROR_SAME_WAY);
-		}
-		else {
-			m_graphView->SetLinkState(LINK_OK);
-		}
-	}
-	// Convert from pinImage coordinates to GUINode coordinates before sending it to GUINode
-	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(pinImage->ClientToScreen(event.GetPosition())));
-	((GUINode*)m_parent)->OnPinMouseMotion(event);
-}
-
-void GUINodeParam::OnNameLeftMouseDown(wxMouseEvent & event)
-{
-	// Convert from nameText coordinates to GUINode coordinates before sending it to GUINode
-	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(nameText->ClientToScreen(event.GetPosition())));
-	((GUINode*)m_parent)->OnLeftMouseDown(event);
-}
-
-void GUINodeParam::OnNameLeftMouseUp(wxMouseEvent & event)
-{
-	// Convert from nameText coordinates to GUINode coordinates before sending it to GUINode
-	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(nameText->ClientToScreen(event.GetPosition())));
-	((GUINode*)m_parent)->OnLeftMouseUp(event);
-}
-
-void GUINodeParam::OnNameMouseMotion(wxMouseEvent & event)
-{
-	// Convert from nameText coordinates to GUINode coordinates before sending it to GUINode
-	event.SetPosition(((GUINode*)m_parent)->ScreenToClient(nameText->ClientToScreen(event.GetPosition())));
-	((GUINode*)m_parent)->OnMouseMotion(event);
-}
-*/
 
 void DrawCircle(wxGraphicsContext& gc, wxPoint p, int r)
 {

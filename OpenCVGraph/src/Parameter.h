@@ -69,9 +69,9 @@ public:
 	*/
 	void AddLink(std::shared_ptr<Parameter> dstParam);
 
-	void RemoveLinksTo(Node* node) {
+	void RemoveLinksTo(std::shared_ptr<Node> node) {
 		for(int i = 0; i < m_links.size(); i++)
-			if (m_links[i]->GetParent() == node) {
+			if (m_links[i]->GetParent() == node.get()) {
 				m_links.erase(m_links.begin() + i);
 				i--;
 			}
@@ -85,7 +85,7 @@ public:
 	}
 
 	// Remove all the links to other nodes
-	// When adding default values, don't forget to set it there too
+	// When adding default value, don't forget to set it there too
 	void RemoveAllLinks() {
 		// Remove the links in the other nodes
 		for (auto l : m_links) { // Iterates through the links of this parameter (input : 0..1, output : 0..n)

@@ -51,10 +51,10 @@ void GraphEngine::AddNode(std::shared_ptr<Node> node)
 	node->GetInitializer()(node->GetOutputs());
 }
 
-void GraphEngine::DeleteNode(Node * node)
+void GraphEngine::DeleteNode(shared_ptr<Node> node)
 {
-	for(int i = 0; i < m_nodes.size(); i++)
-		if (m_nodes[i].get() == node) {
+	for(unsigned int i = 0; i < m_nodes.size(); i++)
+		if (m_nodes[i] == node) {
 			m_nodes.erase(m_nodes.begin() + i);
 			break;
 		}

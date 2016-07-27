@@ -66,7 +66,7 @@ public:
 		m_inputs[dstParam]->AddLink(srcParam);
 	}
 
-	void RemoveLinksTo(Node* node) {
+	void RemoveLinksTo(std::shared_ptr<Node> node) {
 		for (auto in : m_inputs) {
 			in.second->RemoveLinksTo(node);
 		}

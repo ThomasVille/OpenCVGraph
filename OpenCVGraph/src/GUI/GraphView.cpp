@@ -58,6 +58,24 @@ void GraphView::OnLeftMouseUp(wxMouseEvent& event)
 	Redraw();
 }
 
+void GraphView::OnRightMouseUp(wxMouseEvent& event)
+{
+	// Check if we are inside a node or a pin
+	bool nodeFound = false;
+	for (auto node : m_GUINodes) {
+		if (node->IsInside(event.GetPosition())) {
+			for (auto& p : node->GetParams())
+				if (p->IsInsidePin(event.GetPosition())) {
+					DeleteWiresConnectedTo(p); // Delete all the connections to this pin
+					return; // Return now, otherwise we will delete the node too
+				}
+			// Delete the entire node
+			DeleteNode(node);
+			return;
+		}
+	}
+}
+
 void GraphView::OnMouseMotion(wxMouseEvent& event)
 {
 	// If we are dragging a node around
@@ -96,9 +114,9 @@ void GraphView::Init()
 	Bind(wxEVT_PAINT, &GraphView::OnPaint, this);
 	Bind(wxEVT_MOTION, &GraphView::OnMouseMotion, this);
 	Bind(wxEVT_LEFT_UP, &GraphView::OnLeftMouseUp, this);
+	Bind(wxEVT_RIGHT_UP, &GraphView::OnRightMouseUp, this);
 	Bind(wxEVT_LEFT_DOWN, &GraphView::OnLeftMouseDown, this);
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
-	// Initialize the graph engine
 }
 
 wxSize GraphView::DoGetBestSize() const
@@ -178,7 +196,7 @@ void GraphView::OnPaint(wxPaintEvent& event)
 void GraphView::UpdateRealtime()
 {
 	if (m_realtimeStarted)
-		m_graphEngine.RunOneShot(m_entryPoint);
+		m_graphEngine.RunOneShot(m_entryPoint.get());
 }
 
 bool GraphView::isWiring()
@@ -214,7 +232,7 @@ void GraphView::SetLinkState(LinkState state)
 	m_linkState = state;
 }
 
-void GraphView::SetSelected(GUINode * node)
+void GraphView::SetSelected(shared_ptr<GUINode> node)
 {
 	m_selectedNode = node;
 }
@@ -222,20 +240,20 @@ void GraphView::SetSelected(GUINode * node)
 void GraphView::AddNode(shared_ptr<Node> node)
 {
 	m_graphEngine.AddNode(node);
-	m_GUINodes.push_back(new GUINode(this, node));
+	m_GUINodes.push_back(make_shared<GUINode>(this, node));
 	// Let's make the last added node the entry point for the moment
-	m_entryPoint = node.get();
+	m_entryPoint = node;
 	UpdateRealtime();
 	Redraw();
 }
 
-void GraphView::DeleteNode(Node * node)
+void GraphView::DeleteNode(shared_ptr<GUINode> node)
 {
 	// Delete all the wires related to this node
 	for (int i = 0; i < m_wires.size(); i++) {
 		// If either end of the wire is the node we are deleting
-		if (((GUINode*)m_wires[i].first->GetParent())->GetNode().get() == node ||
-			((GUINode*)m_wires[i].second->GetParent())->GetNode().get() == node) {
+		if (m_wires[i].first->GetParent() == node.get() ||
+			m_wires[i].second->GetParent() == node.get()) {
 			m_wires.erase(m_wires.begin()+i); // delete the link
 			i--;
 			continue;
@@ -243,29 +261,29 @@ void GraphView::DeleteNode(Node * node)
 	}
 	// Delete the associated GUINode
 	for(int i = 0; i < m_GUINodes.size(); i++)
-		if (m_GUINodes[i]->GetNode().get() == node) {
+		if (m_GUINodes[i] == node) {
 			m_GUINodes.erase(m_GUINodes.begin() + i);
 			break;
 		}
 	// Delete the node in the graph engine
-	m_graphEngine.DeleteNode(node);
+	m_graphEngine.DeleteNode(node->GetNode());
 	// Check if it's the entry point, in this case, reset the entry point
-	if (m_entryPoint == node)
-		m_entryPoint = nullptr;
+	if (m_entryPoint == node->GetNode())
+		m_entryPoint.reset();
 	// Check if it's selected
-	if (node == m_selectedNode->GetNode().get())
-		m_selectedNode = nullptr;
+	if (node == m_selectedNode)
+		m_selectedNode.reset();
 	UpdateRealtime();
 	Refresh();
 }
 
-void GraphView::DeleteWiresConnectedTo(GUINodeParam * pin)
+void GraphView::DeleteWiresConnectedTo(std::shared_ptr<GUINodeParam> pin)
 {
 	// Delete the links
 	pin->GetParameter()->RemoveAllLinks();
 	// Delete the wires
 	for (int i = 0; i < m_wires.size(); i++) {
-		if (m_wires[i].first.get() == pin || m_wires[i].second.get() == pin) {
+		if (m_wires[i].first == pin || m_wires[i].second == pin) {
 			m_wires.erase(m_wires.begin() + i);
 			i--;
 		}
@@ -281,13 +299,13 @@ GraphEngine * GraphView::GetGraphEngine()
 
 void GraphView::RunOneShot()
 {
-	m_graphEngine.RunOneShot(m_entryPoint);
+	m_graphEngine.RunOneShot(m_entryPoint.get());
 	Refresh();
 }
 void GraphView::RunRealtime()
 {
 	m_realtimeStarted = true;
-	m_graphEngine.RunOneShot(m_entryPoint);
+	m_graphEngine.RunOneShot(m_entryPoint.get());
 	Refresh();
 }
 
@@ -297,7 +315,7 @@ void GraphView::SimulationError(std::string msg)
 	//((MyFrame*)m_parent)->SetSimulationStatus(msg);
 }
 
-Node * GraphView::GetEntryPoint()
+shared_ptr<Node> GraphView::GetEntryPoint()
 {
 	return m_entryPoint;
 }

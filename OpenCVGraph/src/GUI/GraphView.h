@@ -27,14 +27,7 @@ public:
 
 	void OnLeftMouseDown(wxMouseEvent&);
 	void OnLeftMouseUp(wxMouseEvent&);
-
-	// Begin the drawing of the wire
-	// Called when the user click on a parameter
-	void OnPinLeftMouseDown(GUINodeParam* param, wxPoint pos);
-	// Must be called every time the mouse button is released (even if inside a child)
-	void OnMouseUp(wxMouseEvent& event);
-	// Public because the nodes can send event to it if the mouse is over a node and we still need to handle the event
-	// e.g. wiring event
+	void OnRightMouseUp(wxMouseEvent&);
 	void OnMouseMotion(wxMouseEvent&);
 
 	// Redraw asap the whole graph
@@ -42,22 +35,23 @@ public:
 
 	// Are we wiring a pin to another at the moment ?
 	bool isWiring();
+
 	// Return the pin we selected when we began to wire a pin to another
 	std::shared_ptr<GUINodeParam> GetSelectedPin();
+
 	// Add a wire between to pins
 	// Called from a GUINodeParam when it accepts a connection with another pin
 	void AddWire(std::shared_ptr<GUINodeParam> first, std::shared_ptr<GUINodeParam> second);
 	void SetLinkState(LinkState state);
 
 	// Set the selected node
-	void SetSelected(GUINode* node);
+	void SetSelected(std::shared_ptr<GUINode> node);
 
 	void AddNode(std::shared_ptr<Node> node);
-	// Delete the node at this address
-	// Called by a node when right clicked
-	void DeleteNode(Node* node);
+	// Delete the node
+	void DeleteNode(std::shared_ptr<GUINode> node);
 	// Delete all the wires connected to this pin and its links
-	void DeleteWiresConnectedTo(GUINodeParam* pin);
+	void DeleteWiresConnectedTo(std::shared_ptr<GUINodeParam> pin);
 
 	GraphEngine* GetGraphEngine();
 
@@ -65,7 +59,7 @@ public:
 	void RunRealtime();
 	void SimulationError(std::string msg);
 
-	Node* GetEntryPoint();
+	std::shared_ptr<Node> GetEntryPoint();
 protected:
 	void Init();
 	virtual wxSize DoGetBestSize() const;
@@ -73,12 +67,12 @@ protected:
 	// Proceed to a new RunOneShot if we are in realtime mode
 	void UpdateRealtime();
 	// List of all the children GUINodes
-	std::vector<GUINode*> m_GUINodes;
+	std::vector<std::shared_ptr<GUINode>> m_GUINodes;
 
 	wxPoint m_mouseWiringStartingPoint;
 	// Selected pin when we first left clicked on a pin and began dragging
 	std::shared_ptr<GUINodeParam> m_selectedPin;
-	GUINode* m_selectedNode = nullptr;
+	std::shared_ptr<GUINode> m_selectedNode;
 	wxPoint m_mousePosition;
 	bool m_mouseWiring = false;
 	LinkState m_linkState = END_MISSING; // State of the link we are currently dragging with the mouse
@@ -91,7 +85,7 @@ protected:
 	GraphEngine m_graphEngine;
 	bool m_realtimeStarted = false;
 	std::string m_simulationStatus;
-	Node* m_entryPoint = nullptr;
+	std::shared_ptr<Node> m_entryPoint;
 private:
 	wxDECLARE_DYNAMIC_CLASS(GraphView);
 };

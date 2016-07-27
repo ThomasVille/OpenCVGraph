@@ -84,34 +84,3 @@ bool GUINode::IsInside(wxPoint p)
 {
 	return GetRect().Contains(p);
 }
-/*
-void GUINode::OnRightMouseUp(wxMouseEvent & event)
-{
-	((GraphView*)m_parent)->DeleteNode(m_node.get());
-	this->Destroy();
-}*/
-/*
-void GUINode::OnPinLeftMouseUp(wxMouseEvent& event)
-{
-	// If we release the node when the mouse is above a pin, we just stop the dragging
-	if (m_isDragging)
-		m_isDragging = false;
-	else {
-		event.SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())));
-		m_graphView->OnMouseUp(event);
-	}
-}
-
-void GUINode::OnPinMouseMotion(wxMouseEvent& event)
-{
-	// If we are moving the node and the mouse hover over a pin, continue moving
-	if (m_isDragging) {
-		SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())) - m_firstDraggingPoint);
-		m_graphView->Refresh();
-	}
-	else { // If the mouse juste goes over the pin, we forward the event to graphView
-		event.SetPosition(m_parent->ScreenToClient(ClientToScreen(event.GetPosition())));
-		m_graphView->OnMouseMotion(event);
-	}
-}
-*/
