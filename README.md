@@ -13,3 +13,7 @@ Features currently working :
 * Displaying inputs and outputs for each node
 * Deleting nodes and connections
 * Scrolling in the graph canvas to have more space (no zoom in/out for instance)
+
+## Screenshot
+This is how the project looks like today :
+![Screenshot of the application](screenshot.png)
