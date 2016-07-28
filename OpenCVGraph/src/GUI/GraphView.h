@@ -93,6 +93,8 @@ protected:
 	std::shared_ptr<Node> m_entryPoint;
 
 	PreviewPanel* m_previewPanel;
+
+	wxSize m_canvasSize;
 private:
 	wxDECLARE_DYNAMIC_CLASS(GraphView);
 };

@@ -8,16 +8,17 @@ wxIMPLEMENT_DYNAMIC_CLASS(GraphView, wxControl);
 
 void GraphView::OnLeftMouseDown(wxMouseEvent& event)
 {
+	wxPoint mousePos = CalcUnscrolledPosition(event.GetPosition()); // Calculate mouse position in the canvas
 	// Check if we are inside a node and select it
 	bool nodeFound = false;
 	for(auto node : m_GUINodes)
-		if (node->IsInside(event.GetPosition())) {
+		if (node->IsInside(mousePos)) {
 			SetSelected(node);
 			nodeFound = true;
 			// Check if we are clicking on a pin
 			bool inPin = false;
 			for(auto& p : node->GetParams())
-				if (p->IsInsidePin(event.GetPosition())) {
+				if (p->IsInsidePin(mousePos)) {
 					m_mouseWiringStartingPoint = p->GetPinPosition();
 					m_selectedPin = p;
 					m_mouseWiring = true;
@@ -28,7 +29,7 @@ void GraphView::OnLeftMouseDown(wxMouseEvent& event)
 			// If we are not in a pin, drag the node
 			if (!inPin) {
 				m_isDragging = true;
-				node->StartDrag(event.GetPosition());
+				node->StartDrag(mousePos);
 			}
 			break;
 		}
@@ -38,13 +39,15 @@ void GraphView::OnLeftMouseDown(wxMouseEvent& event)
 
 void GraphView::OnLeftMouseUp(wxMouseEvent& event)
 {
+	wxPoint mousePos = CalcUnscrolledPosition(event.GetPosition()); // Calculate mouse position in the canvas
+
 	// Check if we are inside a pin
 	if (isWiring()) { // If we are wiring
 		bool nodeFound = false;
 		for (auto node : m_GUINodes) { // Iterate the nodes
-			if (node->IsInside(event.GetPosition())) { // When we found the node we are in
+			if (node->IsInside(mousePos)) { // When we found the node we are in
 				for (auto& p : node->GetParams()) // Iterate the params
-					if (p->IsInsidePin(event.GetPosition())) { // When we found the param we are in
+					if (p->IsInsidePin(mousePos)) { // When we found the param we are in
 						if (p->GetParameter()->IsCompatible(GetSelectedPin()->GetParameter())) // Check if this param is compatible with the one we selected earlier
 							AddWire(p, GetSelectedPin()); // If so, add the wire
 						break; // When we found the pin we are in, no need to continue
@@ -63,11 +66,12 @@ void GraphView::OnLeftMouseUp(wxMouseEvent& event)
 
 void GraphView::OnRightMouseUp(wxMouseEvent& event)
 {
+	wxPoint mousePos = CalcUnscrolledPosition(event.GetPosition()); // Calculate mouse position in the canvas
 	// Check if we are inside a node or a pin
 	for (auto node : m_GUINodes) {
-		if (node->IsInside(event.GetPosition())) {
+		if (node->IsInside(mousePos)) {
 			for (auto& p : node->GetParams())
-				if (p->IsInsidePin(event.GetPosition())) {
+				if (p->IsInsidePin(mousePos)) {
 					DeleteWiresConnectedTo(p); // Delete all the connections to this pin
 					return; // Return now, otherwise we will delete the node too
 				}
@@ -80,17 +84,18 @@ void GraphView::OnRightMouseUp(wxMouseEvent& event)
 
 void GraphView::OnMouseMotion(wxMouseEvent& event)
 {
+	wxPoint mousePos = CalcUnscrolledPosition(event.GetPosition()); // Calculate mouse position in the canvas
 	// If we are dragging a node around
 	if (m_isDragging && event.LeftIsDown()) {
-		m_selectedNode->Drag(event.GetPosition());
+		m_selectedNode->Drag(mousePos);
 	}
 	else if (isWiring()) {
 		// Check if we are inside a pin
 		bool nodeFound = false;
 		for (auto node : m_GUINodes) {
-			if (node->IsInside(event.GetPosition())) {
+			if (node->IsInside(mousePos)) {
 				for (auto& p : node->GetParams())
-					if (p->IsInsidePin(event.GetPosition())) {
+					if (p->IsInsidePin(mousePos)) {
 						// Check if the two parameters are compatible
 						if (p->GetParameter()->IsCompatible(GetSelectedPin()->GetParameter()))
 							SetLinkState(LINK_OK);
@@ -103,7 +108,7 @@ void GraphView::OnMouseMotion(wxMouseEvent& event)
 			if (nodeFound)
 				break;
 		}
-		m_mousePosition = event.GetPosition();
+		m_mousePosition = mousePos;
 	}
 
 	Redraw();
@@ -111,7 +116,9 @@ void GraphView::OnMouseMotion(wxMouseEvent& event)
 
 void GraphView::Init()
 {
-	SetVirtualSize(wxSize(1920, 1080));
+	m_canvasSize = wxSize(1920, 1080);
+	SetVirtualSize(m_canvasSize);
+	SetScrollRate(10, 10);
 
 	Bind(wxEVT_PAINT, &GraphView::OnPaint, this);
 	Bind(wxEVT_MOTION, &GraphView::OnMouseMotion, this);
@@ -129,17 +136,16 @@ wxSize GraphView::DoGetBestSize() const
 void GraphView::OnPaint(wxPaintEvent& event)
 {
 	wxAutoBufferedPaintDC dc(this);
+	DoPrepareDC(dc);
 	wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
 	wxFont font = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
 
 	if (gc)
 	{
 		// Draw the background
-		wxDouble width, height;
-		gc->GetSize(&width, &height);
 		gc->SetPen(wxPen(RES_GRAPHVIEW_BACKGROUND, 1));
 		gc->SetBrush(wxBrush(RES_GRAPHVIEW_BACKGROUND));
-		gc->DrawRectangle(0, 0, width, height);
+		gc->DrawRectangle(0, 0, m_canvasSize.GetWidth(), m_canvasSize.GetHeight());
 		// Display the simulation status
 		gc->SetFont(font, *wxBLACK);
 		gc->DrawText(m_simulationStatus, 0, 0);
