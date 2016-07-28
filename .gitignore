@@ -33,4 +33,4 @@
 wxWidgets-3.1.0/
 *.tlog
 *.opendb
-*.png
+OpenCVGraph/screenshots/
