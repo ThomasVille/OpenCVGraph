@@ -2,6 +2,7 @@
 ## Goal
 Provide a user-friendly interface to build computer vision algorithms.
 By moving and linking "nodes" representing the different OpenCV functions, the user will build his algorithm without writing lines of code.
+
 I want it to be extensible, so the nodes are packaged into DLLs and loaded dynamically at runtime (adds up a little salt to the development)
 ## What's working
 Features currently working :
