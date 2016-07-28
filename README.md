@@ -1,9 +1,10 @@
 # OpenCVGraph
 ## Goal
-Provide a user-friendly interface to build computer vision algorithms.
-By moving and linking "nodes" representing the different OpenCV functions, the user will build his algorithm without writing lines of code.
+Providing an user-friendly interface for building computer vision algorithms.
+By moving and linking "nodes" representing different OpenCV functions, the user will build his algorithm without actually writing lines of code.
 
-I want it to be extensible, so the nodes are packaged into DLLs and loaded dynamically at runtime (adds up a little salt to the development)
+I want it to be extensible, so the nodes are packaged into DLLs and loaded dynamically at runtime (spices up the development)
+
 ## What's working
 Features currently working :
 * Loading nodes from DLLs
