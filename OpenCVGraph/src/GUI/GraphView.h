@@ -50,8 +50,14 @@ public:
 	void SetSelected(std::shared_ptr<GUINode> node);
 	// Deselect any node previously selected
 	void DeselectNode();
+	/** Set the selected node to be the entry point of the graph.
+	* Call UpdateRealtime and Redraw
+	* \sa UpdateRealtime, Redraw
+	*/
+	void MakeSelectedNodeEntryPoint();
 
 	void AddNode(std::shared_ptr<Node> node);
+	std::shared_ptr<Node> GetSelectedNode();
 	// Delete the node
 	void DeleteNode(std::shared_ptr<GUINode> node);
 	// Delete all the wires connected to this pin and its links
@@ -70,6 +76,8 @@ protected:
 	void OnPaint(wxPaintEvent&);
 	// Proceed to a new RunOneShot if we are in realtime mode
 	void UpdateRealtime();
+	// Change the entry point. No check.
+	void SetEntryPoint(std::shared_ptr<Node> node);
 
 	// List of all the children GUINodes
 	std::vector<std::shared_ptr<GUINode>> m_GUINodes;

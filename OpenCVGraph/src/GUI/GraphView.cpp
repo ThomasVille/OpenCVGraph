@@ -209,6 +209,11 @@ void GraphView::UpdateRealtime()
 	}
 }
 
+void GraphView::SetEntryPoint(std::shared_ptr<Node> node)
+{
+	m_entryPoint = node;
+}
+
 bool GraphView::isWiring()
 {
 	return m_mouseWiring;
@@ -255,6 +260,13 @@ void GraphView::DeselectNode()
 	m_previewPanel->DeselectNode();
 }
 
+void GraphView::MakeSelectedNodeEntryPoint()
+{
+	SetEntryPoint(m_selectedNode->GetNode());
+	UpdateRealtime();
+	Redraw();
+}
+
 void GraphView::AddNode(shared_ptr<Node> node)
 {
 	m_graphEngine.AddNode(node);
@@ -263,6 +275,11 @@ void GraphView::AddNode(shared_ptr<Node> node)
 	m_entryPoint = node;
 	UpdateRealtime();
 	Redraw();
+}
+
+std::shared_ptr<Node> GraphView::GetSelectedNode()
+{
+	return m_selectedNode->GetNode();
 }
 
 void GraphView::DeleteNode(shared_ptr<GUINode> node)

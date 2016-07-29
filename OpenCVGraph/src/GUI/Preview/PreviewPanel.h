@@ -25,6 +25,13 @@ public:
 	void SetNode(std::shared_ptr<Node> node);
 	void DeselectNode();
 
+	void OnPropertyGridChanged(wxPropertyGridEvent& event);
+
+	/** Update the state of the selected node accordingly to the new state.
+	* \param newState	Index of the choice in the "State" property in the property grid.
+	*					0 means "Normal", 1 means "Entry point"
+	*/
+	void OnStateChanged(int newState);
 	void Update();
 
 protected:

@@ -35,7 +35,7 @@ public:
 	void OnDeselectNode();
 
 	void SetSimulationStatus(std::string msg);
-
+	GraphView* GetGraphView();
 private:
 	wxAuiManager m_mgr;
 	wxAuiToolBar* m_mainToolbar;

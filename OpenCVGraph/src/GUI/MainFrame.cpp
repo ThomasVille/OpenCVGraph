@@ -181,3 +181,8 @@ void MyFrame::SetSimulationStatus(std::string msg)
 {
 	SetStatusText(msg, SB_CORRECT);
 }
+
+GraphView * MyFrame::GetGraphView()
+{
+	return m_graphView;
+}
