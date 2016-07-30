@@ -19,7 +19,7 @@ extern "C"
 		return new string("OpenCV");
 	}
 	__declspec(dllexport) void GetNodesNames(vector<string>& names) {
-		names = { "Mat", "ConvertToGrey" };
+		names = { "Mat", "Gaussian blur" };
 	}
 	__declspec(dllexport) Data<Node>* CreateNode(string name) {
 		if (name == "Mat") {
@@ -35,14 +35,14 @@ extern "C"
 			};
 
 			ComputerType computer = [](ParamList in, ParamList out) {
-				//(*static_pointer_cast<Data<int>>(out["value"]->GetData())->Get()) = 42;
 			};
 
 			return new Data<Node>(make_shared<Node>(name, inputs, outputs, init, computer));
 		}
-		if (name == "ConvertToGrey") {
-			string name = "ConvertToGrey";
-			ParamList inputs{ {"src", make_shared<Parameter>("src", Type("Mat"), INPUT_PARAM) } };
+		if (name == "Gaussian blur") {
+			string name = "Gaussian blur";
+			ParamList inputs{ {"src", make_shared<Parameter>("src", Type("Mat"), INPUT_PARAM) },
+			{ "kernelSize", make_shared<Parameter>("kernelSize", Type("int"), INPUT_PARAM) } };
 			ParamList outputs{ {"dst", make_shared<Parameter>("dst", Type("Mat"), OUTPUT_PARAM) }};
 
 			InitializerType init = [](ParamList outputs) {
@@ -53,8 +53,9 @@ extern "C"
 
 			ComputerType computer = [](ParamList in, ParamList out) {
 				Mat src = (*static_pointer_cast<Data<Mat>>(in["src"]->GetData())->Get().get());
+				int kernelSize = (*static_pointer_cast<Data<int>>(in["kernelSize"]->GetData())->Get().get());
 				Mat dst = (*static_pointer_cast<Data<Mat>>(out["dst"]->GetData())->Get().get());
-				src.convertTo(dst, -1, 2.0);
+				GaussianBlur(src, dst, Size(kernelSize, kernelSize), 0, 0);
 			};
 			return new Data<Node>(make_shared<Node>(name, inputs, outputs, init, computer));
 		}

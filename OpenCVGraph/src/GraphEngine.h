@@ -10,7 +10,7 @@ private:
 	std::vector<std::shared_ptr<Node>> m_nodes;
 	GraphView* m_graphView;
 
-	void OneShotRecursive(Node* node);
+	bool OneShotRecursive(Node* node);
 public:
 	GraphEngine(GraphView* parent);
 	~GraphEngine();

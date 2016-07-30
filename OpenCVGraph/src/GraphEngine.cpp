@@ -1,20 +1,22 @@
 #include "GraphEngine.h"
 #include "GUI\GraphView.h"
 using namespace std;
-void GraphEngine::OneShotRecursive(Node * node)
+bool GraphEngine::OneShotRecursive(Node * node)
 {
 	// Process all the nodes connected to the inputs
 	for (auto input : node->GetInputs()) {
 		if (!input.second->HasEntry()) { // Check if the input is connected to something or has a default value
 			m_graphView->SimulationError("Input '" + input.first + "' missing in " + node->GetName() + "(" + to_string((int)node) + ")");
-			return;
+			return false;
 		}
 		for (auto param : input.second->GetLinkedNodes()) { // Iterates through the different linked nodes but an input should not have multiple links
-			RunOneShot(param->GetParent());
+			if (!OneShotRecursive(param->GetParent())) // If an input node failed, fail here too
+				return false;
 		}
 	}
 	// Then process the current node
 	node->GetComputer()(node->GetInputs(), node->GetOutputs());
+	return true;
 }
 GraphEngine::GraphEngine(GraphView* parent):
 	m_graphView(parent)

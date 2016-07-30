@@ -24,11 +24,10 @@ extern "C"
 			ParamList outputs{ {"value", make_shared<Parameter>("value", Type("int"), OUTPUT_PARAM) } };
 
 			InitializerType init = [](ParamList outputs) {
-				outputs["value"]->AllocateData(make_shared<Data<int>>(make_shared<int>(42)));
+				outputs["value"]->AllocateData(make_shared<Data<int>>(make_shared<int>(1)));
 			};
 
 			ComputerType computer = [](ParamList in, ParamList out) {
-				(*static_pointer_cast<Data<int>>(out["value"]->GetData())->Get()) = 42;
 			};
 
 			return new Data<Node>(make_shared<Node>(name, inputs, outputs, init, computer));

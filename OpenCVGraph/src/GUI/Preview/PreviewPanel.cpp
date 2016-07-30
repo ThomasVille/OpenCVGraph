@@ -28,17 +28,6 @@ void PreviewPanel::SetNode(shared_ptr<Node> node)
 		stateP->SetChoiceSelection(1);
 	m_pg->Append(stateP);
 
-	m_pg->Append(new wxPropertyCategory("Inputs"));
-	for (auto out : node->GetInputs()) {
-		if (out.second->GetType().name == "int")
-			m_pg->Append(new wxIntProperty(out.first, wxPG_LABEL, 0));
-	}
-	m_pg->Append(new wxPropertyCategory("Ouputs"));
-	for (auto out : node->GetOutputs()) {
-		if (out.second->GetType().name == "int")
-			m_pg->Append(new wxIntProperty(out.first, wxPG_LABEL, 0));
-	}
-
 	m_ioPanel->DestroyChildren();
 	m_inputsPreview.clear();
 	m_outputsPreview.clear();
@@ -50,6 +39,10 @@ void PreviewPanel::SetNode(shared_ptr<Node> node)
 				m_inputsPreview.push_back(new wxStaticText(m_ioPanel, wxID_ANY, in.first+" = empty"));
 				sizer->Add(m_inputsPreview.back(), 0, wxALL | wxEXPAND, 5);
 			}
+			else if (in.second->GetType().name == "Mat") {
+				m_inputsPreview.push_back(new wxStaticText(m_ioPanel, wxID_ANY, in.first+" = No display"));
+				sizer->Add(m_inputsPreview.back(), 0, wxALL | wxEXPAND, 5);
+			}
 		}
 
 		wxStaticText* outputsText = new wxStaticText(m_ioPanel, wxID_ANY, "Outputs");
@@ -59,7 +52,7 @@ void PreviewPanel::SetNode(shared_ptr<Node> node)
 				m_outputsPreview.push_back(new wxStaticText(m_ioPanel, wxID_ANY, out.first + " = empty"));
 				sizer->Add(m_outputsPreview.back(), 0, wxALL | wxEXPAND, 5);
 			}
-			if (out.second->GetType().name == "Mat") {
+			else if (out.second->GetType().name == "Mat") {
 				// convert to bitmap to be used by the window to draw
 				m_outputsPreview.push_back(new wxPanel(m_ioPanel));
 				m_outputsPreview.back()->Bind(wxEVT_PAINT, [=](wxPaintEvent) {
@@ -130,16 +123,6 @@ void PreviewPanel::Update()
 				static_cast<wxStaticText*>(m_outputsPreview.at(i))->SetLabel(out.first + " = " + to_string(*(static_pointer_cast<Data<int>>(out.second->GetData()))->Get().get()));
 			}
 			i++;
-		}
-	}
-	if (m_node.use_count() != 0) {
-		for (auto out : m_node->GetInputs()) {
-			if (out.second->GetData().use_count() != 0 && out.second->GetType().name == "int")
-				m_pg->GetPropertyByName(out.first)->SetValueFromInt(*(static_pointer_cast<Data<int>>(out.second->GetData()))->Get().get());
-		}
-		for (auto out : m_node->GetOutputs()) {
-			if (out.second->GetData().use_count() != 0 && out.second->GetType().name == "int")
-				m_pg->GetPropertyByName(out.first)->SetValueFromInt(*(static_pointer_cast<Data<int>>(out.second->GetData()))->Get().get());
 		}
 	}
 }
