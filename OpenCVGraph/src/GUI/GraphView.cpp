@@ -271,8 +271,9 @@ void GraphView::AddNode(shared_ptr<Node> node)
 {
 	m_graphEngine.AddNode(node);
 	m_GUINodes.push_back(make_shared<GUINode>(this, node));
-	// Let's make the last added node the entry point for the moment
-	m_entryPoint = node;
+	// If there are no entry point, the new node becomes it
+	if(!m_entryPoint)
+		m_entryPoint = node;
 	UpdateRealtime();
 	Redraw();
 }

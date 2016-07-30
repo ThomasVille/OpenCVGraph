@@ -1,0 +1,10 @@
+@startuml
+User -> MyTreeCtrl : "OnItemActivated()"
+MyTreeCtrl -> MyTreeCtrl : "item->Get()"
+MyTreeCtrl -> NodesProvider : "GetNewNode()"
+NodesProvider -> Package : "CreateNode()"
+Package --> NodesProvider : "<< Data<Node>* >>"
+NodesProvider -> Package : "DeleteNode()"
+NodesProvider --> MyTreeCtrl : "<< shared_ptr<Node> >>"
+MyTreeCtrl -> GraphView : "AddNode(newNode)"
+@enduml
