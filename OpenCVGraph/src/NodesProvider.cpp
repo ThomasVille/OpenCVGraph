@@ -35,14 +35,11 @@ void NodesProvider::Init()
 		// Create the package node in the tree
 		shared_ptr<ModelNode> packageNode = make_shared<ModelNode>(filename.ToStdString(), filename.ToStdString());
 		// Add a node for each nodes we can create with this package
-		vector<string>* nodesName = m_packages[filename.ToStdString()]->GetNodesNames();
-		for (auto nodeName : *nodesName) {
+		vector<string> nodesName;
+		m_packages[filename.ToStdString()]->GetNodesNames(nodesName);
+		for (auto nodeName : nodesName) {
 			packageNode->AddChild(make_shared<ModelNode>(nodeName, filename.ToStdString()));
 		}
-		// We must delete all the objets we created in the DLL
-		// Even with this, it seems there is still a memory leak...
-		m_packages[filename.ToStdString()]->DeleteNodesName(nodesName);
-
 		// Add the package node to the tree
 		m_rootNodes.push_back(packageNode);
 		// Iterate to the next package

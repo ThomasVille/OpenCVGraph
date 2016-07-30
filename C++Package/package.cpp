@@ -14,8 +14,8 @@ extern "C"
 	__declspec(dllexport) string* GetPackageName() {
 		return new string("C++");
 	}
-	__declspec(dllexport) vector<string>* GetNodesNames() {
-		return new vector<string>{ "Int", "Add" };
+	__declspec(dllexport) void GetNodesNames(vector<string>& names) {
+		names = { "Int", "Add" };
 	}
 	__declspec(dllexport) Data<Node>* CreateNode(string name) {
 		if (name == "Int") {
@@ -51,9 +51,6 @@ extern "C"
 	}
 	__declspec(dllexport) void DeletePackageName(string* name) {
 		delete name;
-	}
-	__declspec(dllexport) void DeleteNodesNames(vector<string>* nodeNames) {
-		delete nodeNames;
 	}
 	__declspec(dllexport) void DeleteNode(Data<Node>* node) {
 		delete node;

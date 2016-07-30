@@ -1,16 +1,21 @@
 #include "PreviewPanel.h"
+#include <wx/sizer.h>
+#include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
 #include "../Resources.h"
 #include "../../Node.h"
 #include "../../Data.h"
 #include "../MainFrame.h"
+
 wxIMPLEMENT_DYNAMIC_CLASS(PreviewPanel, wxControl);
 using namespace std;
-
+using namespace cv;
 void PreviewPanel::SetNode(shared_ptr<Node> node)
 {
 	if (m_node == node || node.unique() || node.use_count() == 0)
 		return;
 	m_node = node;
+
 	// Check if the node is not empty
 	// Update the interface and update the values in it
 	m_pg->Clear();
@@ -22,7 +27,6 @@ void PreviewPanel::SetNode(shared_ptr<Node> node)
 	if (((MyFrame*)m_parent)->GetGraphView()->GetEntryPoint() == node)
 		stateP->SetChoiceSelection(1);
 	m_pg->Append(stateP);
-	
 
 	m_pg->Append(new wxPropertyCategory("Inputs"));
 	for (auto out : node->GetInputs()) {
@@ -34,6 +38,48 @@ void PreviewPanel::SetNode(shared_ptr<Node> node)
 		if (out.second->GetType().name == "int")
 			m_pg->Append(new wxIntProperty(out.first, wxPG_LABEL, 0));
 	}
+
+	m_ioPanel->DestroyChildren();
+	m_inputsPreview.clear();
+	m_outputsPreview.clear();
+	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+		wxStaticText* inputsText = new wxStaticText(m_ioPanel, wxID_ANY, "Inputs");
+		sizer->Add(inputsText, 0, wxALL | wxEXPAND, 5);
+		for (auto in : node->GetInputs()) {
+			if (in.second->GetType().name == "int") {
+				m_inputsPreview.push_back(new wxStaticText(m_ioPanel, wxID_ANY, in.first+" = empty"));
+				sizer->Add(m_inputsPreview.back(), 0, wxALL | wxEXPAND, 5);
+			}
+		}
+
+		wxStaticText* outputsText = new wxStaticText(m_ioPanel, wxID_ANY, "Outputs");
+		sizer->Add(outputsText, 0, wxALL | wxEXPAND, 5);
+		for (auto out : node->GetOutputs()) {
+			if (out.second->GetType().name == "int") {
+				m_outputsPreview.push_back(new wxStaticText(m_ioPanel, wxID_ANY, out.first + " = empty"));
+				sizer->Add(m_outputsPreview.back(), 0, wxALL | wxEXPAND, 5);
+			}
+			if (out.second->GetType().name == "Mat") {
+				// convert to bitmap to be used by the window to draw
+				m_outputsPreview.push_back(new wxPanel(m_ioPanel));
+				m_outputsPreview.back()->Bind(wxEVT_PAINT, [=](wxPaintEvent) {
+					wxPaintDC dc(static_cast<wxPanel*>(m_outputsPreview.back()));
+					Mat tmp;
+					int w = m_outputsPreview.back()->GetClientSize().GetWidth();
+					int h = m_outputsPreview.back()->GetClientSize().GetHeight();
+					(static_pointer_cast<Data<Mat>>(out.second->GetData()))->Get()->copyTo(tmp);
+					wxImage image(tmp.cols, tmp.rows, tmp.data, true);
+					wxBitmap bitmap(image.Scale(tmp.cols, tmp.rows));
+					m_outputsPreview.back()->SetSize(tmp.cols, tmp.rows);
+					dc.DrawBitmap(bitmap, wxPoint(0,0));
+				});
+				sizer->Add(m_outputsPreview.back(), 0, wxALL | wxEXPAND, 5);
+			}
+		}
+	m_ioPanel->SetSizer(sizer);
+
+
+	Layout();
 	Update();
 }
 
@@ -71,6 +117,22 @@ void PreviewPanel::OnStateChanged(int newState)
 void PreviewPanel::Update()
 {
 	if (m_node.use_count() != 0) {
+		int i = 0;
+		for (auto out : m_node->GetInputs()) {
+			if (out.second->GetData().use_count() != 0 && out.second->GetType().name == "int") {
+				static_cast<wxStaticText*>(m_inputsPreview.at(i))->SetLabel(out.first+" = "+ to_string(*(static_pointer_cast<Data<int>>(out.second->GetData()))->Get().get()));
+			}
+			i++;
+		}
+		i = 0;
+		for (auto out : m_node->GetOutputs()) {
+			if (out.second->GetData().use_count() != 0 && out.second->GetType().name == "int") {
+				static_cast<wxStaticText*>(m_outputsPreview.at(i))->SetLabel(out.first + " = " + to_string(*(static_pointer_cast<Data<int>>(out.second->GetData()))->Get().get()));
+			}
+			i++;
+		}
+	}
+	if (m_node.use_count() != 0) {
 		for (auto out : m_node->GetInputs()) {
 			if (out.second->GetData().use_count() != 0 && out.second->GetType().name == "int")
 				m_pg->GetPropertyByName(out.first)->SetValueFromInt(*(static_pointer_cast<Data<int>>(out.second->GetData()))->Get().get());
@@ -89,6 +151,9 @@ void PreviewPanel::Init()
 
 	m_pg = new wxPropertyGrid(this);
 	bSizer1->Add(m_pg, 1, wxALL | wxEXPAND, 5);
+
+	m_ioPanel = new wxPanel(this);
+	bSizer1->Add(m_ioPanel, 2, wxALL | wxEXPAND, 5);
 
 	SetSizer(bSizer1);
 	Layout();

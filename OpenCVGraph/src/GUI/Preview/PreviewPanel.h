@@ -1,7 +1,6 @@
 #ifndef _GUI_PREVIEWPANEL_H_
 #define _GUI_PREVIEWPANEL_H_
 #include <memory>
-#include <wx/sizer.h>
 #include <wx/control.h>
 #include <wx/stattext.h>
 #include <wx/propgrid/propgrid.h>
@@ -37,6 +36,10 @@ public:
 protected:
 	void Init();
 	wxPropertyGrid* m_pg;
+	wxPanel* m_ioPanel;
+	std::vector<wxWindow*> m_inputsPreview;
+	std::vector<wxWindow*> m_outputsPreview;
+
 	std::shared_ptr<Node> m_node;
 
 private:
