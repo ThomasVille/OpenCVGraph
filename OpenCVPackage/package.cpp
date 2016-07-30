@@ -55,6 +55,10 @@ extern "C"
 				Mat src = (*static_pointer_cast<Data<Mat>>(in["src"]->GetData())->Get().get());
 				int kernelSize = (*static_pointer_cast<Data<int>>(in["kernelSize"]->GetData())->Get().get());
 				Mat dst = (*static_pointer_cast<Data<Mat>>(out["dst"]->GetData())->Get().get());
+				// Gaussian blur only accepts odd numbers in kernel size
+				if (kernelSize % 2 == 0)
+					return;
+
 				GaussianBlur(src, dst, Size(kernelSize, kernelSize), 0, 0);
 			};
 			return new Data<Node>(make_shared<Node>(name, inputs, outputs, init, computer));

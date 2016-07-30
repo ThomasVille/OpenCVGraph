@@ -29,7 +29,7 @@ class MyApp : public wxApp
 {
 public:
 	virtual bool OnInit() wxOVERRIDE;
-
+	virtual bool OnExceptionInMainLoop();
 private:
 };
 
@@ -56,4 +56,21 @@ bool MyApp::OnInit()
 	frame->Show(true);
 
 	return true;
+}
+
+bool MyApp::OnExceptionInMainLoop()
+{
+	wxString error;
+	try {
+		throw; // Rethrow the current exception.
+	}
+	catch (const std::exception& e) {
+		error = e.what();
+	}
+	catch (...) {
+		error = "unknown error.";
+	}
+	wxLogError("Unexpected exception has occurred: %s, the program will terminate.", error);
+	// Exit the main loop and thus terminate the program.
+	return false;
 }
