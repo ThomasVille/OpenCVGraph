@@ -1,7 +1,8 @@
 #include "NodesProvider.h"
-#include <wx/dir.h>
-#include <wx/filefn.h>
 #include <wx/log.h>
+#include <wx/filefn.h>
+#include <wx/dir.h>
+#include "Package.h"
 using namespace std;
 
 

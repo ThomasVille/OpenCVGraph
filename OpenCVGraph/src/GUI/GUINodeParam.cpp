@@ -6,7 +6,8 @@ void GUINodeParam::Draw(wxGraphicsContext * gc)
 {
 	wxSize fontSize = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT).GetPixelSize();
 	// Draw the pin and the param name
-	gc->SetPen(wxPen(wxColor(255, 255, 255), 2));
+	wxColor pinColor(m_parameter->GetType().r, m_parameter->GetType().g, m_parameter->GetType().b);
+	gc->SetPen(wxPen(pinColor, 2));
 	// If the pin is connected, fill the pin
 	if(m_parameter->HasEntry())
 		gc->SetBrush(wxBrush(wxColor(255, 255, 255)));
@@ -60,35 +61,7 @@ bool GUINodeParam::IsInside(wxPoint p)
 
 void GUINodeParam::Init()
 {
-	/*wxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
-	pinImage = new wxStaticText(this, wxID_ANY, "O", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
 
-	pinImage->SetBackgroundColour(RES_NODE_PIN_GOOD_STATE);
-
-	if (m_parameter->GetParamType() == INPUT_PARAM) {
-		nameText = new wxStaticText(this, wxID_ANY, m_parameter->GetName(), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
-		sizer->Add(pinImage, 1, wxALL | wxALIGN_CENTER_VERTICAL); // From left to right, add the pin then the name for an input
-		sizer->Add(nameText, 1, wxALL | wxALIGN_CENTER_VERTICAL);
-	}
-	else {
-		nameText = new wxStaticText(this, wxID_ANY, m_parameter->GetName(), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
-		sizer->Add(nameText, 1, wxALL | wxALIGN_CENTER_VERTICAL); // From left to right, add the name then the pin for an output
-		sizer->Add(pinImage, 1, wxALL | wxALIGN_CENTER_VERTICAL);
-	}
-	nameText->SetForegroundColour(*wxWHITE);
-
-	nameText->Bind(wxEVT_MOTION, &GUINodeParam::OnNameMouseMotion, this);
-	nameText->Bind(wxEVT_LEFT_DOWN, &GUINodeParam::OnNameLeftMouseDown, this);
-	nameText->Bind(wxEVT_LEFT_UP, &GUINodeParam::OnNameLeftMouseUp, this);
-	pinImage->Bind(wxEVT_MOTION, &GUINodeParam::OnPinMouseMotion, this);
-	pinImage->Bind(wxEVT_LEFT_DOWN, &GUINodeParam::OnPinLeftMouseDown, this);
-	pinImage->Bind(wxEVT_LEFT_UP, &GUINodeParam::OnPinLeftMouseUp, this);
-	pinImage->Bind(wxEVT_RIGHT_UP, &GUINodeParam::OnPinRightMouseUp, this);
-
-	Bind(wxEVT_LEFT_DOWN, &GUINodeParam::OnLeftMouseDown, this);
-	Bind(wxEVT_LEFT_UP, &GUINodeParam::OnLeftMouseUp, this);
-	Bind(wxEVT_MOTION, &GUINodeParam::OnMouseMotion, this);
-	Bind(wxEVT_PAINT, &GUINodeParam::OnPaint, this);*/
 }
 
 void DrawCircle(wxGraphicsContext& gc, wxPoint p, int r)

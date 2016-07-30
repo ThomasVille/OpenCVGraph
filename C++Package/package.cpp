@@ -21,7 +21,7 @@ extern "C"
 		if (name == "Int") {
 			string name = "Int";
 			ParamList inputs{};
-			ParamList outputs{ {"value", make_shared<Parameter>("value", Type("int"), OUTPUT_PARAM) } };
+			ParamList outputs{ {"value", make_shared<Parameter>("value", TypeFactory::GetType("int"), OUTPUT_PARAM) } };
 
 			InitializerType init = [](ParamList outputs) {
 				outputs["value"]->AllocateData(make_shared<Data<int>>(make_shared<int>(1)));
@@ -34,7 +34,7 @@ extern "C"
 		}
 		if (name == "Add") {
 			string name = "Add";
-			ParamList inputs{ {"a", make_shared<Parameter>("a", Type("int"), INPUT_PARAM) } , {"b", make_shared<Parameter>("b", Type("int"), INPUT_PARAM) } };
+			ParamList inputs{ {"a", make_shared<Parameter>("a", TypeFactory::GetType("int"), INPUT_PARAM) } , {"b", make_shared<Parameter>("b", TypeFactory::GetType("int"), INPUT_PARAM) } };
 			ParamList outputs{ {"sum", make_shared<Parameter>("sum", Type("int"), OUTPUT_PARAM) }};
 
 			InitializerType init = [](ParamList outputs) {

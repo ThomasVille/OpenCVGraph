@@ -514,6 +514,7 @@
     <ClCompile Include="src\OpenCVGraph.cpp" />
     <ClCompile Include="src\Package.cpp" />
     <ClCompile Include="src\Parameter.cpp" />
+    <ClCompile Include="src\Type.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseData.h" />
@@ -535,6 +536,7 @@
     <ClInclude Include="src\Package.h" />
     <ClInclude Include="src\Parameter.h" />
     <ClInclude Include="src\PDll.h" />
+    <ClInclude Include="src\Type.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

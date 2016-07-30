@@ -74,6 +74,9 @@
     <ClCompile Include="src\GUI\Preview\IntPreview.cpp">
       <Filter>Fichiers sources\src\GUI\Preview</Filter>
     </ClCompile>
+    <ClCompile Include="src\Type.cpp">
+      <Filter>Fichiers sources\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GUI\MainFrame.h">
@@ -132,6 +135,9 @@
     </ClInclude>
     <ClInclude Include="src\GUI\Resources.h">
       <Filter>Fichiers sources\src\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Type.h">
+      <Filter>Fichiers sources\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

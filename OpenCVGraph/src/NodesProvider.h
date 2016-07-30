@@ -6,8 +6,7 @@
 #include <map>
 #include "ModelNode.h"
 #include "Node.h"
-#include "Package.h"
-
+class Package;
 class NodesProvider
 {
 public:

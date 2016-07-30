@@ -25,7 +25,7 @@ extern "C"
 		if (name == "Mat") {
 			string name = "Mat";
 			ParamList inputs{};
-			ParamList outputs{ {"value", make_shared<Parameter>("value", Type("Mat"), OUTPUT_PARAM) } };
+			ParamList outputs{ {"value", make_shared<Parameter>("value", TypeFactory::GetType("Mat"), OUTPUT_PARAM) } };
 
 			InitializerType init = [](ParamList outputs) {
 				// Create the variable
@@ -41,9 +41,9 @@ extern "C"
 		}
 		if (name == "Gaussian blur") {
 			string name = "Gaussian blur";
-			ParamList inputs{ {"src", make_shared<Parameter>("src", Type("Mat"), INPUT_PARAM) },
-			{ "kernelSize", make_shared<Parameter>("kernelSize", Type("int"), INPUT_PARAM) } };
-			ParamList outputs{ {"dst", make_shared<Parameter>("dst", Type("Mat"), OUTPUT_PARAM) }};
+			ParamList inputs{ {"src", make_shared<Parameter>("src", TypeFactory::GetType("Mat"), INPUT_PARAM) },
+			{ "kernelSize", make_shared<Parameter>("kernelSize", TypeFactory::GetType("int"), INPUT_PARAM) } };
+			ParamList outputs{ {"dst", make_shared<Parameter>("dst", TypeFactory::GetType("Mat"), OUTPUT_PARAM) }};
 
 			InitializerType init = [](ParamList outputs) {
 				outputs["dst"]->AllocateData(make_shared<Data<Mat>>(make_shared<Mat>()));

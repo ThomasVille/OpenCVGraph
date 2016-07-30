@@ -4,17 +4,10 @@
 #include <vector>
 #include <memory>
 #include "BaseData.h"
+#include "Type.h"
 class Node;
 enum ParamType {INPUT_PARAM, OUTPUT_PARAM};
-struct Type {
-	Type(std::string p_name) : name(p_name) {}
 
-	bool CompatibleWith(Type& other) {
-		return name == other.name;
-	}
-
-	std::string name = "empty";
-};
 class Parameter
 {
 private:
@@ -43,7 +36,7 @@ public:
 	inline std::string GetName() {
 		return m_name;
 	}
-	inline Type GetType() {
+	inline Type& GetType() {
 		return m_type;
 	}
 	inline ParamType GetParamType() {

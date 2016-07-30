@@ -112,14 +112,14 @@ void PreviewPanel::Update()
 	if (m_node.use_count() != 0) {
 		int i = 0;
 		for (auto out : m_node->GetInputs()) {
-			if (out.second->GetData().use_count() != 0 && out.second->GetType().name == "int") {
+			if (out.second->GetData() && out.second->GetType().name == "int") {
 				static_cast<wxStaticText*>(m_inputsPreview.at(i))->SetLabel(out.first+" = "+ to_string(*(static_pointer_cast<Data<int>>(out.second->GetData()))->Get().get()));
 			}
 			i++;
 		}
 		i = 0;
 		for (auto out : m_node->GetOutputs()) {
-			if (out.second->GetData().use_count() != 0 && out.second->GetType().name == "int") {
+			if (out.second->GetData() && out.second->GetType().name == "int") {
 				static_cast<wxStaticText*>(m_outputsPreview.at(i))->SetLabel(out.first + " = " + to_string(*(static_pointer_cast<Data<int>>(out.second->GetData()))->Get().get()));
 			}
 			i++;
