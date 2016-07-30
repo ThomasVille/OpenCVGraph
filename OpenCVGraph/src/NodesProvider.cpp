@@ -56,10 +56,7 @@ std::vector<std::shared_ptr<ModelNode>> NodesProvider::GetItems()
 std::shared_ptr<Node> NodesProvider::GetNewNode(std::shared_ptr<ModelNode> description)
 {
 	// Get the new node from the DLL
-	Data<Node>* nodePtr = m_packages[description->GetPkgName()]->CreateNode(description->GetName());
-	// Get the shared_ptr associated to it
-	shared_ptr<Node> newNode = nodePtr->Get();
-	// Delete the pointer and leave the shared_ptr in this program
-	m_packages[description->GetPkgName()]->DeleteNode(nodePtr);
+	shared_ptr<Node> newNode;
+	m_packages[description->GetPkgName()]->NodeFactory(description->GetName(), newNode);
 	return	newNode;
 }

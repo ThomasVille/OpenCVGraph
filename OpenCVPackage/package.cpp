@@ -21,7 +21,7 @@ extern "C"
 	__declspec(dllexport) void GetNodesNames(vector<string>& names) {
 		names = { "Mat", "Gaussian blur" };
 	}
-	__declspec(dllexport) Data<Node>* CreateNode(string name) {
+	__declspec(dllexport) void NodeFactory(string name, shared_ptr<Node>& node) {
 		if (name == "Mat") {
 			string name = "Mat";
 			ParamList inputs{};
@@ -37,7 +37,7 @@ extern "C"
 			ComputerType computer = [](ParamList in, ParamList out) {
 			};
 
-			return new Data<Node>(make_shared<Node>(name, inputs, outputs, init, computer));
+			node = make_shared<Node>(name, inputs, outputs, init, computer);
 		}
 		if (name == "Gaussian blur") {
 			string name = "Gaussian blur";
@@ -61,15 +61,11 @@ extern "C"
 
 				GaussianBlur(src, dst, Size(kernelSize, kernelSize), 0, 0);
 			};
-			return new Data<Node>(make_shared<Node>(name, inputs, outputs, init, computer));
+			node = make_shared<Node>(name, inputs, outputs, init, computer);
 		}
-		return nullptr;
 	}
 	__declspec(dllexport) void DeletePackageName(string* name) {
 		delete name;
-	}
-	__declspec(dllexport) void DeleteNode(Data<Node>* node) {
-		delete node;
 	}
 }
 

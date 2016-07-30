@@ -23,6 +23,7 @@ public:
 		else if (name == "Mat") {
 			return Type("Mat", 230, 38, 43);
 		}
+		return Type("error-type", 255, 0, 0);
 	}
 
 private:

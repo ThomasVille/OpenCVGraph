@@ -17,7 +17,7 @@ extern "C"
 	__declspec(dllexport) void GetNodesNames(vector<string>& names) {
 		names = { "Int", "Add" };
 	}
-	__declspec(dllexport) Data<Node>* CreateNode(string name) {
+	__declspec(dllexport) void NodeFactory(string name, shared_ptr<Node>& node) {
 		if (name == "Int") {
 			string name = "Int";
 			ParamList inputs{};
@@ -30,7 +30,7 @@ extern "C"
 			ComputerType computer = [](ParamList in, ParamList out) {
 			};
 
-			return new Data<Node>(make_shared<Node>(name, inputs, outputs, init, computer));
+			node = make_shared<Node>(name, inputs, outputs, init, computer);
 		}
 		if (name == "Add") {
 			string name = "Add";
@@ -44,15 +44,11 @@ extern "C"
 			ComputerType computer = [](ParamList in, ParamList out) {
 				(*static_pointer_cast<Data<int>>(out["sum"]->GetData())->Get()) = (*static_pointer_cast<Data<int>>(in["a"]->GetData())->Get()) + (*static_pointer_cast<Data<int>>(in["b"]->GetData())->Get());
 			};
-			return new Data<Node>(make_shared<Node>(name, inputs, outputs, init, computer));
+			node = make_shared<Node>(name, inputs, outputs, init, computer);
 		}
-		return nullptr;
 	}
 	__declspec(dllexport) void DeletePackageName(string* name) {
 		delete name;
-	}
-	__declspec(dllexport) void DeleteNode(Data<Node>* node) {
-		delete node;
 	}
 }
 
