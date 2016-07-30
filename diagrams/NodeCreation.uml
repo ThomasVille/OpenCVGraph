@@ -1,10 +1,12 @@
 @startuml
-User -> MyTreeCtrl : "OnItemActivated()"
-MyTreeCtrl -> MyTreeCtrl : "item->Get()"
-MyTreeCtrl -> NodesProvider : "GetNewNode()"
-NodesProvider -> Package : "CreateNode()"
-Package --> NodesProvider : "<< Data<Node>* >>"
-NodesProvider -> Package : "DeleteNode()"
-NodesProvider --> MyTreeCtrl : "<< shared_ptr<Node> >>"
-MyTreeCtrl -> GraphView : "AddNode(newNode)"
+User -> MyTreeCtrl : OnItemActivated()
+MyTreeCtrl -> MyTreeCtrl : item->Get()
+MyTreeCtrl -> NodesProvider : GetNewNode()
+NodesProvider -> Package : NodeFactory()
+NodesProvider --> MyTreeCtrl : << shared_ptr<Node> >>
+MyTreeCtrl -> GraphView : AddNode(newNode)
+GraphView -> GraphEngine : AddNode(newNode)
+GraphView -> GraphView : Add a new GUINode
+GraphView -> GraphView : UpdateRealtime()
+GraphView -> GraphView : Redraw()
 @enduml
