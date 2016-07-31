@@ -35,3 +35,4 @@ wxWidgets-3.1.0/
 *.opendb
 OpenCVGraph/screenshots/
 opencv/
+*.mp4
