@@ -13,7 +13,7 @@ Features currently working :
 * Running a live simulation (which updates automatically at each action on the graph)
 * Displaying inputs and outputs for each node
 * Deleting nodes and connections
-* Scrolling in the graph canvas to have more space (no zoom in/out for instance)
+* Scrolling in the graph canvas to have more space (no zoom in/out for the moment)
 
 ## Screenshot
 This is what the project looks like today :
