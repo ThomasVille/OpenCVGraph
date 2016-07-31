@@ -53,6 +53,13 @@ void GUINode::Draw(wxGraphicsContext * gc)
 	// Draw the parameters
 	for (auto& p : m_params)
 		p->Draw(gc);
+	// Draw the highlight if the node is selected
+	if (m_isSelected) {
+		gc->SetBrush(*wxTRANSPARENT_BRUSH);
+		gc->SetPen(wxPen(RES_NODE_HIGHLIGHT, 1));
+		gc->DrawRectangle(m_rect.x - 1,	m_rect.y - 1, m_rect.GetWidth() + 1, m_rect.GetHeight() + 1);
+	}
+
 }
 
 void GUINode::StartDrag(wxPoint startingPoint)
@@ -83,4 +90,14 @@ wxRect GUINode::GetRect()
 bool GUINode::IsInside(wxPoint p)
 {
 	return GetRect().Contains(p);
+}
+
+void GUINode::Select()
+{
+	m_isSelected = true;
+}
+
+void GUINode::Deselect()
+{
+	m_isSelected = false;
 }

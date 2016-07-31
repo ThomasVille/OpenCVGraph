@@ -39,19 +39,28 @@ public:
 
 	bool IsInside(wxPoint p);
 
+	void Select();
+
+	void Deselect();
+
 protected:
 	void Init();
 
+	//! Rectangle in which the node is drawn (position and size)
 	wxRect m_rect;
+	//! Offset between the mouse and the node's position when we begin to drag the node
 	wxPoint m_offset;
+	//! True if the node is selected and we must highlight it
+	bool m_isSelected = false;
 
-	// Best size for the node according to its content
+	//! Best size for the node according to its content
 	wxSize m_bestSize;
-	int m_maxParamsPerColumn;
+	//! Maximum number of parameters on one column
+	int m_maxParamsPerColumn = 0;
 
-	// The node to represent
+	//! The underlying node
 	std::shared_ptr<Node> m_node;
-
+	//! List of graphical parameters
 	std::vector<std::shared_ptr<GUINodeParam>> m_params;
 
 	// Pointer to the GraphView

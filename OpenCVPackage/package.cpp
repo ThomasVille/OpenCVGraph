@@ -102,7 +102,6 @@ extern "C"
 			InitializerType init = [](ParamList outputs) {
 				outputs["dst"]->AllocateData(make_shared<Data<Mat>>(make_shared<Mat>()));
 				(*static_pointer_cast<Data<Mat>>(outputs["dst"]->GetData())->Get()) = imread("default.jpg", IMREAD_COLOR);
-
 			};
 
 			ComputerType computer = [](ParamList in, ParamList out) {
