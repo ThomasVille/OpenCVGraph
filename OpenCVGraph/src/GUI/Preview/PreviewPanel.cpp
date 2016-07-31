@@ -70,6 +70,15 @@ void PreviewPanel::SetNode(shared_ptr<Node> node)
 						int w = m_outputsPreview.back()->GetClientSize().GetWidth();
 						int h = m_outputsPreview.back()->GetClientSize().GetHeight();
 						(static_pointer_cast<Data<Mat>>(out.second->GetData()))->Get()->copyTo(tmp);
+						if (tmp.type() == CV_8UC1) {
+							tmp.convertTo(tmp, CV_8UC3);
+							Mat newSrc(tmp.size(), CV_MAKE_TYPE(tmp.type(), 3));
+
+							int from_to[] = { 0,0, 0,1, 0,2 };
+
+							cv::mixChannels(&tmp, 1, &newSrc, 1, from_to, 3);
+							newSrc.copyTo(tmp);
+						}
 						cvtColor(tmp, tmp, COLOR_BGR2RGB);
 						wxImage image(tmp.cols, tmp.rows, tmp.data, true);
 						wxBitmap bitmap(image.Scale(w, h));
