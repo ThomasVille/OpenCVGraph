@@ -16,7 +16,7 @@ public:
 		Init();
 	};
 	PreviewPanel(wxWindow *parent):
-		wxControl(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE)
+		wxControl(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxCLIP_CHILDREN)
 	{
 		Init();
 	}

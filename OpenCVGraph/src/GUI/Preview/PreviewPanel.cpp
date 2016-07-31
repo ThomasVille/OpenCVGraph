@@ -1,5 +1,6 @@
 #include "PreviewPanel.h"
 #include <wx/sizer.h>
+#include <wx/dcbuffer.h>
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
 #include "../Resources.h"
@@ -57,16 +58,27 @@ void PreviewPanel::SetNode(shared_ptr<Node> node)
 				m_outputsPreview.push_back(new wxPanel(m_ioPanel));
 				Mat tmp = *(static_pointer_cast<Data<Mat>>(out.second->GetData()))->Get().get();
 				m_outputsPreview.back()->SetSize(tmp.cols, tmp.rows);
+				// Do this to allow double buffering
+				m_outputsPreview.back()->SetBackgroundStyle(wxBG_STYLE_PAINT);
 
 				m_outputsPreview.back()->Bind(wxEVT_PAINT, [=](wxPaintEvent) {
-					wxPaintDC dc(static_cast<wxPanel*>(m_outputsPreview.back()));
-					Mat tmp;
-					int w = m_outputsPreview.back()->GetClientSize().GetWidth();
-					int h = m_outputsPreview.back()->GetClientSize().GetHeight();
-					(static_pointer_cast<Data<Mat>>(out.second->GetData()))->Get()->copyTo(tmp);
-					wxImage image(tmp.cols, tmp.rows, tmp.data, true);
-					wxBitmap bitmap(image.Scale(w, h));
-					dc.DrawBitmap(bitmap, wxPoint(0,0));
+					wxBufferedPaintDC dc(static_cast<wxPanel*>(m_outputsPreview.back()));
+					wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
+					if (gc) {
+						Mat tmp;
+						int w = m_outputsPreview.back()->GetClientSize().GetWidth();
+						int h = m_outputsPreview.back()->GetClientSize().GetHeight();
+						int imageW = (static_pointer_cast<Data<Mat>>(out.second->GetData()))->Get()->cols;
+						int imageH = (static_pointer_cast<Data<Mat>>(out.second->GetData()))->Get()->rows;
+						uchar* imageData = (static_pointer_cast<Data<Mat>>(out.second->GetData()))->Get()->data;
+						//(static_pointer_cast<Data<Mat>>(out.second->GetData()))->Get()->copyTo(tmp);
+						//wxImage image(tmp.cols, tmp.rows, tmp.data, true);
+						wxImage image(imageW, imageH, imageData, true);
+						wxBitmap bitmap(image.Scale(w, h));
+						gc->DrawBitmap(bitmap, 0, 0, w, h);
+						delete gc;
+					}
+					
 				});
 				sizer->Add(m_outputsPreview.back(), 0, wxALL | wxEXPAND | wxSHAPED, 5);
 			}
@@ -127,6 +139,7 @@ void PreviewPanel::Update()
 			i++;
 		}
 	}
+	Refresh();
 }
 
 void PreviewPanel::Init()
@@ -137,7 +150,7 @@ void PreviewPanel::Init()
 	m_pg = new wxPropertyGrid(this);
 	bSizer1->Add(m_pg, 1, wxALL | wxEXPAND, 5);
 
-	m_ioPanel = new wxPanel(this);
+	m_ioPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxCLIP_CHILDREN);
 	bSizer1->Add(m_ioPanel, 2, wxALL | wxEXPAND, 5);
 
 	SetSizer(bSizer1);

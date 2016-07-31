@@ -45,20 +45,25 @@ extern "C"
 				// Create the variable
 				outputs["value"]->AllocateData(make_shared<Data<Mat>>(make_shared<Mat>()));
 				outputs["cap"]->AllocateData(make_shared<Data<VideoCapture>>(make_shared<VideoCapture>(0)));
+				(*static_pointer_cast<Data<VideoCapture>>(outputs["cap"]->GetData())->Get()).set(CV_CAP_PROP_HUE, 100);
 				// Put an image in it
 				(*static_pointer_cast<Data<Mat>>(outputs["value"]->GetData())->Get()) = imread("default.jpg", IMREAD_COLOR);
+				CV_Assert((*static_pointer_cast<Data<Mat>>(outputs["value"]->GetData())->Get()).type() == CV_8UC3);
+
 			};
 
 			ComputerType computer = [](ParamList in, ParamList out) {
-				Mat value = (*static_pointer_cast<Data<Mat>>(out["value"]->GetData())->Get().get());
+				Mat& value = (*static_pointer_cast<Data<Mat>>(out["value"]->GetData())->Get().get());
 				VideoCapture cap((*static_pointer_cast<Data<VideoCapture>>(out["cap"]->GetData())->Get().get()));
 
+				CV_Assert(value.type() == CV_8UC3);
 				 // open the default camera
 				if (!cap.isOpened())  // check if we succeeded
 					return;
 				Mat tmp;
 				cap >> tmp; // get a new frame from camera
 				tmp.copyTo(value);
+				//value.convertTo(value, COLOR_RGB2BGR);
 			};
 
 			node = make_shared<Node>(name, inputs, outputs, init, computer);
@@ -75,9 +80,9 @@ extern "C"
 			};
 
 			ComputerType computer = [](ParamList in, ParamList out) {
-				Mat src = (*static_pointer_cast<Data<Mat>>(in["src"]->GetData())->Get().get());
-				int kernelSize = (*static_pointer_cast<Data<int>>(in["kernelSize"]->GetData())->Get().get());
-				Mat dst = (*static_pointer_cast<Data<Mat>>(out["dst"]->GetData())->Get().get());
+				Mat& src = (*static_pointer_cast<Data<Mat>>(in["src"]->GetData())->Get().get());
+				int& kernelSize = (*static_pointer_cast<Data<int>>(in["kernelSize"]->GetData())->Get().get());
+				Mat& dst = (*static_pointer_cast<Data<Mat>>(out["dst"]->GetData())->Get().get());
 				// Gaussian blur only accepts odd numbers in kernel size
 				if (kernelSize % 2 == 0)
 					return;

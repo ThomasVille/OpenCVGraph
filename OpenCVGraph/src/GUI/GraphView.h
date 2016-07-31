@@ -31,6 +31,7 @@ public:
 	void OnLeftMouseUp(wxMouseEvent&);
 	void OnRightMouseUp(wxMouseEvent&);
 	void OnMouseMotion(wxMouseEvent&);
+	void OnTimer(wxTimerEvent&);
 
 	// Redraw asap the whole graph
 	void Redraw();
@@ -101,8 +102,10 @@ protected:
 	std::shared_ptr<Node> m_entryPoint;
 
 	PreviewPanel* m_previewPanel;
-
+	//! Real size of the canvas, usually bigger than the screen.
 	wxSize m_canvasSize;
+	//! Timer used to refresh the canvas in realtime
+	wxTimer m_timer;
 private:
 	wxDECLARE_DYNAMIC_CLASS(GraphView);
 };

@@ -114,17 +114,26 @@ void GraphView::OnMouseMotion(wxMouseEvent& event)
 	Redraw();
 }
 
+void GraphView::OnTimer(wxTimerEvent& event)
+{
+	UpdateRealtime();
+	Redraw();
+}
+
 void GraphView::Init()
 {
 	m_canvasSize = wxSize(1920, 1080);
 	SetVirtualSize(m_canvasSize);
 	SetScrollRate(10, 10);
 
+	m_timer.SetOwner(this);
+
 	Bind(wxEVT_PAINT, &GraphView::OnPaint, this);
 	Bind(wxEVT_MOTION, &GraphView::OnMouseMotion, this);
 	Bind(wxEVT_LEFT_UP, &GraphView::OnLeftMouseUp, this);
 	Bind(wxEVT_RIGHT_UP, &GraphView::OnRightMouseUp, this);
 	Bind(wxEVT_LEFT_DOWN, &GraphView::OnLeftMouseDown, this);
+	Bind(wxEVT_TIMER, &GraphView::OnTimer, this);
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
 }
 
@@ -341,6 +350,7 @@ void GraphView::RunOneShot()
 void GraphView::RunRealtime()
 {
 	m_realtimeStarted = true;
+	m_timer.Start(10);
 	m_graphEngine.RunOneShot(m_entryPoint.get());
 	Refresh();
 }
