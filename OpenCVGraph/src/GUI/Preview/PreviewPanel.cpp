@@ -11,6 +11,7 @@
 wxIMPLEMENT_DYNAMIC_CLASS(PreviewPanel, wxControl);
 using namespace std;
 using namespace cv;
+
 void PreviewPanel::SetNode(shared_ptr<Node> node)
 {
 	if (m_node == node || node.unique() || node.use_count() == 0)
@@ -68,13 +69,12 @@ void PreviewPanel::SetNode(shared_ptr<Node> node)
 						Mat tmp;
 						int w = m_outputsPreview.back()->GetClientSize().GetWidth();
 						int h = m_outputsPreview.back()->GetClientSize().GetHeight();
-						int imageW = (static_pointer_cast<Data<Mat>>(out.second->GetData()))->Get()->cols;
-						int imageH = (static_pointer_cast<Data<Mat>>(out.second->GetData()))->Get()->rows;
-						uchar* imageData = (static_pointer_cast<Data<Mat>>(out.second->GetData()))->Get()->data;
-						//(static_pointer_cast<Data<Mat>>(out.second->GetData()))->Get()->copyTo(tmp);
-						//wxImage image(tmp.cols, tmp.rows, tmp.data, true);
-						wxImage image(imageW, imageH, imageData, true);
+						(static_pointer_cast<Data<Mat>>(out.second->GetData()))->Get()->copyTo(tmp);
+						cvtColor(tmp, tmp, COLOR_BGR2RGB);
+						wxImage image(tmp.cols, tmp.rows, tmp.data, true);
 						wxBitmap bitmap(image.Scale(w, h));
+						gc->SetBrush(*wxWHITE_BRUSH);
+						gc->SetPen(*wxWHITE_PEN);
 						gc->DrawBitmap(bitmap, 0, 0, w, h);
 						delete gc;
 					}

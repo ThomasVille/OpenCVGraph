@@ -123,11 +123,11 @@ void MyFrame::CreatePanes()
 	m_mgr.AddPane(m_nodesTree, wxAuiPaneInfo().Name(wxT("available_nodes")).Caption(wxT("Available nodes")).
 		Left().Row(1).Position(0));
 
-	m_mgr.AddPane(m_previewPanel, wxAuiPaneInfo().Name(wxT("preview_panel")).Caption(wxT("Preview panel")).Right().Row(0).Position(0).BestSize(wxSize(200, 200)));
+	m_mgr.AddPane(m_previewPanel, wxAuiPaneInfo().Name(wxT("preview_panel")).Caption(wxT("Preview panel")).Right().Row(0).Position(0).BestSize(wxSize(500, 200)));
 
-	m_mgr.AddPane(new wxTextCtrl(this, wxID_ANY, "Here goes the preview images", wxPoint(0, 0), wxSize(90, 200), wxNO_BORDER | wxTE_MULTILINE),
+	/*m_mgr.AddPane(new wxTextCtrl(this, wxID_ANY, "Here goes the preview images", wxPoint(0, 0), wxSize(90, 200), wxNO_BORDER | wxTE_MULTILINE),
 		wxAuiPaneInfo().Name(wxT("preview_images")).Caption(wxT("Preview")).
-		Bottom().Row(0).Position(0));
+		Bottom().Row(0).Position(0));*/
 
 	m_mgr.AddPane(m_graphNotebook, wxAuiPaneInfo().Name(wxT("graph_notebook")).Caption(wxT("Graph notebook")).Center().CaptionVisible(false));
 }
