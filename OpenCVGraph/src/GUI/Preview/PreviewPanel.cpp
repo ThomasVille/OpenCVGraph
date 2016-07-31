@@ -55,6 +55,9 @@ void PreviewPanel::SetNode(shared_ptr<Node> node)
 			else if (out.second->GetType().name == "Mat") {
 				// convert to bitmap to be used by the window to draw
 				m_outputsPreview.push_back(new wxPanel(m_ioPanel));
+				Mat tmp = *(static_pointer_cast<Data<Mat>>(out.second->GetData()))->Get().get();
+				m_outputsPreview.back()->SetSize(tmp.cols, tmp.rows);
+
 				m_outputsPreview.back()->Bind(wxEVT_PAINT, [=](wxPaintEvent) {
 					wxPaintDC dc(static_cast<wxPanel*>(m_outputsPreview.back()));
 					Mat tmp;
@@ -62,11 +65,10 @@ void PreviewPanel::SetNode(shared_ptr<Node> node)
 					int h = m_outputsPreview.back()->GetClientSize().GetHeight();
 					(static_pointer_cast<Data<Mat>>(out.second->GetData()))->Get()->copyTo(tmp);
 					wxImage image(tmp.cols, tmp.rows, tmp.data, true);
-					wxBitmap bitmap(image.Scale(tmp.cols, tmp.rows));
-					m_outputsPreview.back()->SetSize(tmp.cols, tmp.rows);
+					wxBitmap bitmap(image.Scale(w, h));
 					dc.DrawBitmap(bitmap, wxPoint(0,0));
 				});
-				sizer->Add(m_outputsPreview.back(), 0, wxALL | wxEXPAND, 5);
+				sizer->Add(m_outputsPreview.back(), 0, wxALL | wxEXPAND | wxSHAPED, 5);
 			}
 		}
 	m_ioPanel->SetSizer(sizer);

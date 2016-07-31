@@ -12,12 +12,8 @@ class Package : public PDLL
 {
 public:
 	DECLARE_CLASS(Package)
-	
-	DECLARE_FUNCTION0(std::string*, GetPackageName)
 	DECLARE_FUNCTION1(void, GetNodesNames, std::vector<std::string>&)
 	DECLARE_FUNCTION2(void, NodeFactory, std::string, std::shared_ptr<Node>&)
-
-	DECLARE_FUNCTION1(void, DeletePackageName, std::string*)
 private:
 };
 

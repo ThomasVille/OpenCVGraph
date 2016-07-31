@@ -5,6 +5,7 @@
 #include <iostream>
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include "../OpenCVGraph/src/Node.h"
 #include "../OpenCVGraph/src/Parameter.h"
@@ -15,15 +16,11 @@ using namespace cv;
 
 extern "C"
 {
-	__declspec(dllexport) string* GetPackageName() {
-		return new string("OpenCV");
-	}
 	__declspec(dllexport) void GetNodesNames(vector<string>& names) {
-		names = { "Mat", "Gaussian blur" };
+		names = { "imread", "VideoCapture", "Gaussian blur" };
 	}
 	__declspec(dllexport) void NodeFactory(string name, shared_ptr<Node>& node) {
-		if (name == "Mat") {
-			string name = "Mat";
+		if (name == "imread") {
 			ParamList inputs{};
 			ParamList outputs{ {"value", make_shared<Parameter>("value", TypeFactory::GetType("Mat"), OUTPUT_PARAM) } };
 
@@ -39,8 +36,34 @@ extern "C"
 
 			node = make_shared<Node>(name, inputs, outputs, init, computer);
 		}
-		if (name == "Gaussian blur") {
-			string name = "Gaussian blur";
+		else if (name == "VideoCapture") {
+			ParamList inputs{};
+			ParamList outputs{ { "value", make_shared<Parameter>("value", TypeFactory::GetType("Mat"), OUTPUT_PARAM) },
+			{ "cap", make_shared<Parameter>("cap", TypeFactory::GetType("VideoCapture"), OUTPUT_PARAM) } };
+
+			InitializerType init = [](ParamList outputs) {
+				// Create the variable
+				outputs["value"]->AllocateData(make_shared<Data<Mat>>(make_shared<Mat>()));
+				outputs["cap"]->AllocateData(make_shared<Data<VideoCapture>>(make_shared<VideoCapture>(0)));
+				// Put an image in it
+				(*static_pointer_cast<Data<Mat>>(outputs["value"]->GetData())->Get()) = imread("default.jpg", IMREAD_COLOR);
+			};
+
+			ComputerType computer = [](ParamList in, ParamList out) {
+				Mat value = (*static_pointer_cast<Data<Mat>>(out["value"]->GetData())->Get().get());
+				VideoCapture cap((*static_pointer_cast<Data<VideoCapture>>(out["cap"]->GetData())->Get().get()));
+
+				 // open the default camera
+				if (!cap.isOpened())  // check if we succeeded
+					return;
+				Mat tmp;
+				cap >> tmp; // get a new frame from camera
+				tmp.copyTo(value);
+			};
+
+			node = make_shared<Node>(name, inputs, outputs, init, computer);
+		}
+		else if (name == "Gaussian blur") {
 			ParamList inputs{ {"src", make_shared<Parameter>("src", TypeFactory::GetType("Mat"), INPUT_PARAM) },
 			{ "kernelSize", make_shared<Parameter>("kernelSize", TypeFactory::GetType("int"), INPUT_PARAM) } };
 			ParamList outputs{ {"dst", make_shared<Parameter>("dst", TypeFactory::GetType("Mat"), OUTPUT_PARAM) }};
@@ -63,9 +86,6 @@ extern "C"
 			};
 			node = make_shared<Node>(name, inputs, outputs, init, computer);
 		}
-	}
-	__declspec(dllexport) void DeletePackageName(string* name) {
-		delete name;
 	}
 }
 

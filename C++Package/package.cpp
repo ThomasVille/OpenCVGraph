@@ -11,9 +11,6 @@ using namespace std;
 
 extern "C"
 {
-	__declspec(dllexport) string* GetPackageName() {
-		return new string("C++");
-	}
 	__declspec(dllexport) void GetNodesNames(vector<string>& names) {
 		names = { "Int", "Add" };
 	}
@@ -46,9 +43,6 @@ extern "C"
 			};
 			node = make_shared<Node>(name, inputs, outputs, init, computer);
 		}
-	}
-	__declspec(dllexport) void DeletePackageName(string* name) {
-		delete name;
 	}
 }
 
